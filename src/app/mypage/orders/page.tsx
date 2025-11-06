@@ -34,7 +34,7 @@ interface Order {
   id: string;
   date: string;
   status: string;
-  statusVariant: 'primary' | 'success' | 'warning' | 'danger';
+  statusVariant: 'default' | 'success' | 'warning' | 'danger' | 'info';
   total: string;
   items: OrderItem[];
   shippingAddress?: {
@@ -91,7 +91,7 @@ export default function OrdersPage() {
       id: '20240115-001',
       date: '2024年1月15日',
       status: '配送中',
-      statusVariant: 'primary',
+      statusVariant: 'info',
       total: '15,980',
       subtotal: '15,980',
       shippingFee: '0',
