@@ -61,6 +61,7 @@ This is a complex BtoB e-commerce system designed for business-to-business trans
 
 2. **Planning First（計画優先）**
    - Create a plan before starting implementation
+   - **UI/UX development requires designer review BEFORE planning phase**
    - Get user approval before proceeding with the plan
    - Use `/init` or planning documents to outline the approach
 
@@ -86,6 +87,8 @@ This is a complex BtoB e-commerce system designed for business-to-business trans
      - **Pages**: `src/app/` - Full pages with data and business logic
 
 5. **Component Reusability（コンポーネント化）**
+   - **CRITICAL**: Always check for existing reusable components before creating new ones
+   - Reuse existing components whenever possible to maintain consistency
    - Extract reusable logic into components whenever possible
    - Keep components small and focused on single responsibility
    - Use composition over inheritance
