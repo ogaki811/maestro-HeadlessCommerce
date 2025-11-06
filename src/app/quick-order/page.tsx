@@ -10,7 +10,7 @@ import toast from 'react-hot-toast';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import Breadcrumb from '@/components/common/Breadcrumb';
-import QuickOrderLineForm from '@/components/quick-order/QuickOrderLineForm';
+import QuickOrderMultiLineForm from '@/components/quick-order/QuickOrderMultiLineForm';
 import QuickOrderHelpSection from '@/components/quick-order/QuickOrderHelpSection';
 import useCartStore from '@/store/useCartStore';
 
@@ -104,7 +104,7 @@ export default function QuickOrderPage() {
 
           {/* メインコンテンツ */}
           <main className="mb-8">
-            <QuickOrderLineForm onAddToCart={handleAddToCart} />
+            <QuickOrderMultiLineForm onAddToCart={handleAddToCart} />
           </main>
 
           {/* 使い方ガイド */}

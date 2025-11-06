@@ -14,7 +14,6 @@ export interface QuickOrderMultiLineFormProps {
 
 const INITIAL_ROWS = 20;
 const MAX_ROWS = 99;
-const ADD_ROWS_COUNT = 10;
 
 /**
  * QuickOrderMultiLineForm
