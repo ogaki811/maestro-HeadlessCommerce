@@ -145,10 +145,16 @@ This is a complex BtoB e-commerce system designed for business-to-business trans
 
 12. **Commit Workflow（コミットワークフロー）**
     - **CRITICAL: Refactor code before committing (Red-Green-Refactor cycle)**
+    - **CRITICAL: Always include detailed development content in commit messages**
     - Always run tests before committing
     - Ensure TypeScript has no errors: `npm run build`
     - Stage related changes together
     - Use Claude Code's commit tool with co-authoring
+    - Commit message must include:
+      - Summary of what was implemented
+      - Key changes made
+      - Test results (if applicable)
+      - Technical details or specifications
     - Refactoring checklist:
       - Remove duplicate code
       - Improve naming clarity
