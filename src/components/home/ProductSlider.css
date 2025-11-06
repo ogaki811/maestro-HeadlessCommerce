@@ -1,0 +1,29 @@
+.product-slider .swiper-button-prev,
+.product-slider .swiper-button-next {
+  color: #1e3a8a;
+  background: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.product-slider .swiper-button-prev:after,
+.product-slider .swiper-button-next:after {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.product-slider .swiper-button-prev:hover,
+.product-slider .swiper-button-next:hover {
+  background: #1e3a8a;
+  color: white;
+}
+
+.product-slider .swiper-pagination-bullet {
+  background: #9ca3af;
+}
+
+.product-slider .swiper-pagination-bullet-active {
+  background: #1e3a8a;
+}
