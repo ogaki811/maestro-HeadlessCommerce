@@ -7,7 +7,7 @@ import { campaignsApi, productsApi } from '@/lib/api-client';
 import { formatCampaignPeriod, getCampaignStatus } from '@/types/campaign';
 
 type Props = {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 };
 
 /**
@@ -16,7 +16,8 @@ type Props = {
  */
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
-    const response = await campaignsApi.getCampaign(params.slug);
+    const { slug } = await params;
+    const response = await campaignsApi.getCampaign(slug);
 
     if (!response.success) {
       return {
@@ -52,7 +53,8 @@ export default async function CampaignDetailPage({ params }: Props) {
   // キャンペーン情報取得
   let campaign;
   try {
-    const response = await campaignsApi.getCampaign(params.slug);
+    const { slug } = await params;
+    const response = await campaignsApi.getCampaign(slug);
 
     if (!response.success || !response.data) {
       notFound();

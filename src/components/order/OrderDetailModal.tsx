@@ -17,7 +17,7 @@ interface Order {
   id: string;
   date: string;
   status: string;
-  statusVariant: 'primary' | 'success' | 'warning' | 'danger';
+  statusVariant: 'default' | 'success' | 'warning' | 'danger' | 'info';
   total: string;
   items: OrderItem[];
   shippingAddress?: {

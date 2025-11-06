@@ -52,12 +52,12 @@ export default function ProductCodeInput({
   };
 
   return (
-    <div className="product-code-input">
-      <label htmlFor={inputId} className="product-code-input__label">
+    <div className="flex flex-col gap-2 flex-1">
+      <label htmlFor={inputId} className="text-sm font-medium text-gray-700">
         {label}
       </label>
 
-      <div className="product-code-input__wrapper">
+      <div className="relative flex items-center">
         <input
           type="text"
           id={inputId}
@@ -66,7 +66,18 @@ export default function ProductCodeInput({
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
           disabled={disabled}
-          className={`product-code-input__field ${error ? 'product-code-input__field--error' : ''}`}
+          className={`
+            w-full px-3 py-2.5 pr-10
+            border rounded-lg
+            text-base
+            transition-all duration-150
+            outline-none
+            ${error
+              ? 'border-red-500 focus:border-red-500 focus:ring-4 focus:ring-red-500/10'
+              : 'border-gray-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10'
+            }
+            ${disabled ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : ''}
+          `}
           aria-label={label}
           aria-invalid={!!error}
           aria-describedby={error ? `${inputId}-error` : undefined}
@@ -74,15 +85,15 @@ export default function ProductCodeInput({
         />
 
         {isSearching && (
-          <div className="product-code-input__loading" aria-label="検索中">
+          <div className="absolute right-3 flex items-center justify-center" aria-label="検索中">
             <svg
-              className="product-code-input__spinner"
+              className="w-5 h-5 animate-spin"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
             >
               <circle
-                className="product-code-input__spinner-circle"
+                className="opacity-25"
                 cx="12"
                 cy="12"
                 r="10"
@@ -90,7 +101,7 @@ export default function ProductCodeInput({
                 strokeWidth="4"
               />
               <path
-                className="product-code-input__spinner-path"
+                className="opacity-75"
                 fill="currentColor"
                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
               />
@@ -100,99 +111,10 @@ export default function ProductCodeInput({
       </div>
 
       {error && (
-        <p id={`${inputId}-error`} className="product-code-input__error" role="alert">
+        <p id={`${inputId}-error`} className="text-sm text-red-500 m-0" role="alert">
           {error}
         </p>
       )}
-
-      <style jsx>{`
-        .product-code-input {
-          display: flex;
-          flex-direction: column;
-          gap: 0.5rem;
-          flex: 1;
-        }
-
-        .product-code-input__label {
-          font-size: 0.875rem;
-          font-weight: 500;
-          color: #374151;
-        }
-
-        .product-code-input__wrapper {
-          position: relative;
-          display: flex;
-          align-items: center;
-        }
-
-        .product-code-input__field {
-          width: 100%;
-          padding: 0.625rem 0.75rem;
-          padding-right: 2.5rem;
-          border: 1px solid #d1d5db;
-          border-radius: 0.5rem;
-          font-size: 1rem;
-          transition: all 0.15s ease;
-          outline: none;
-        }
-
-        .product-code-input__field:focus {
-          border-color: #3b82f6;
-          box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-        }
-
-        .product-code-input__field:disabled {
-          background-color: #f3f4f6;
-          color: #9ca3af;
-          cursor: not-allowed;
-        }
-
-        .product-code-input__field--error {
-          border-color: #ef4444;
-        }
-
-        .product-code-input__field--error:focus {
-          border-color: #ef4444;
-          box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
-        }
-
-        .product-code-input__loading {
-          position: absolute;
-          right: 0.75rem;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .product-code-input__spinner {
-          width: 1.25rem;
-          height: 1.25rem;
-          animation: spin 1s linear infinite;
-        }
-
-        .product-code-input__spinner-circle {
-          opacity: 0.25;
-        }
-
-        .product-code-input__spinner-path {
-          opacity: 0.75;
-        }
-
-        .product-code-input__error {
-          font-size: 0.875rem;
-          color: #ef4444;
-          margin: 0;
-        }
-
-        @keyframes spin {
-          from {
-            transform: rotate(0deg);
-          }
-          to {
-            transform: rotate(360deg);
-          }
-        }
-      `}</style>
     </div>
   );
 }

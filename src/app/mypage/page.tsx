@@ -36,7 +36,7 @@ export default function MyPage() {
       id: '20240115-001',
       date: '2024年1月15日',
       status: '配送中',
-      statusVariant: 'primary' as const,
+      statusVariant: 'info' as const,
       total: '15,980',
       items: [
         {

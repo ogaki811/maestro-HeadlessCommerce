@@ -13,10 +13,10 @@ import type { BusinessType } from '@/constants/business-types';
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const businessType = request.headers.get('x-business-type') as BusinessType;
 
     if (!businessType) {

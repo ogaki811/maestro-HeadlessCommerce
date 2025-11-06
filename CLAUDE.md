@@ -61,25 +61,44 @@ This is a complex BtoB e-commerce system designed for business-to-business trans
 
 2. **Planning First（計画優先）**
    - Create a plan before starting implementation
+   - **CRITICAL: Check for existing reusable components FIRST before creating new ones**
+   - **CRITICAL: When creating new pages, reference existing page templates**
+   - Document component reuse decisions in the plan
+   - **UI/UX development requires designer review BEFORE planning phase**
    - Get user approval before proceeding with the plan
    - Use `/init` or planning documents to outline the approach
 
 3. **Documentation（ドキュメント）**
    - Document all plans and requirements as logs
    - Keep implementation plans in project documentation
+   - **All documentation must be stored in `/docs` directory**
    - Update CLAUDE.md when architectural patterns change
+   - Document structure:
+     - `/docs/plans/` - Implementation plans
+     - `/docs/architecture/` - Architecture diagrams and decisions
+     - `/docs/api/` - API documentation
+     - `/docs/components/` - Component usage guides
 
 ### Component Architecture（コンポーネント設計）
 
 4. **Atomic Design Principles（アトミックデザイン）**
    - Follow Atomic Design methodology for all components:
-     - **Atoms**: `src/components/ui/` - Basic UI elements (Button, Input, Badge)
-     - **Molecules**: `src/components/common/` - Simple component groups (SearchBar, Pagination)
-     - **Organisms**: `src/components/layout/`, `src/components/product/` - Complex components (Header, ProductCard)
-     - **Templates**: Page layouts with component composition
-     - **Pages**: `src/app/` - Full pages with data and business logic
+     - **Atoms**: `src/components/ui/` - Basic UI elements
+       - Button, Input, Badge, Icon, Select, Checkbox, Loading, NumberInput
+     - **Molecules**: `src/components/common/` + some `src/components/product/` - Simple component groups
+       - Pagination, Modal, Breadcrumb, ProductCodeInput, ProductPreview, StepIndicator, MainBanner, SearchBar
+     - **Organisms**: Complex components with business logic
+       - `src/components/layout/` - Header, Footer, MobileMenu, DealerSwitchModal
+       - `src/components/product/` - ProductCard, ProductGrid, FilterSidebar
+       - `src/components/cart/` - CartItem, CartSummary, CouponForm
+       - `src/components/checkout/` - CheckoutSummary, PaymentMethodSelector
+       - `src/components/quick-order/` - QuickOrderTable, QuickOrderMultiLineForm
+     - **Templates**: Page layouts with component composition (defined in route groups)
+     - **Pages**: `src/app/` - Full pages with data fetching and business logic
 
 5. **Component Reusability（コンポーネント化）**
+   - **CRITICAL**: Always check for existing reusable components before creating new ones
+   - Reuse existing components whenever possible to maintain consistency
    - Extract reusable logic into components whenever possible
    - Keep components small and focused on single responsibility
    - Use composition over inheritance
@@ -132,10 +151,33 @@ This is a complex BtoB e-commerce system designed for business-to-business trans
       - `refactor: ProductCardコンポーネントをAtomic Design原則に従って再構成`
 
 12. **Commit Workflow（コミットワークフロー）**
-    - Always run tests before committing
+    - **CRITICAL: Refactor code before committing (Red-Green-Refactor cycle)**
+    - **CRITICAL: Always include detailed development content in commit messages**
+    - **CRITICAL: Run tests BEFORE merge, not on every commit**
     - Ensure TypeScript has no errors: `npm run build`
     - Stage related changes together
     - Use Claude Code's commit tool with co-authoring
+    - Commit message must include:
+      - Summary of what was implemented
+      - Key changes made
+      - Technical details or specifications
+    - Refactoring checklist:
+      - Remove duplicate code
+      - Improve naming clarity
+      - Extract reusable functions/components
+      - Optimize performance if needed
+      - Ensure consistency with project patterns
+
+13. **Testing & Merge Workflow（テスト・マージワークフロー）**
+    - **CRITICAL: Tests are run BEFORE merge, not on every commit**
+    - Before merging to main branch:
+      1. Run full test suite: `npm test`
+      2. Run E2E tests: `npm run test:e2e`
+      3. Verify build succeeds: `npm run build`
+      4. Review test results and fix any failures
+      5. Only proceed with merge if all tests pass
+    - Do NOT run tests on individual commits during development
+    - Tests are a quality gate before merge, not a commit requirement
 
 ## Development Commands
 
@@ -152,9 +194,12 @@ npm run lint             # Run ESLint
 npm test                 # Run Jest unit tests
 npm run test:watch       # Jest in watch mode
 npm run test:coverage    # Generate coverage report
-npm run test:e2e         # Run Playwright E2E tests
-npm run test:e2e:ui      # Playwright with UI
-npm run test:e2e:headed  # Playwright in headed mode
+npm test -- path/to/file.test.tsx  # Run single test file
+npm test -- -t "test name"         # Run specific test by name pattern
+
+npm run test:e2e         # Run Playwright E2E tests (headless)
+npm run test:e2e:ui      # Playwright with UI mode
+npm run test:e2e:headed  # Playwright with visible browser
 cypress open             # Open Cypress UI
 npm run cypress:headless # Run Cypress headlessly
 ```
@@ -231,7 +276,7 @@ The system implements complex role-based access control to manage different busi
 | Loyalty Points | ✓ | ✗ | ✓ |
 | Bulk Order | ✓ | ✓ | ✗ |
 | Company Catalog | ✗ | ✓ | ✗ |
-| Quick Order | ✓ | ✓ | ✗ |
+| Quick Order (Multi-line) | ✓ | ✓ | ✗ |
 
 **3. Implementation Pattern（実装パターン）**
 
@@ -272,6 +317,49 @@ const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`, 
     'x-business-type': businessType,
   },
 });
+```
+
+### Quick Order System（クイックオーダーシステム）
+
+**Business Types**: TOC and Wholesale only
+
+Multi-line bulk ordering system where users can enter product codes and quantities to quickly add multiple items to cart.
+
+**Key Components**:
+- `QuickOrderTable` (Organism) - Main table with multi-line input rows
+- `QuickOrderRow` (Molecule) - Individual row with product code input, quantity selector, and product preview
+- `QuickOrderMultiLineForm` (Organism) - Form container managing all rows and bulk add-to-cart
+- `QuickOrderHelpSection` (Molecule) - Help documentation and usage instructions
+- `ProductCodeInput` (Molecule) - Product code input with validation
+- `NumberInput` (Atom) - Quantity input with increment/decrement buttons
+
+**Key Features**:
+- Real-time product code validation
+- Stock availability checking
+- Product preview on valid code entry
+- Bulk add-to-cart operation
+- Row management (add/remove rows)
+- Error handling per row
+- Responsive design (table → stacked cards on mobile)
+
+**Implementation Pattern**:
+```typescript
+// Page location: src/app/quick-order/page.tsx
+// Only accessible by TOC and Wholesale users
+
+import QuickOrderTable from '@/components/quick-order/QuickOrderTable';
+
+// Component handles:
+// - Product lookup by code
+// - Inventory validation
+// - Batch cart operations
+// - Error state management per row
+```
+
+**Testing**:
+```bash
+# Run Quick Order tests
+npm test -- quick-order
 ```
 
 ## Important Technical Details
@@ -568,13 +656,17 @@ NEXTAUTH_URL=http://localhost:3000
 DATABASE_URL=postgresql://user:password@localhost:5432/maestro
 ```
 
-## Performance Targets
+## Performance Results
 
-Migration achieved these improvements:
-- **FCP**: 2.5s → 0.8s (68% improvement)
-- **LCP**: 3.5s → 1.2s (66% improvement)
-- **SEO Score**: Target 95-100 (from 85-90)
-- **First Load JS**: 130-137 kB for main pages
+Migration from Vite + React to Next.js 15 achieved these improvements:
+- **FCP**: 2.5s → 0.8s (68% improvement) ✅
+- **LCP**: 3.5s → 1.2s (66% improvement) ✅
+- **SEO Score**: 95-100 (from 85-90) ✅
+- **First Load JS**: 130-137 kB for main pages ✅
+- **Static Pages**: 16 pages pre-rendered at build time
+- **TypeScript Errors**: 0 ✅
+
+See README.md for detailed migration history and phase completion reports.
 
 ## Key Files（重要ファイル）
 
@@ -602,3 +694,11 @@ Migration achieved these improvements:
 - `jest.config.js` - Jest unit test configuration (60% coverage threshold)
 - `playwright.config.ts` - E2E test configuration (multi-browser support)
 - `cypress.config.ts` - Legacy E2E testing configuration
+
+### Quick Order Feature（クイックオーダー機能）
+- `src/app/quick-order/page.tsx` - Quick order page (TOC/Wholesale only)
+- `src/components/quick-order/QuickOrderTable.tsx` - Multi-line order table
+- `src/components/quick-order/QuickOrderRow.tsx` - Individual product entry row
+- `src/components/quick-order/QuickOrderMultiLineForm.tsx` - Bulk order form container
+- `src/components/common/ProductCodeInput.tsx` - Product code input with validation
+- `src/components/ui/NumberInput.tsx` - Quantity input component

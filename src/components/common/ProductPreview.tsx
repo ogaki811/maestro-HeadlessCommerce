@@ -29,16 +29,16 @@ export default function ProductPreview({ product, error, isSearching }: ProductP
   // 検索中
   if (isSearching) {
     return (
-      <div className="product-preview product-preview--loading">
-        <div className="product-preview__spinner">
+      <div className="p-6 border-2 border-dashed border-gray-300 rounded-xl bg-gray-50 flex flex-col items-center gap-3">
+        <div className="w-10 h-10 text-blue-600">
           <svg
-            className="spinner"
+            className="w-full h-full animate-spin"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
           >
             <circle
-              className="spinner-circle"
+              className="opacity-25"
               cx="12"
               cy="12"
               r="10"
@@ -46,64 +46,13 @@ export default function ProductPreview({ product, error, isSearching }: ProductP
               strokeWidth="4"
             />
             <path
-              className="spinner-path"
+              className="opacity-75"
               fill="currentColor"
               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
             />
           </svg>
         </div>
-        <p className="product-preview__message">検索中...</p>
-
-        <style jsx>{`
-          .product-preview {
-            padding: 1.5rem;
-            border: 2px dashed #d1d5db;
-            border-radius: 0.75rem;
-            background: #f9fafb;
-          }
-
-          .product-preview--loading {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.75rem;
-          }
-
-          .product-preview__spinner {
-            width: 2.5rem;
-            height: 2.5rem;
-            color: #3b82f6;
-          }
-
-          .spinner {
-            width: 100%;
-            height: 100%;
-            animation: spin 1s linear infinite;
-          }
-
-          .spinner-circle {
-            opacity: 0.25;
-          }
-
-          .spinner-path {
-            opacity: 0.75;
-          }
-
-          .product-preview__message {
-            margin: 0;
-            font-size: 0.875rem;
-            color: #6b7280;
-          }
-
-          @keyframes spin {
-            from {
-              transform: rotate(0deg);
-            }
-            to {
-              transform: rotate(360deg);
-            }
-          }
-        `}</style>
+        <p className="m-0 text-sm text-gray-600">検索中...</p>
       </div>
     );
   }
@@ -111,37 +60,9 @@ export default function ProductPreview({ product, error, isSearching }: ProductP
   // エラー（商品が見つからない）
   if (error && !product) {
     return (
-      <div className="product-preview product-preview--error">
-        <span className="product-preview__icon product-preview__icon--error">❌</span>
-        <p className="product-preview__message product-preview__message--error">{error.message}</p>
-
-        <style jsx>{`
-          .product-preview {
-            padding: 1.5rem;
-            border: 2px dashed #d1d5db;
-            border-radius: 0.75rem;
-          }
-
-          .product-preview--error {
-            background: #fef2f2;
-            border-color: #fca5a5;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.75rem;
-          }
-
-          .product-preview__icon {
-            font-size: 2rem;
-          }
-
-          .product-preview__message--error {
-            margin: 0;
-            font-size: 0.875rem;
-            color: #dc2626;
-            font-weight: 500;
-          }
-        `}</style>
+      <div className="p-6 border-2 border-dashed border-red-300 rounded-xl bg-red-50 flex flex-col items-center gap-3">
+        <span className="text-2xl">❌</span>
+        <p className="m-0 text-sm text-red-600 font-medium">{error.message}</p>
       </div>
     );
   }
@@ -149,134 +70,41 @@ export default function ProductPreview({ product, error, isSearching }: ProductP
   // 成功（商品が見つかった）
   if (product) {
     return (
-      <div className="product-preview product-preview--success">
-        <span className="product-preview__icon product-preview__icon--success">✅</span>
+      <div className="p-6 border-2 border-solid border-green-300 rounded-xl bg-green-50">
+        <span className="text-2xl mb-3 block">✅</span>
 
-        <div className="product-preview__content">
-          <div className="product-preview__image">
+        <div className="flex gap-4">
+          <div className="flex-shrink-0 w-30 h-30 rounded-lg overflow-hidden bg-white border border-gray-200">
             <Image src={product.imageUrl} alt={product.name} width={120} height={120} />
           </div>
 
-          <div className="product-preview__details">
-            <h3 className="product-preview__name">{product.name}</h3>
-            <p className="product-preview__code">商品コード: {product.code}</p>
-            <p className="product-preview__price">
+          <div className="flex-1 flex flex-col gap-2">
+            <h3 className="m-0 text-lg font-semibold text-gray-900">{product.name}</h3>
+            <p className="m-0 text-sm text-gray-600">商品コード: {product.code}</p>
+            <p className="m-0 text-xl font-bold text-emerald-600">
               ¥{product.price.toLocaleString()}
-              <span className="product-preview__price-tax">
+              <span className="ml-2 text-sm font-normal text-gray-600">
                 （税込 ¥{product.priceWithTax.toLocaleString()}）
               </span>
             </p>
 
-            <div className="product-preview__stock">
+            <div className="mt-1">
               {product.isAvailable ? (
-                <span className="stock-badge stock-badge--available">在庫: {product.stock}個</span>
+                <span className="inline-block px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                  在庫: {product.stock}個
+                </span>
               ) : (
-                <span className="stock-badge stock-badge--out">在庫切れ</span>
+                <span className="inline-block px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
+                  在庫切れ
+                </span>
               )}
             </div>
 
             {error && (
-              <p className="product-preview__warning">⚠️ {error.message}</p>
+              <p className="mt-2 mb-0 text-sm text-amber-600 font-medium">⚠️ {error.message}</p>
             )}
           </div>
         </div>
-
-        <style jsx>{`
-          .product-preview {
-            padding: 1.5rem;
-            border: 2px solid #d1d5db;
-            border-radius: 0.75rem;
-          }
-
-          .product-preview--success {
-            background: #f0fdf4;
-            border-color: #86efac;
-          }
-
-          .product-preview__icon {
-            font-size: 1.5rem;
-            margin-bottom: 0.75rem;
-            display: block;
-          }
-
-          .product-preview__content {
-            display: flex;
-            gap: 1rem;
-          }
-
-          .product-preview__image {
-            flex-shrink: 0;
-            width: 120px;
-            height: 120px;
-            border-radius: 0.5rem;
-            overflow: hidden;
-            background: white;
-            border: 1px solid #e5e7eb;
-          }
-
-          .product-preview__details {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-          }
-
-          .product-preview__name {
-            margin: 0;
-            font-size: 1.125rem;
-            font-weight: 600;
-            color: #111827;
-          }
-
-          .product-preview__code {
-            margin: 0;
-            font-size: 0.875rem;
-            color: #6b7280;
-          }
-
-          .product-preview__price {
-            margin: 0;
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #059669;
-          }
-
-          .product-preview__price-tax {
-            font-size: 0.875rem;
-            font-weight: 400;
-            color: #6b7280;
-            margin-left: 0.5rem;
-          }
-
-          .product-preview__stock {
-            margin-top: 0.25rem;
-          }
-
-          .stock-badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.875rem;
-            font-weight: 500;
-          }
-
-          .stock-badge--available {
-            background: #d1fae5;
-            color: #065f46;
-          }
-
-          .stock-badge--out {
-            background: #fee2e2;
-            color: #991b1b;
-          }
-
-          .product-preview__warning {
-            margin: 0.5rem 0 0;
-            font-size: 0.875rem;
-            color: #f59e0b;
-            font-weight: 500;
-          }
-        `}</style>
       </div>
     );
   }
