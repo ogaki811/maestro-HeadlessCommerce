@@ -61,6 +61,8 @@ This is a complex BtoB e-commerce system designed for business-to-business trans
 
 2. **Planning First（計画優先）**
    - Create a plan before starting implementation
+   - **CRITICAL: Check for existing reusable components FIRST before creating new ones**
+   - Document component reuse decisions in the plan
    - **UI/UX development requires designer review BEFORE planning phase**
    - Get user approval before proceeding with the plan
    - Use `/init` or planning documents to outline the approach
@@ -141,10 +143,17 @@ This is a complex BtoB e-commerce system designed for business-to-business trans
       - `refactor: ProductCardコンポーネントをAtomic Design原則に従って再構成`
 
 12. **Commit Workflow（コミットワークフロー）**
+    - **CRITICAL: Refactor code before committing (Red-Green-Refactor cycle)**
     - Always run tests before committing
     - Ensure TypeScript has no errors: `npm run build`
     - Stage related changes together
     - Use Claude Code's commit tool with co-authoring
+    - Refactoring checklist:
+      - Remove duplicate code
+      - Improve naming clarity
+      - Extract reusable functions/components
+      - Optimize performance if needed
+      - Ensure consistency with project patterns
 
 ## Development Commands
 
