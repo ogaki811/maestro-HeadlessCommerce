@@ -62,6 +62,7 @@ This is a complex BtoB e-commerce system designed for business-to-business trans
 2. **Planning First（計画優先）**
    - Create a plan before starting implementation
    - **CRITICAL: Check for existing reusable components FIRST before creating new ones**
+   - **CRITICAL: When creating new pages, reference existing page templates**
    - Document component reuse decisions in the plan
    - **UI/UX development requires designer review BEFORE planning phase**
    - Get user approval before proceeding with the plan
