@@ -88,11 +88,10 @@ export default function QuickOrderPage() {
     <>
       <Header />
 
-      <div className="min-h-screen bg-white py-8 md:py-8">
-        <div className="max-w-6xl mx-auto px-4">
-          {/* パンくずリスト */}
-          <Breadcrumb />
+      <main className="min-h-screen bg-white">
+        <Breadcrumb />
 
+        <div className="max-w-6xl mx-auto px-4 py-8">
           {/* ヘッダー */}
           <header className="mb-8 pb-6 border-b-2 border-gray-200">
             <h1 className="m-0 mb-2 text-3xl md:text-2xl font-bold text-gray-900">
@@ -111,7 +110,7 @@ export default function QuickOrderPage() {
           {/* 使い方ガイド */}
           <QuickOrderHelpSection />
         </div>
-      </div>
+      </main>
 
       <Footer />
     </>
