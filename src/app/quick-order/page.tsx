@@ -23,12 +23,6 @@ export default function QuickOrderPage() {
   const router = useRouter();
   const { fetchCart } = useCartStore();
 
-  // パンくずリスト
-  const breadcrumbItems = [
-    { label: 'ホーム', href: '/' },
-    { label: 'クイックオーダー', href: '/quick-order' },
-  ];
-
   /**
    * カートに商品を追加
    */
@@ -97,7 +91,7 @@ export default function QuickOrderPage() {
       <div className="min-h-screen bg-white py-8 md:py-8">
         <div className="max-w-6xl mx-auto px-4">
           {/* パンくずリスト */}
-          <Breadcrumb items={breadcrumbItems} />
+          <Breadcrumb />
 
           {/* ヘッダー */}
           <header className="mb-8 pb-6 border-b-2 border-gray-200">
