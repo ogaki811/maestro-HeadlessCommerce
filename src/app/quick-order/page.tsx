@@ -103,9 +103,9 @@ export default function QuickOrderPage() {
           </header>
 
           {/* メインコンテンツ */}
-          <main className="mb-8">
+          <div className="mb-8">
             <QuickOrderMultiLineForm onAddToCart={handleAddToCart} />
-          </main>
+          </div>
 
           {/* 使い方ガイド */}
           <QuickOrderHelpSection />
