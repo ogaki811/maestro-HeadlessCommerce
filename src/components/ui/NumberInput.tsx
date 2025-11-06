@@ -75,20 +75,28 @@ export default function NumberInput({
   };
 
   return (
-    <div className={`number-input ${className}`}>
+    <div className={`inline-flex flex-col gap-2 ${className}`}>
       {label && (
-        <label htmlFor={inputId} className="number-input__label">
+        <label htmlFor={inputId} className="text-sm font-medium text-gray-700">
           {label}
         </label>
       )}
 
-      <div className="number-input__wrapper">
+      <div className="inline-flex items-center border border-gray-300 rounded-lg overflow-hidden bg-white">
         {showStepper && (
           <button
             type="button"
             onClick={handleDecrement}
             disabled={disabled || value <= min}
-            className="number-input__stepper number-input__stepper--decrement"
+            className="
+              flex items-center justify-center
+              w-8 h-10 p-0
+              border-r border-gray-300
+              bg-gray-50 text-gray-700
+              hover:bg-gray-200 active:bg-gray-300
+              disabled:text-gray-300 disabled:cursor-not-allowed
+              transition-all duration-150
+            "
             aria-label="減らす"
           >
             <svg
@@ -116,7 +124,17 @@ export default function NumberInput({
           max={max}
           step={step}
           disabled={disabled}
-          className="number-input__field"
+          className="
+            w-16 p-2
+            border-none
+            text-center text-base font-medium
+            outline-none
+            [appearance:textfield]
+            [&::-webkit-outer-spin-button]:appearance-none
+            [&::-webkit-inner-spin-button]:appearance-none
+            focus:outline-2 focus:outline-blue-500 focus:outline-offset-[-2px]
+            disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed
+          "
           aria-label={label || '数量'}
         />
 
@@ -125,7 +143,15 @@ export default function NumberInput({
             type="button"
             onClick={handleIncrement}
             disabled={disabled || (max !== undefined && value >= max)}
-            className="number-input__stepper number-input__stepper--increment"
+            className="
+              flex items-center justify-center
+              w-8 h-10 p-0
+              border-l border-gray-300
+              bg-gray-50 text-gray-700
+              hover:bg-gray-200 active:bg-gray-300
+              disabled:text-gray-300 disabled:cursor-not-allowed
+              transition-all duration-150
+            "
             aria-label="増やす"
           >
             <svg
@@ -145,92 +171,6 @@ export default function NumberInput({
           </button>
         )}
       </div>
-
-      <style jsx>{`
-        .number-input {
-          display: inline-flex;
-          flex-direction: column;
-          gap: 0.5rem;
-        }
-
-        .number-input__label {
-          font-size: 0.875rem;
-          font-weight: 500;
-          color: #374151;
-        }
-
-        .number-input__wrapper {
-          display: inline-flex;
-          align-items: center;
-          border: 1px solid #d1d5db;
-          border-radius: 0.5rem;
-          overflow: hidden;
-          background: white;
-        }
-
-        .number-input__field {
-          width: 4rem;
-          padding: 0.5rem;
-          border: none;
-          text-align: center;
-          font-size: 1rem;
-          font-weight: 500;
-          outline: none;
-          -moz-appearance: textfield;
-        }
-
-        .number-input__field::-webkit-outer-spin-button,
-        .number-input__field::-webkit-inner-spin-button {
-          -webkit-appearance: none;
-          margin: 0;
-        }
-
-        .number-input__field:focus {
-          outline: 2px solid #3b82f6;
-          outline-offset: -2px;
-        }
-
-        .number-input__field:disabled {
-          background-color: #f3f4f6;
-          color: #9ca3af;
-          cursor: not-allowed;
-        }
-
-        .number-input__stepper {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 2rem;
-          height: 2.5rem;
-          padding: 0;
-          border: none;
-          background: #f9fafb;
-          color: #374151;
-          cursor: pointer;
-          transition: all 0.15s ease;
-        }
-
-        .number-input__stepper:hover:not(:disabled) {
-          background: #e5e7eb;
-        }
-
-        .number-input__stepper:active:not(:disabled) {
-          background: #d1d5db;
-        }
-
-        .number-input__stepper:disabled {
-          color: #d1d5db;
-          cursor: not-allowed;
-        }
-
-        .number-input__stepper--decrement {
-          border-right: 1px solid #d1d5db;
-        }
-
-        .number-input__stepper--increment {
-          border-left: 1px solid #d1d5db;
-        }
-      `}</style>
     </div>
   );
 }
