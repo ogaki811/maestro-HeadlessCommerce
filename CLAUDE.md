@@ -67,7 +67,13 @@ This is a complex BtoB e-commerce system designed for business-to-business trans
 3. **Documentation（ドキュメント）**
    - Document all plans and requirements as logs
    - Keep implementation plans in project documentation
+   - **All documentation must be stored in `/docs` directory**
    - Update CLAUDE.md when architectural patterns change
+   - Document structure:
+     - `/docs/plans/` - Implementation plans
+     - `/docs/architecture/` - Architecture diagrams and decisions
+     - `/docs/api/` - API documentation
+     - `/docs/components/` - Component usage guides
 
 ### Component Architecture（コンポーネント設計）
 
