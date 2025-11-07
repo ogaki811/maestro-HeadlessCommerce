@@ -138,9 +138,16 @@ This is a complex BtoB e-commerce system designed for business-to-business trans
     - When custom CSS is required, use BEM naming convention
     - Example: `.product-card__title--featured`
 
+11. **Icon Usage（アイコン使用）**
+    - **CRITICAL: Never use emoji icons in UI components**
+    - Use monochrome SVG icons only
+    - Icons should be single-color and consistent with the design system
+    - Example of allowed icons: SVG with `stroke="currentColor"` or `fill="currentColor"`
+    - Example of prohibited: 💡, ⚠️, ❌, ✅, etc.
+
 ### Git & Commits（Git・コミット）
 
-11. **Clear Commit Messages（わかりやすいコミット）**
+12. **Clear Commit Messages（わかりやすいコミット）**
     - Write descriptive commit messages in Japanese
     - Format: `[type] 実装内容の説明`
     - Types: `feat`, `fix`, `refactor`, `test`, `docs`, `style`, `chore`
@@ -150,13 +157,19 @@ This is a complex BtoB e-commerce system designed for business-to-business trans
       - `test: useCartStoreのユニットテストを追加`
       - `refactor: ProductCardコンポーネントをAtomic Design原則に従って再構成`
 
-12. **Commit Workflow（コミットワークフロー）**
+13. **Commit Workflow（コミットワークフロー）**
+    - **CRITICAL: Document added requirements BEFORE committing**
     - **CRITICAL: Refactor code before committing (Red-Green-Refactor cycle)**
     - **CRITICAL: Always include detailed development content in commit messages**
     - **CRITICAL: Run tests BEFORE merge, not on every commit**
     - Ensure TypeScript has no errors: `npm run build`
     - Stage related changes together
     - Use Claude Code's commit tool with co-authoring
+    - Documentation requirements:
+      - Create or update documentation in `/docs` for new features
+      - Update feature specifications when requirements change
+      - Document design decisions and architectural changes
+      - Include examples and usage patterns for new components
     - Commit message must include:
       - Summary of what was implemented
       - Key changes made
@@ -168,16 +181,20 @@ This is a complex BtoB e-commerce system designed for business-to-business trans
       - Optimize performance if needed
       - Ensure consistency with project patterns
 
-13. **Testing & Merge Workflow（テスト・マージワークフロー）**
+14. **Testing & Merge Workflow（テスト・マージワークフロー）**
     - **CRITICAL: Tests are run BEFORE merge, not on every commit**
+    - **CRITICAL: Do NOT merge to main without explicit user instruction**
     - Before merging to main branch:
       1. Run full test suite: `npm test`
       2. Run E2E tests: `npm run test:e2e`
       3. Verify build succeeds: `npm run build`
       4. Review test results and fix any failures
-      5. Only proceed with merge if all tests pass
+      5. Present test results to user
+      6. **Wait for explicit user instruction to merge**
+      7. Only proceed with merge if all tests pass AND user approves
     - Do NOT run tests on individual commits during development
     - Tests are a quality gate before merge, not a commit requirement
+    - **Never merge automatically - always wait for user instruction**
 
 ## Development Commands
 

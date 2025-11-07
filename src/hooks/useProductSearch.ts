@@ -5,6 +5,7 @@
 
 import { useState, useEffect } from 'react';
 import useDebounce from './useDebounce';
+import { sampleProducts } from '@/data/sampleProducts';
 
 /**
  * 商品検索結果
@@ -20,6 +21,11 @@ export interface ProductSearchResult {
   stock: number;
   category: string;
   isAvailable: boolean;
+  // 廃番商品対応
+  discontinued?: boolean;
+  discontinuedDate?: string;
+  discontinuedReason?: string;
+  alternativeProducts?: ProductSearchResult[]; // 代替商品情報
 }
 
 /**
@@ -61,70 +67,93 @@ export function useProductSearch(productCode: string, delay: number = 300) {
       setIsSearching(true);
       setError(null);
 
+      // サンプルデータから商品を検索（API呼び出しをシミュレート）
+      await new Promise(resolve => setTimeout(resolve, 200)); // 検索のシミュレーション
+
       try {
-        // API呼び出し
-        const siteId = process.env.NEXT_PUBLIC_SITE_ID || 'toc-site-a';
-        const businessType = process.env.NEXT_PUBLIC_BUSINESS_TYPE || 'toc';
-        const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT || 'http://localhost:4000';
+        // 商品コードで検索（大文字小文字を区別しない）
+        const trimmedCode = debouncedCode.trim().toUpperCase();
+        const product = sampleProducts.find(
+          (p) => p.code.toUpperCase() === trimmedCode
+        );
 
-        // 顧客ID取得（localStorage から）
-        let customerId = '';
-        if (typeof window !== 'undefined') {
-          const customerData = localStorage.getItem('customer');
-          if (customerData) {
-            try {
-              const customer = JSON.parse(customerData);
-              customerId = customer.id || '';
-            } catch (e) {
-              console.error('Failed to parse customer data:', e);
-            }
+        if (product) {
+          // 代替商品を検索（廃番商品の場合）
+          let alternativeProducts: ProductSearchResult[] | undefined;
+          if (product.discontinued && product.alternativeProductCodes) {
+            alternativeProducts = product.alternativeProductCodes
+              .map((altCode) => {
+                const altProduct = sampleProducts.find(
+                  (p) => p.code.toUpperCase() === altCode.toUpperCase()
+                );
+                if (!altProduct) return null;
+
+                return {
+                  id: altProduct.id,
+                  code: altProduct.code,
+                  name: altProduct.name,
+                  description: '',
+                  price: altProduct.price,
+                  priceWithTax: Math.floor(altProduct.price * 1.1),
+                  imageUrl: altProduct.image,
+                  stock: typeof altProduct.stock === 'number' ? altProduct.stock : (altProduct.stock ? 100 : 0),
+                  category: altProduct.category,
+                  isAvailable: altProduct.stock ? true : false,
+                };
+              })
+              .filter((p): p is ProductSearchResult => p !== null)
+              .slice(0, 3); // 最大3件まで
           }
-        }
 
-        const url = new URL('/api/quick-order/search', apiEndpoint);
-        url.searchParams.set('code', debouncedCode.trim());
+          // 商品が見つかった場合
+          const searchResult: ProductSearchResult = {
+            id: product.id,
+            code: product.code,
+            name: product.name,
+            description: '', // サンプルデータには説明がないため空文字
+            price: product.price,
+            priceWithTax: Math.floor(product.price * 1.1), // 10%の消費税を加算
+            imageUrl: product.image,
+            stock: product.stock ? 100 : 0, // サンプルデータはboolean型なので数値に変換
+            category: product.category,
+            isAvailable: product.stock,
+            // 廃番商品情報
+            discontinued: product.discontinued,
+            discontinuedDate: product.discontinuedDate,
+            discontinuedReason: product.discontinuedReason,
+            alternativeProducts,
+          };
 
-        const response = await fetch(url.toString(), {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-site-id': siteId,
-            'x-business-type': businessType,
-            'x-customer-id': customerId,
-          },
-        });
+          setResult(searchResult);
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-
-        if (data.success) {
-          setResult(data.product);
-
-          // 在庫切れ警告
-          if (data.warning) {
+          // 廃番警告または在庫切れ警告
+          if (product.discontinued) {
             setError({
-              code: data.warning.code,
-              message: data.warning.message,
+              code: 'DISCONTINUED',
+              message: 'この商品は廃番になりました',
+            });
+          } else if (!product.stock) {
+            setError({
+              code: 'OUT_OF_STOCK',
+              message: 'この商品は在庫切れです',
             });
           } else {
             setError(null);
           }
         } else {
+          // 商品が見つからなかった場合
           setResult(null);
           setError({
-            code: data.errorCode,
-            message: data.errorMessage,
+            code: 'NOT_FOUND',
+            message: '商品が見つかりませんでした',
           });
         }
       } catch (err) {
         console.error('Product search error:', err);
         setResult(null);
         setError({
-          code: 'NETWORK_ERROR',
-          message: '通信エラーが発生しました',
+          code: 'SEARCH_ERROR',
+          message: '検索エラーが発生しました',
         });
       } finally {
         setIsSearching(false);

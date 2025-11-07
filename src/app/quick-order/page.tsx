@@ -13,6 +13,7 @@ import Breadcrumb from '@/components/common/Breadcrumb';
 import QuickOrderMultiLineForm from '@/components/quick-order/QuickOrderMultiLineForm';
 import QuickOrderHelpSection from '@/components/quick-order/QuickOrderHelpSection';
 import useCartStore from '@/store/useCartStore';
+import { sampleProducts } from '@/data/sampleProducts';
 
 /**
  * クイックオーダーページ
@@ -21,52 +22,46 @@ import useCartStore from '@/store/useCartStore';
  */
 export default function QuickOrderPage() {
   const router = useRouter();
-  const { fetchCart } = useCartStore();
+  const addItem = useCartStore((state) => state.addItem);
 
   /**
    * カートに商品を追加
    */
   const handleAddToCart = async (items: Array<{ productId: string; quantity: number }>) => {
     try {
-      const siteId = process.env.NEXT_PUBLIC_SITE_ID || 'toc-site-a';
-      const businessType = process.env.NEXT_PUBLIC_BUSINESS_TYPE || 'toc';
-      const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT || 'http://localhost:4000';
+      // 商品コードから実際の商品データを取得
+      const productsToAdd = items
+        .map((item) => {
+          // productIdは実際には商品コード（code）
+          const product = sampleProducts.find(
+            (p) => p.code.toUpperCase() === item.productId.toUpperCase()
+          );
 
-      // 顧客ID取得
-      let customerId = '';
-      if (typeof window !== 'undefined') {
-        const customerData = localStorage.getItem('customer');
-        if (customerData) {
-          try {
-            const customer = JSON.parse(customerData);
-            customerId = customer.id || '';
-          } catch (e) {
-            console.error('Failed to parse customer data:', e);
+          if (!product) {
+            console.warn(`Product not found: ${item.productId}`);
+            return null;
           }
-        }
+
+          return {
+            ...product,
+            quantity: item.quantity,
+          };
+        })
+        .filter((p) => p !== null);
+
+      // 商品が1つも見つからなかった場合
+      if (productsToAdd.length === 0) {
+        toast.error('有効な商品が見つかりませんでした');
+        return;
       }
 
-      // カート追加API呼び出し
-      const response = await fetch(`${apiEndpoint}/api/cart`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-site-id': siteId,
-          'x-business-type': businessType,
-          'x-customer-id': customerId,
-        },
-        body: JSON.stringify({ items }),
+      // カートに追加
+      productsToAdd.forEach((product) => {
+        addItem(product);
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to add to cart');
-      }
-
-      // カート状態を更新
-      await fetchCart();
-
       // 成功メッセージ表示
-      toast.success(`${items.length}商品をカートに追加しました！`, {
+      toast.success(`${productsToAdd.length}商品をカートに追加しました！`, {
         duration: 3000,
         position: 'top-center',
       });
@@ -91,7 +86,7 @@ export default function QuickOrderPage() {
       <main className="min-h-screen bg-white">
         <Breadcrumb />
 
-        <div className="max-w-6xl mx-auto px-4 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* ヘッダー */}
           <header className="mb-8 pb-6 border-b-2 border-gray-200">
             <h1 className="m-0 mb-2 text-3xl md:text-2xl font-bold text-gray-900">

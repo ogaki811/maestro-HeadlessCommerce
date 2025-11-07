@@ -68,7 +68,9 @@ describe('QuickOrderMultiLineForm', () => {
   it('カート追加ボタンが表示されること', () => {
     render(<QuickOrderMultiLineForm onAddToCart={mockOnAddToCart} />);
 
-    expect(screen.getByRole('button', { name: /カートに追加/ })).toBeInTheDocument();
+    // 上部と下部に2つカート追加ボタンがあることを確認
+    const addToCartButtons = screen.getAllByRole('button', { name: /カートに追加/ });
+    expect(addToCartButtons).toHaveLength(2);
   });
 
   it('カート追加ボタンクリック時にonAddToCartが呼ばれること', async () => {
@@ -76,16 +78,16 @@ describe('QuickOrderMultiLineForm', () => {
     render(<QuickOrderMultiLineForm onAddToCart={mockAddToCart} />);
 
     // 商品コードを入力
-    const inputs = screen.getAllByLabelText('商品コード');
+    const inputs = screen.getAllByPlaceholderText('商品コード');
     fireEvent.change(inputs[0], { target: { value: 'ABC123' } });
 
     // 数量を変更
     const quantityInputs = screen.getAllByRole('spinbutton');
     fireEvent.change(quantityInputs[0], { target: { value: '5' } });
 
-    // カートに追加
-    const addToCartButton = screen.getByRole('button', { name: /カートに追加/ });
-    fireEvent.click(addToCartButton);
+    // カートに追加（上部ボタンを使用）
+    const addToCartButtons = screen.getAllByRole('button', { name: /カートに追加/ });
+    fireEvent.click(addToCartButtons[0]);
 
     await waitFor(() => {
       expect(mockAddToCart).toHaveBeenCalled();
@@ -96,27 +98,46 @@ describe('QuickOrderMultiLineForm', () => {
     const mockAddToCart = jest.fn().mockResolvedValue(undefined);
     render(<QuickOrderMultiLineForm onAddToCart={mockAddToCart} />);
 
-    // 何も入力せずにカート追加
-    const addToCartButton = screen.getByRole('button', { name: /カートに追加/ });
-    fireEvent.click(addToCartButton);
+    // 何も入力せずにカート追加（上部と下部に2つあるので最初のボタンを使用）
+    const addToCartButtons = screen.getAllByRole('button', { name: /カートに追加/ });
+    fireEvent.click(addToCartButtons[0]);
 
+    // カートに追加が呼ばれないことを確認
     await waitFor(() => {
-      // 空配列で呼ばれるか、呼ばれないはず
-      if (mockAddToCart.mock.calls.length > 0) {
-        expect(mockAddToCart.mock.calls[0][0]).toEqual([]);
-      }
+      expect(mockAddToCart).not.toHaveBeenCalled();
     });
   });
 
   it('入力済み商品の数が表示されること', () => {
     render(<QuickOrderMultiLineForm onAddToCart={mockOnAddToCart} />);
 
+    // 初期表示時は空（上部と下部に2箇所）
+    const initialTexts = screen.getAllByText('入力済み: 0商品');
+    expect(initialTexts).toHaveLength(2);
+
     // 商品コードを入力
-    const inputs = screen.getAllByLabelText('商品コード');
+    const inputs = screen.getAllByPlaceholderText('商品コード');
     fireEvent.change(inputs[0], { target: { value: 'ABC123' } });
     fireEvent.change(inputs[1], { target: { value: 'DEF456' } });
 
-    // 入力済み商品数が表示される（実装に依存）
-    // カートに追加ボタンに反映される可能性がある
+    // 入力済み商品数が2件になる（上部と下部に2箇所）
+    const updatedTexts = screen.getAllByText('入力済み: 2商品');
+    expect(updatedTexts).toHaveLength(2);
+  });
+
+  it('デモデータボタンでデモデータが入力されること', () => {
+    render(<QuickOrderMultiLineForm onAddToCart={mockOnAddToCart} />);
+
+    // 初期表示時は空
+    const initialTexts = screen.getAllByText('入力済み: 0商品');
+    expect(initialTexts).toHaveLength(2);
+
+    // デモデータボタンをクリック
+    const demoButton = screen.getByRole('button', { name: /デモデータを入力/ });
+    fireEvent.click(demoButton);
+
+    // デモデータが入力される（6件）
+    const updatedTexts = screen.getAllByText('入力済み: 6商品');
+    expect(updatedTexts).toHaveLength(2);
   });
 });

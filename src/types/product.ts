@@ -21,6 +21,11 @@ export interface Product {
   availableFor?: BusinessType[]; // Which business types can access this product
   minOrderQty?: number; // Minimum order quantity (商流別)
   volumePrices?: VolumePrice[]; // Volume discount tiers (卸売用)
+  // Discontinued product support (廃番商品対応)
+  discontinued?: boolean; // 廃番フラグ
+  discontinuedDate?: string; // 廃番日 (YYYY-MM-DD)
+  alternativeProductCodes?: string[]; // 代替商品コード配列
+  discontinuedReason?: string; // 廃番理由（任意）
 }
 
 export interface VolumePrice {
