@@ -107,7 +107,7 @@ describe('QuickOrderTable', () => {
       />
     );
 
-    const inputs = screen.getAllByLabelText('商品コード');
+    const inputs = screen.getAllByPlaceholderText('商品コード');
     fireEvent.change(inputs[0], { target: { value: 'ABC123' } });
 
     expect(mockOnRowChange).toHaveBeenCalledWith('row-1', 'productCode', 'ABC123');

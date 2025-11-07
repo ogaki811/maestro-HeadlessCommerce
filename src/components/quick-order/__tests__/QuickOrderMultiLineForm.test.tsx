@@ -136,8 +136,8 @@ describe('QuickOrderMultiLineForm', () => {
     const demoButton = screen.getByRole('button', { name: /デモデータを入力/ });
     fireEvent.click(demoButton);
 
-    // デモデータが入力される（5件）
-    const updatedTexts = screen.getAllByText('入力済み: 5商品');
+    // デモデータが入力される（6件）
+    const updatedTexts = screen.getAllByText('入力済み: 6商品');
     expect(updatedTexts).toHaveLength(2);
   });
 });
