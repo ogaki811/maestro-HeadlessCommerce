@@ -119,6 +119,14 @@ describe('CustomMenuBar', () => {
       expect(menuBar).toHaveClass('flex');
       expect(menuBar).toHaveClass('items-center');
     });
+
+    it('スクロール対応のクラスが適用されていること', () => {
+      const { container } = render(<CustomMenuBar selectedMenuIds={selectedMenuIds} />);
+
+      const menuBar = container.firstChild as HTMLElement;
+      expect(menuBar).toHaveClass('overflow-x-auto');
+      expect(menuBar).toHaveClass('flex-nowrap');
+    });
   });
 
   describe('順序', () => {

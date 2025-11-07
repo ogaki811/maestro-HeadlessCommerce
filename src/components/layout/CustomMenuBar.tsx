@@ -58,9 +58,12 @@ export default function CustomMenuBar({ selectedMenuIds }: CustomMenuBarProps) {
     <div
       className="
         flex items-center gap-4
+        flex-nowrap
+        overflow-x-auto
         px-4 py-2
         bg-gray-50
         rounded-md
+        scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200
       "
       role="navigation"
       aria-label="カスタムメニュー"

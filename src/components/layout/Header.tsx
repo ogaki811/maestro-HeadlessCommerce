@@ -10,7 +10,6 @@ import { CartAddedNotification } from '@/components/cart';
 import MobileMenu from './MobileMenu';
 import DeliveryAddressDisplay from './DeliveryAddressDisplay';
 import DealerSelectorButton from './DealerSelectorButton';
-import PointsDisplay from './PointsDisplay';
 import CustomMenuBar from './CustomMenuBar';
 import UserNameDisplay from './UserNameDisplay';
 import { useScrollDirection } from '@/hooks/useScrollDirection';
@@ -132,6 +131,27 @@ export default function Header() {
 
               {/* 機能エリア */}
               <div className="ec-header__actions flex items-center space-x-4">
+                {/* お問い合わせ（認証済みユーザーのみ） */}
+                {isAuthenticated && (
+                  <Link href="/contact" className="flex flex-col items-center p-2 text-gray-600 hover:text-gray-700 transition-colors">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
+                    </svg>
+                    <span className="text-xs mt-1">お問い合わせ</span>
+                  </Link>
+                )}
+
+                {/* ポイント表示（認証済みユーザーのみ） */}
+                {isAuthenticated && user && user.points > 0 && (
+                  <div className="flex flex-col items-center p-2 text-gray-600">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <circle cx="12" cy="12" r="10" strokeWidth="2"></circle>
+                      <path d="M12 6v6l4 2" strokeWidth="2" strokeLinecap="round"></path>
+                    </svg>
+                    <span className="text-xs mt-1 font-semibold">{user.points}pt</span>
+                  </div>
+                )}
+
                 <Link href="/cart" className="ec-header__cart-icon flex flex-col items-center p-2 text-gray-600 hover:text-gray-700 transition-colors">
                   <div className="relative">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -193,7 +213,6 @@ export default function Header() {
                         postalCode={user.postalCode}
                         address={user.address}
                       />
-                      <PointsDisplay points={user.points} />
 
                       {/* カスタムメニューバー */}
                       <CustomMenuBar selectedMenuIds={customMenuIds} />
