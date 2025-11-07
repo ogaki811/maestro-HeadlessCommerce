@@ -53,9 +53,11 @@ export default function ProductCodeInput({
 
   return (
     <div className="flex flex-col gap-2 flex-1">
-      <label htmlFor={inputId} className="text-sm font-medium text-gray-700">
-        {label}
-      </label>
+      {label && (
+        <label htmlFor={inputId} className="text-sm font-medium text-gray-700">
+          {label}
+        </label>
+      )}
 
       <div className="relative flex items-center">
         <input

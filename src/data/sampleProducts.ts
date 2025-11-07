@@ -44,7 +44,7 @@ export const sampleProducts: Product[] = [
   { id: '2', name: 'オフィスチェア エルゴノミック', code: 'AW75238', price: 45800, image: getRandomImage(1), images: getProductImages(1), brand: 'プラス', category: '家具', stock: true, rating: 4.8, tags: ['高評価'] },
   { id: '3', name: 'ボールペン 10本セット', code: '8027341', price: 1200, image: getRandomImage(2), images: getProductImages(2), brand: 'ゼブラ', category: '文具・事務用品', stock: true, rating: 4.3, tags: [] },
   { id: '4', name: 'クリアファイル 20枚', code: 'AH85168', price: 980, image: getRandomImage(3), images: getProductImages(3), brand: 'プラス', category: '文具・事務用品', stock: true, rating: 4.2, tags: [] },
-  { id: '5', name: 'デスクマット 透明', code: 'DM110BK', price: 2500, image: getRandomImage(4), images: getProductImages(4), brand: 'プラス', category: '家具', stock: false, rating: 4.0, tags: [] },
+  { id: '5', name: 'デスクマット 透明', code: 'DM110BK', price: 2500, image: getRandomImage(4), images: getProductImages(4), brand: 'プラス', category: '家具', stock: false, rating: 4.0, tags: [], discontinued: true, discontinuedDate: '2024-12-01', alternativeProductCodes: ['DM220BK', 'DK1260'], discontinuedReason: 'モデルチェンジのため廃番' },
   { id: '6', name: 'シャープペンシル 0.5mm', code: 'SP05', price: 450, image: getRandomImage(5), images: getProductImages(5), brand: 'ぺんてる', category: '文具・事務用品', stock: true, rating: 4.6, tags: ['人気'] },
   { id: '7', name: 'ノート A5 5冊パック', code: 'NT5001', price: 1500, image: getRandomImage(6), images: getProductImages(6), brand: 'プラス', category: '文具・事務用品', stock: true, rating: 4.4, tags: [] },
   { id: '8', name: 'マウス ワイヤレス', code: 'MS2000', price: 2980, image: getRandomImage(7), images: getProductImages(7), brand: 'ロジクール', category: '電化製品', stock: true, rating: 4.7, tags: ['新商品', '人気'] },
@@ -59,7 +59,7 @@ export const sampleProducts: Product[] = [
   { id: '17', name: 'ハサミ チタンコート', code: 'SC8800', price: 980, image: getRandomImage(16), images: getProductImages(16), brand: 'プラス', category: '文具・事務用品', stock: true, rating: 4.7, tags: [] },
   { id: '18', name: 'カッターナイフ', code: 'KN0500', price: 350, image: getRandomImage(17), images: getProductImages(17), brand: 'オルファ', category: '文具・事務用品', stock: true, rating: 4.3, tags: [] },
   { id: '19', name: '付箋 3色セット', code: 'FU3SET', price: 680, image: getRandomImage(18), images: getProductImages(18), brand: 'スリーエム', category: '文具・事務用品', stock: true, rating: 4.4, tags: [] },
-  { id: '20', name: 'テープのり 詰替タイプ', code: 'TN2200', price: 420, image: getRandomImage(19), images: getProductImages(19), brand: 'トンボ鉛筆', category: '文具・事務用品', stock: false, rating: 4.1, tags: [] },
+  { id: '20', name: 'テープのり 詰替タイプ', code: 'TN2200', price: 420, image: getRandomImage(19), images: getProductImages(19), brand: 'トンボ鉛筆', category: '文具・事務用品', stock: false, rating: 4.1, tags: [], discontinued: true, discontinuedDate: '2024-10-15', alternativeProductCodes: ['TN3300', 'MT0500'], discontinuedReason: '後継モデルへ移行' },
   { id: '21', name: 'モニターアーム', code: 'MA7700', price: 8800, image: getRandomImage(20), images: getProductImages(20), brand: 'エルゴトロン', category: '電化製品', stock: true, rating: 4.8, tags: ['高評価'] },
   { id: '22', name: 'USBハブ 4ポート', code: 'UH4000', price: 1980, image: getRandomImage(21), images: getProductImages(21), brand: 'エレコム', category: '電化製品', stock: true, rating: 4.3, tags: [] },
   { id: '23', name: 'クッション オフィス用', code: 'CS5500', price: 2800, image: getRandomImage(22), images: getProductImages(22), brand: 'ニトリ', category: '家具', stock: true, rating: 4.5, tags: [] },
@@ -70,6 +70,9 @@ export const sampleProducts: Product[] = [
   { id: '28', name: 'ラベルシール A4', code: 'LS4400', price: 950, image: getRandomImage(27), images: getProductImages(27), brand: 'エーワン', category: '文具・事務用品', stock: false, rating: 4.0, tags: [] },
   { id: '29', name: 'パンチ 2穴', code: 'PN2000', price: 1100, image: getRandomImage(28), images: getProductImages(28), brand: 'プラス', category: '文具・事務用品', stock: true, rating: 4.5, tags: [] },
   { id: '30', name: 'ステープラー 中型', code: 'ST3000', price: 1680, image: getRandomImage(29), images: getProductImages(29), brand: 'マックス', category: '文具・事務用品', stock: true, rating: 4.7, tags: ['人気'] },
+  // 代替商品（廃番商品の後継モデル）
+  { id: '31', name: 'デスクマット 透明 改良版', code: 'DM220BK', price: 2800, image: getRandomImage(30), images: getProductImages(30), brand: 'プラス', category: '家具', stock: true, rating: 4.5, tags: ['新商品'] },
+  { id: '32', name: 'テープのり 強粘着タイプ', code: 'TN3300', price: 480, image: getRandomImage(31), images: getProductImages(31), brand: 'トンボ鉛筆', category: '文具・事務用品', stock: true, rating: 4.6, tags: ['新商品'] },
 ];
 
 export const categories: Category[] = ['文具・事務用品', '家具', '電化製品', '収納用品'];
