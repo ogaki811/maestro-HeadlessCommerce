@@ -6,7 +6,9 @@ import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import useAuthStore from '@/store/useAuthStore';
 import useFavoritesStore from '@/store/useFavoritesStore';
+import useCustomMenuStore from '@/store/useCustomMenuStore';
 import useKeyboardNavigation from '@/hooks/useKeyboardNavigation';
+import { headerNavigationIcons } from '@/config/headerNavigationConfig';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -17,6 +19,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   const router = useRouter();
   const { isAuthenticated, user, logout } = useAuthStore();
   const favoriteCount = useFavoritesStore((state) => state.getFavoriteCount());
+  const { isCustomMenu, toggleCustomMenu } = useCustomMenuStore();
 
   // Escapeキーでメニューを閉じる
   useKeyboardNavigation({
@@ -146,6 +149,98 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                   {category.name}
                 </Link>
               ))}
+            </div>
+          </div>
+
+          {/* カスタムメニュー（機能メニュー） */}
+          <div className="ec-mobile-menu__custom-section mt-6 pt-6 border-t border-gray-200">
+            <h3 className="ec-mobile-menu__section-title px-4 text-sm font-semibold text-gray-500 uppercase mb-2">
+              機能メニュー
+            </h3>
+            <div className="ec-mobile-menu__custom-list space-y-1">
+              {headerNavigationIcons
+                .filter((icon) => icon.showInDrawer)
+                .map((menu) => (
+                  <div
+                    key={menu.id}
+                    className="ec-mobile-menu__custom-item flex items-center px-4 py-2 hover:bg-gray-100 rounded-lg transition-colors"
+                  >
+                    {/* 星アイコン（カスタマイズ可能な項目のみ） */}
+                    {menu.customizable && (
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          toggleCustomMenu(menu.id);
+                        }}
+                        className={`
+                          ec-mobile-menu__star
+                          w-5 h-5 mr-3 flex-shrink-0
+                          text-gray-400 hover:text-yellow-500
+                          transition-colors
+                          ${isCustomMenu(menu.id) ? 'ec-mobile-menu__star--filled' : ''}
+                        `}
+                        aria-label={`${menu.label}をカスタムメニューに${isCustomMenu(menu.id) ? '削除' : '追加'}`}
+                        aria-pressed={isCustomMenu(menu.id)}
+                        data-testid="star-icon"
+                      >
+                        {isCustomMenu(menu.id) ? (
+                          // Filled Star（選択済み）
+                          <svg
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                            className="w-full h-full text-yellow-500"
+                          >
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                          </svg>
+                        ) : (
+                          // Outline Star（未選択）
+                          <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            className="w-full h-full"
+                          >
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                          </svg>
+                        )}
+                      </button>
+                    )}
+
+                    {/* メニューリンク */}
+                    <Link
+                      href={menu.href}
+                      onClick={handleLinkClick}
+                      className="flex-1 flex items-center text-gray-700"
+                    >
+                      {/* アイコン */}
+                      <svg
+                        className="ec-mobile-menu__icon w-5 h-5 mr-3 flex-shrink-0"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        {Array.isArray(menu.iconPath) ? (
+                          menu.iconPath.map((path, index) => <path key={index} d={path} />)
+                        ) : (
+                          <path d={menu.iconPath} />
+                        )}
+                      </svg>
+
+                      {/* テキスト */}
+                      <span>{menu.text}</span>
+
+                      {/* バッジ（承認件数など） */}
+                      {menu.badge && menu.getBadgeCount && (
+                        <span className="ec-mobile-menu__custom-badge ml-auto bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+                          {menu.getBadgeCount()}
+                        </span>
+                      )}
+                    </Link>
+                  </div>
+                ))}
             </div>
           </div>
 

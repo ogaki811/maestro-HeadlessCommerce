@@ -3,17 +3,16 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import toast from 'react-hot-toast';
 import useCartStore from '@/store/useCartStore';
 import useAuthStore from '@/store/useAuthStore';
+import useCustomMenuStore from '@/store/useCustomMenuStore';
 import { CartAddedNotification } from '@/components/cart';
 import MobileMenu from './MobileMenu';
 import DeliveryAddressDisplay from './DeliveryAddressDisplay';
 import DealerSelectorButton from './DealerSelectorButton';
 import PointsDisplay from './PointsDisplay';
-import HeaderNavigationIcon from './HeaderNavigationIcon';
+import CustomMenuBar from './CustomMenuBar';
 import UserNameDisplay from './UserNameDisplay';
-import { headerNavigationIcons, headerNavigationGroups } from '@/config/headerNavigationConfig';
 import { useScrollDirection } from '@/hooks/useScrollDirection';
 
 export default function Header() {
@@ -32,6 +31,7 @@ export default function Header() {
   const itemCount = useCartStore((state) => state.getItemCount());
   const lastAddedItem = useCartStore((state) => state.lastAddedItem);
   const { user, isAuthenticated } = useAuthStore();
+  const { customMenuIds } = useCustomMenuStore();
 
   // Cleanup timeout on unmount
   useEffect(() => {
@@ -80,17 +80,6 @@ export default function Header() {
       }
     }
   }, [pathname]);
-
-
-  const handleLogout = () => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('customer');
-    setIsAuthenticated(false);
-    toast.success('ログアウトしました');
-    router.push('/');
-    router.refresh();
-  };
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -158,24 +147,13 @@ export default function Header() {
                 </Link>
 
                 {isAuthenticated ? (
-                  <>
-                    <Link href="/mypage" className="flex flex-col items-center p-2 text-gray-600 hover:text-green-500 transition-colors">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="12" cy="7" r="4"></circle>
-                      </svg>
-                      <span className="text-xs mt-1">マイページ</span>
-                    </Link>
-
-                    <button onClick={handleLogout} className="flex flex-col items-center p-2 text-gray-600 hover:text-red-500 transition-colors">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                        <polyline points="16 17 21 12 16 7"></polyline>
-                        <line x1="21" y1="12" x2="9" y2="12"></line>
-                      </svg>
-                      <span className="text-xs mt-1">ログアウト</span>
-                    </button>
-                  </>
+                  <Link href="/mypage" className="flex flex-col items-center p-2 text-gray-600 hover:text-green-500 transition-colors">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    <span className="text-xs mt-1">マイページ</span>
+                  </Link>
                 ) : (
                   <Link href="/login" className="ec-header__login-button flex flex-col items-center p-2 text-gray-600 hover:text-gray-700 transition-colors">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -215,41 +193,18 @@ export default function Header() {
                         postalCode={user.postalCode}
                         address={user.address}
                       />
-                      <DealerSelectorButton />
                       <PointsDisplay points={user.points} />
-                      {/* 左側グループのナビゲーションアイコン */}
-                      {headerNavigationIcons
-                        .filter(icon => headerNavigationGroups.left.includes(icon.id))
-                        .map(icon => (
-                          <HeaderNavigationIcon
-                            key={icon.id}
-                            href={icon.href}
-                            label={icon.label}
-                            iconPath={icon.iconPath}
-                            text={icon.text}
-                          />
-                        ))
-                      }
+
+                      {/* カスタムメニューバー */}
+                      <CustomMenuBar selectedMenuIds={customMenuIds} />
                     </>
                   )}
                 </div>
 
-                {/* 右側: お問い合わせ・ユーザー名 */}
+                {/* 右側: 販売店選択・ユーザー名 */}
                 {isAuthenticated && user && (
                   <div className="flex items-center space-x-4">
-                    {/* 右側グループのナビゲーションアイコン */}
-                    {headerNavigationIcons
-                      .filter(icon => headerNavigationGroups.right.includes(icon.id))
-                      .map(icon => (
-                        <HeaderNavigationIcon
-                          key={icon.id}
-                          href={icon.href}
-                          label={icon.label}
-                          iconPath={icon.iconPath}
-                          text={icon.text}
-                        />
-                      ))
-                    }
+                    <DealerSelectorButton />
                     <UserNameDisplay
                       userName={user.name}
                       userEmail={user.email}
