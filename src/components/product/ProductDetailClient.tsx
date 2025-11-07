@@ -83,12 +83,90 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
   const stockCount = typeof product.stock === 'number' ? product.stock : 0;
 
+  // カートインボタンコンポーネント（共通化）
+  const AddToCartButton = () => (
+    <div className="flex gap-4">
+      <button
+        onClick={handleAddToCart}
+        disabled={stockCount === 0}
+        className="flex-1 py-3 px-6 bg-black text-white rounded-lg font-semibold hover:bg-gray-900 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+      >
+        {stockCount > 0 ? 'カートに追加' : '在庫切れ'}
+      </button>
+      <button
+        onClick={handleToggleFavorite}
+        className={`${isInFavorites ? 'ec-product-detail__favorite-btn--active' : ''} w-14 h-14 flex items-center justify-center border-2 rounded-lg transition-colors ${
+          isInFavorites
+            ? 'bg-red-50 border-red-500 text-red-500'
+            : 'border-gray-300 hover:bg-red-50 hover:border-red-500 hover:text-red-500'
+        }`}
+        aria-label={isInFavorites ? 'お気に入りから削除' : 'お気に入りに追加'}
+      >
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill={isInFavorites ? 'currentColor' : 'none'}
+          stroke="currentColor"
+          strokeWidth="2"
+        >
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+        </svg>
+      </button>
+    </div>
+  );
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-      {/* 商品画像 */}
-      <div className="ec-product-detail__images">
-        <ProductImageGallery images={product.images} productName={product.name} />
+    <>
+      {/* ページ上部：クイックカートインセクション */}
+      <div className="ec-product-detail__quick-actions bg-gray-50 border-b border-gray-200 py-4 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-center">
+          {/* 商品情報 */}
+          <div className="lg:col-span-6">
+            <p className="text-sm text-gray-600 mb-1">{product.brand}</p>
+            <h2 className="text-xl font-bold text-gray-900 mb-2">{product.name}</h2>
+            <div className="flex items-baseline gap-3">
+              <p className="text-2xl font-bold text-black">¥{product.price.toLocaleString()}</p>
+              {product.originalPrice && (
+                <span className="bg-red-500 text-white text-xs px-2 py-1 rounded">
+                  {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}%OFF
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* 数量選択とカートインボタン */}
+          <div className="lg:col-span-6">
+            <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+              {stockCount > 0 && (
+                <div className="flex items-center gap-3">
+                  <label className="text-sm font-medium text-gray-700 whitespace-nowrap">数量:</label>
+                  <QuantitySelector
+                    value={quantity}
+                    onChange={setQuantity}
+                    max={stockCount}
+                  />
+                </div>
+              )}
+              <div className="flex-1 min-w-0 w-full sm:w-auto">
+                <AddToCartButton />
+              </div>
+            </div>
+            {stockCount > 0 ? (
+              <p className="text-sm text-green-600 mt-2">在庫あり ({stockCount}個)</p>
+            ) : (
+              <p className="text-sm text-red-600 mt-2">在庫切れ</p>
+            )}
+          </div>
+        </div>
       </div>
+
+      {/* メイン商品詳細セクション */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+        {/* 商品画像 */}
+        <div className="ec-product-detail__images">
+          <ProductImageGallery images={product.images} productName={product.name} />
+        </div>
 
       {/* 商品情報 */}
       <div className="ec-product-detail__info">
@@ -156,33 +234,8 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           </div>
         )}
 
-        <div className="ec-product-detail__actions flex gap-4 mb-6">
-          <button
-            onClick={handleAddToCart}
-            disabled={stockCount === 0}
-            className="ec-product-detail__add-to-cart flex-1 py-3 px-6 bg-black text-white rounded-lg font-semibold hover:bg-gray-900 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
-          >
-            {stockCount > 0 ? 'カートに追加' : '在庫切れ'}
-          </button>
-          <button
-            onClick={handleToggleFavorite}
-            className={`ec-product-detail__favorite-btn ${isInFavorites ? 'ec-product-detail__favorite-btn--active' : ''} w-14 h-14 flex items-center justify-center border-2 rounded-lg transition-colors ${
-              isInFavorites
-                ? 'bg-red-50 border-red-500 text-red-500'
-                : 'border-gray-300 hover:bg-red-50 hover:border-red-500 hover:text-red-500'
-            }`}
-          >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill={isInFavorites ? 'currentColor' : 'none'}
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-            </svg>
-          </button>
+        <div className="ec-product-detail__actions mb-6">
+          <AddToCartButton />
         </div>
 
         {product.features && product.features.length > 0 && (
@@ -201,6 +254,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           </div>
         )}
       </div>
-    </div>
+      </div>
+    </>
   );
 }
