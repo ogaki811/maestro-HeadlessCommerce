@@ -135,7 +135,7 @@ export default function Header() {
               {/* 検索エリア */}
               <div className="ec-header__search flex-1 relative">
                 <form onSubmit={handleSearch} className="ec-header__search-form relative">
-                  <div className="flex gap-2">
+                  <div className="flex">
                     {/* カテゴリセレクター */}
                     <CategorySelector
                       value={selectedCategory}
@@ -153,8 +153,8 @@ export default function Header() {
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         placeholder="商品名やメーカー、品番から探す"
-                        className="ec-header__search-input w-full pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-700 focus:border-transparent"
-                        style={{ paddingLeft: '40px' }}
+                        className="ec-header__search-input w-full pr-12 py-3 border border-gray-300 border-l-0 focus:ring-2 focus:ring-gray-700 focus:border-transparent"
+                        style={{ paddingLeft: '40px', borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
                       />
                       <button type="submit" className="ec-header__search-button absolute right-0 top-0 h-full px-4 bg-black text-white rounded-r-lg hover:bg-gray-900 transition-colors">
                         <span>検索</span>
@@ -316,14 +316,13 @@ export default function Header() {
               )}
             </Link>
           </div>
-          <form onSubmit={handleSearch} className="ec-header__search-form">
+          <form onSubmit={handleSearch} className="ec-header__search-form space-y-2">
             {/* カテゴリセレクター（モバイル） */}
-            <div className="mb-2">
-              <CategorySelector
-                value={selectedCategory}
-                onChange={setSelectedCategory}
-              />
-            </div>
+            <CategorySelector
+              value={selectedCategory}
+              onChange={setSelectedCategory}
+              variant="standalone"
+            />
 
             {/* 検索入力（モバイル） */}
             <div className="relative">
@@ -336,8 +335,11 @@ export default function Header() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="商品を検索"
-                className="ec-header__search-input w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg"
+                className="ec-header__search-input w-full pl-10 pr-16 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-700 focus:border-transparent"
               />
+              <button type="submit" className="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-black text-white text-sm rounded hover:bg-gray-900 transition-colors">
+                検索
+              </button>
             </div>
           </form>
         </div>

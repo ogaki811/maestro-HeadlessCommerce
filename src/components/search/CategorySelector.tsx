@@ -34,6 +34,18 @@ export interface CategorySelectorProps {
    * プレースホルダーテキスト
    */
   placeholder?: string;
+
+  /**
+   * 表示バリアント
+   * - integrated: 検索窓と統合（デスクトップ）
+   * - standalone: 独立表示（モバイル）
+   */
+  variant?: 'integrated' | 'standalone';
+
+  /**
+   * 追加のCSSクラス名
+   */
+  className?: string;
 }
 
 /**
@@ -49,8 +61,12 @@ export default function CategorySelector({
   value,
   onChange,
   placeholder = 'すべてのカテゴリ',
+  variant = 'integrated',
+  className = '',
 }: CategorySelectorProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [hoveredLarge, setHoveredLarge] = useState<CategoryHierarchy | null>(null);
+  const [hoveredMedium, setHoveredMedium] = useState<CategoryHierarchy | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // 表示テキストを生成
@@ -76,35 +92,20 @@ export default function CategorySelector({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // 大カテゴリ選択
-  const handleLargeSelect = (category: CategoryHierarchy) => {
-    onChange({
-      large: category,
-    });
+  // カテゴリ選択（どの階層でも選択可能）
+  const handleCategorySelect = (
+    large: CategoryHierarchy,
+    medium?: CategoryHierarchy,
+    small?: CategoryHierarchy
+  ) => {
+    const selection: CategorySelection = { large };
+    if (medium) selection.medium = medium;
+    if (small) selection.small = small;
+
+    onChange(selection);
     setIsOpen(false);
-  };
-
-  // 中カテゴリ選択
-  const handleMediumSelect = (category: CategoryHierarchy) => {
-    if (!value?.large) return;
-
-    onChange({
-      large: value.large,
-      medium: category,
-    });
-    setIsOpen(false);
-  };
-
-  // 小カテゴリ選択
-  const handleSmallSelect = (category: CategoryHierarchy) => {
-    if (!value?.large || !value?.medium) return;
-
-    onChange({
-      large: value.large,
-      medium: value.medium,
-      small: category,
-    });
-    setIsOpen(false);
+    setHoveredLarge(null);
+    setHoveredMedium(null);
   };
 
   // クリア
@@ -112,60 +113,58 @@ export default function CategorySelector({
     e.stopPropagation();
     onChange(undefined);
     setIsOpen(false);
+    setHoveredLarge(null);
+    setHoveredMedium(null);
   };
 
-  // 表示するカテゴリ一覧を取得
-  const getCategoriesToShow = () => {
-    if (!value?.large) {
-      // 大カテゴリ一覧
-      return {
-        level: 'large' as const,
-        categories: getLargeCategories(),
-      };
-    }
+  // カテゴリデータ取得
+  const largeCategories = getLargeCategories();
+  const mediumCategories = hoveredLarge ? getMediumCategories(hoveredLarge.id) : [];
+  const smallCategories = hoveredMedium ? getSmallCategories(hoveredMedium.id) : [];
 
-    if (!value?.medium) {
-      // 中カテゴリ一覧
-      return {
-        level: 'medium' as const,
-        categories: getMediumCategories(value.large.id),
-      };
-    }
-
-    // 小カテゴリ一覧
-    return {
-      level: 'small' as const,
-      categories: getSmallCategories(value.medium.id),
-    };
-  };
-
-  const { level, categories } = getCategoriesToShow();
+  // ボタンスタイル（variant による切り替え）
+  const buttonClassName = variant === 'standalone'
+    ? `
+        flex items-center justify-between
+        flex-1 min-w-[200px] max-w-[300px]
+        px-4 py-3
+        bg-white
+        border border-gray-300
+        rounded-lg
+        text-sm text-gray-700
+        hover:bg-gray-50
+        focus:outline-none focus:ring-2 focus:ring-gray-700 focus:border-transparent
+        transition-colors
+        h-full
+      `
+    : `
+        flex items-center justify-between
+        flex-1 min-w-[200px] max-w-[300px]
+        px-4 py-3
+        bg-white
+        border border-gray-300 border-r-0
+        rounded-l-lg
+        text-sm text-gray-700
+        hover:bg-gray-50
+        focus:outline-none focus:ring-2 focus:ring-gray-700 focus:border-transparent
+        transition-colors
+        h-full
+      `;
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className={`relative ${className}`} ref={dropdownRef}>
       {/* セレクターボタン */}
       <div className="relative flex">
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
-          className="
-            flex items-center justify-between
-            flex-1 min-w-[200px] max-w-[300px]
-            px-4 py-2.5
-            bg-white
-            border border-gray-300
-            rounded-l-lg
-            text-sm text-gray-700
-            hover:bg-gray-50
-            focus:outline-none focus:ring-2 focus:ring-gray-700
-            transition-colors
-          "
+          className={buttonClassName}
         >
           <span className="truncate">{getDisplayText()}</span>
 
           {/* プルダウンアイコン */}
           <svg
-            className={`w-4 h-4 ml-2 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+            className={`w-4 h-4 ml-2 flex-shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`}
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -202,52 +201,113 @@ export default function CategorySelector({
         )}
       </div>
 
-      {/* ドロップダウンメニュー */}
+      {/* メガメニュードロップダウン */}
       {isOpen && (
         <div
           className="
             absolute top-full left-0 mt-1
-            w-full min-w-[200px]
             bg-white
             border border-gray-300
             rounded-lg
-            shadow-lg
+            shadow-xl
             z-50
-            max-h-[300px]
-            overflow-y-auto
+            flex
           "
         >
-          {categories.length === 0 ? (
-            <div className="px-4 py-3 text-sm text-gray-500">
-              カテゴリがありません
+          {/* 大カテゴリ列 */}
+          <div className="w-48 border-r border-gray-200">
+            <div className="px-3 py-2 bg-gray-50 border-b border-gray-200">
+              <span className="text-xs font-semibold text-gray-600">大カテゴリ</span>
             </div>
-          ) : (
-            <ul className="py-1">
-              {categories.map((category) => (
-                <li key={category.id}>
+            <ul className="py-1 max-h-[400px] overflow-y-auto">
+              {largeCategories.map((large) => (
+                <li key={large.id}>
                   <button
                     type="button"
-                    onClick={() => {
-                      if (level === 'large') {
-                        handleLargeSelect(category);
-                      } else if (level === 'medium') {
-                        handleMediumSelect(category);
-                      } else {
-                        handleSmallSelect(category);
-                      }
+                    onClick={() => handleCategorySelect(large)}
+                    onMouseEnter={() => {
+                      setHoveredLarge(large);
+                      setHoveredMedium(null);
                     }}
-                    className="
-                      w-full px-4 py-2
+                    className={`
+                      w-full px-4 py-2.5
                       text-left text-sm
-                      hover:bg-gray-100
+                      hover:bg-blue-50
                       transition-colors
-                    "
+                      flex items-center justify-between
+                      ${hoveredLarge?.id === large.id ? 'bg-blue-50 text-blue-700' : 'text-gray-700'}
+                    `}
                   >
-                    {category.name}
+                    <span>{large.name}</span>
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
                   </button>
                 </li>
               ))}
             </ul>
+          </div>
+
+          {/* 中カテゴリ列 */}
+          {hoveredLarge && mediumCategories.length > 0 && (
+            <div className="w-48 border-r border-gray-200">
+              <div className="px-3 py-2 bg-gray-50 border-b border-gray-200">
+                <span className="text-xs font-semibold text-gray-600">中カテゴリ</span>
+              </div>
+              <ul className="py-1 max-h-[400px] overflow-y-auto">
+                {mediumCategories.map((medium) => (
+                  <li key={medium.id}>
+                    <button
+                      type="button"
+                      onClick={() => handleCategorySelect(hoveredLarge, medium)}
+                      onMouseEnter={() => setHoveredMedium(medium)}
+                      className={`
+                        w-full px-4 py-2.5
+                        text-left text-sm
+                        hover:bg-blue-50
+                        transition-colors
+                        flex items-center justify-between
+                        ${hoveredMedium?.id === medium.id ? 'bg-blue-50 text-blue-700' : 'text-gray-700'}
+                      `}
+                    >
+                      <span>{medium.name}</span>
+                      {getSmallCategories(medium.id).length > 0 && (
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      )}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* 小カテゴリ列 */}
+          {hoveredMedium && smallCategories.length > 0 && (
+            <div className="w-48">
+              <div className="px-3 py-2 bg-gray-50 border-b border-gray-200">
+                <span className="text-xs font-semibold text-gray-600">小カテゴリ</span>
+              </div>
+              <ul className="py-1 max-h-[400px] overflow-y-auto">
+                {smallCategories.map((small) => (
+                  <li key={small.id}>
+                    <button
+                      type="button"
+                      onClick={() => handleCategorySelect(hoveredLarge!, hoveredMedium, small)}
+                      className="
+                        w-full px-4 py-2.5
+                        text-left text-sm text-gray-700
+                        hover:bg-blue-50 hover:text-blue-700
+                        transition-colors
+                      "
+                    >
+                      {small.name}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
           )}
         </div>
       )}
