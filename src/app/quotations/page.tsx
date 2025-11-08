@@ -31,6 +31,13 @@ export default function QuotationsPage() {
   const [vendors, setVendors] = useState<Vendor[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchParams, setSearchParams] = useState<QuotationSearchParams>({});
+  const [startYear, setStartYear] = useState('');
+  const [startMonth, setStartMonth] = useState('');
+  const [startDay, setStartDay] = useState('');
+  const [endYear, setEndYear] = useState('');
+  const [endMonth, setEndMonth] = useState('');
+  const [endDay, setEndDay] = useState('');
+  const [selectedVendorIds, setSelectedVendorIds] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
@@ -140,115 +147,215 @@ export default function QuotationsPage() {
             </p>
           </header>
 
-          {/* 新規作成セクション */}
-          <div className="mb-8 p-6 bg-gray-50 rounded-lg border border-gray-200">
-            <h2 className="text-lg font-bold text-gray-900 mb-4">
-              新しく見積を依頼する
+          {/* 見積を検索する */}
+          <div className="mb-8 p-6 bg-white border-l-4 border-gray-900 rounded-lg shadow-sm">
+            <h2 className="text-lg font-bold text-gray-900 mb-6 flex items-center">
+              <span className="inline-block w-1 h-6 bg-gray-900 mr-3"></span>
+              見積を検索する
             </h2>
-            <Button
-              variant="primary"
-              size="md"
-              onClick={() => router.push('/quotations/new')}
-            >
-              新規見積依頼を作成
-            </Button>
-          </div>
 
-          {/* 検索フィルター */}
-          <div className="mb-8 p-6 bg-gray-50 rounded-lg border border-gray-200">
-            <h2 className="text-lg font-bold text-gray-900 mb-4">
-              検索条件
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {/* 検索フォーム */}
+            <div className="space-y-4">
               {/* 見積依頼番号 */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+              <div className="grid grid-cols-4 gap-4 items-center">
+                <label className="text-sm font-medium text-gray-700 bg-gray-100 px-4 py-3">
                   見積依頼番号
                 </label>
-                <input
-                  type="text"
-                  placeholder="Q-2024-0115"
-                  value={searchParams.quotationNumber || ''}
-                  onChange={(e) => setSearchParams({ ...searchParams, quotationNumber: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
-                />
+                <div className="col-span-3">
+                  <input
+                    type="text"
+                    placeholder=""
+                    value={searchParams.quotationNumber || ''}
+                    onChange={(e) => setSearchParams({ ...searchParams, quotationNumber: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 focus:outline-none focus:border-gray-500"
+                  />
+                </div>
+              </div>
+
+              {/* 依頼日 */}
+              <div className="grid grid-cols-4 gap-4 items-center">
+                <label className="text-sm font-medium text-gray-700 bg-gray-100 px-4 py-3">
+                  依頼日
+                </label>
+                <div className="col-span-3 flex items-center gap-2">
+                  <input
+                    type="text"
+                    placeholder=""
+                    value={startYear}
+                    onChange={(e) => setStartYear(e.target.value)}
+                    className="w-20 px-3 py-2 border border-gray-300 focus:outline-none focus:border-gray-500"
+                  />
+                  <span>年</span>
+                  <input
+                    type="text"
+                    placeholder=""
+                    value={startMonth}
+                    onChange={(e) => setStartMonth(e.target.value)}
+                    className="w-16 px-3 py-2 border border-gray-300 focus:outline-none focus:border-gray-500"
+                  />
+                  <span>月</span>
+                  <input
+                    type="text"
+                    placeholder=""
+                    value={startDay}
+                    onChange={(e) => setStartDay(e.target.value)}
+                    className="w-16 px-3 py-2 border border-gray-300 focus:outline-none focus:border-gray-500"
+                  />
+                  <span>日</span>
+                  <button className="p-2 text-gray-500 hover:text-gray-700">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                  </button>
+                  <span className="mx-2">〜</span>
+                  <input
+                    type="text"
+                    placeholder=""
+                    value={endYear}
+                    onChange={(e) => setEndYear(e.target.value)}
+                    className="w-20 px-3 py-2 border border-gray-300 focus:outline-none focus:border-gray-500"
+                  />
+                  <span>年</span>
+                  <input
+                    type="text"
+                    placeholder=""
+                    value={endMonth}
+                    onChange={(e) => setEndMonth(e.target.value)}
+                    className="w-16 px-3 py-2 border border-gray-300 focus:outline-none focus:border-gray-500"
+                  />
+                  <span>月</span>
+                  <input
+                    type="text"
+                    placeholder=""
+                    value={endDay}
+                    onChange={(e) => setEndDay(e.target.value)}
+                    className="w-16 px-3 py-2 border border-gray-300 focus:outline-none focus:border-gray-500"
+                  />
+                  <span>日</span>
+                  <button className="p-2 text-gray-500 hover:text-gray-700">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                  </button>
+                </div>
               </div>
 
               {/* 商品コード */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+              <div className="grid grid-cols-4 gap-4 items-center">
+                <label className="text-sm font-medium text-gray-700 bg-gray-100 px-4 py-3">
                   商品コード
                 </label>
-                <input
-                  type="text"
-                  placeholder="PEN-JETSTREAM-001"
-                  value={searchParams.productCode || ''}
-                  onChange={(e) => setSearchParams({ ...searchParams, productCode: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
-                />
-              </div>
-
-              {/* ステータス */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  ステータス
-                </label>
-                <select
-                  value={searchParams.status || ''}
-                  onChange={(e) => setSearchParams({ ...searchParams, status: e.target.value as QuotationSearchParams['status'] })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
-                >
-                  <option value="">すべて</option>
-                  <option value="draft">下書き</option>
-                  <option value="pending">回答待ち</option>
-                  <option value="partially_responded">一部回答済み</option>
-                  <option value="responded">回答済み</option>
-                  <option value="accepted">承認済み</option>
-                  <option value="rejected">却下</option>
-                  <option value="expired">期限切れ</option>
-                </select>
-              </div>
-
-              {/* 販売店選択 */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  販売店
-                </label>
-                <select
-                  multiple
-                  value={searchParams.selectedVendors || []}
-                  onChange={(e) => {
-                    const selected = Array.from(e.target.selectedOptions, option => option.value);
-                    setSearchParams({ ...searchParams, selectedVendors: selected });
-                  }}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
-                  size={3}
-                >
-                  {vendors.map((vendor) => (
-                    <option key={vendor.id} value={vendor.id}>
-                      {vendor.name}
-                    </option>
-                  ))}
-                </select>
+                <div className="col-span-3 flex items-center gap-4">
+                  <input
+                    type="text"
+                    placeholder=""
+                    value={searchParams.productCode || ''}
+                    onChange={(e) => setSearchParams({ ...searchParams, productCode: e.target.value })}
+                    className="flex-1 px-3 py-2 border border-gray-300 focus:outline-none focus:border-gray-500"
+                  />
+                  <button
+                    onClick={() => {
+                      setSelectedVendorIds(vendors.map(v => v.id));
+                    }}
+                    className="px-6 py-2 bg-orange-500 text-white font-medium rounded hover:bg-orange-600 transition-colors"
+                  >
+                    全選択
+                  </button>
+                  <button
+                    onClick={() => {
+                      setSelectedVendorIds([]);
+                    }}
+                    className="px-6 py-2 bg-gray-400 text-white font-medium rounded hover:bg-gray-500 transition-colors"
+                  >
+                    選択クリア
+                  </button>
+                </div>
               </div>
             </div>
 
-            {/* クリアボタン */}
-            <div className="mt-4 flex justify-end">
+            {/* 販売店選択テーブル */}
+            <div className="mt-6">
+              <div className="grid grid-cols-4 gap-4 items-center mb-2">
+                <label className="text-sm font-medium text-gray-700 bg-gray-100 px-4 py-3">
+                  販売店選択
+                </label>
+                <div className="col-span-3">
+                  {/* ヘッダー行 */}
+                  <div className="grid grid-cols-3 gap-4 bg-gray-50 px-4 py-2 border border-gray-300 font-medium text-sm text-gray-700">
+                    <div>販売店</div>
+                    <div>ユーザーコード/ユーザー名</div>
+                    <div>WebID/氏名</div>
+                  </div>
+                  {/* データ行 */}
+                  {vendors.map((vendor) => (
+                    <div key={vendor.id} className="grid grid-cols-3 gap-4 px-4 py-3 border-x border-b border-gray-300 hover:bg-gray-50">
+                      <div className="flex items-center gap-3">
+                        <input
+                          type="checkbox"
+                          checked={selectedVendorIds.includes(vendor.id)}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setSelectedVendorIds([...selectedVendorIds, vendor.id]);
+                            } else {
+                              setSelectedVendorIds(selectedVendorIds.filter(id => id !== vendor.id));
+                            }
+                          }}
+                          className="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        />
+                        <span className="text-sm">{vendor.name}</span>
+                      </div>
+                      <div className="text-sm text-gray-700">
+                        <div>{vendor.userCode}</div>
+                        <div className="text-gray-600">{vendor.department}</div>
+                      </div>
+                      <div className="text-sm text-gray-700">
+                        <div>{vendor.webId}</div>
+                        <div className="text-gray-600">{vendor.contactPerson}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* 検索・クリアボタン */}
+            <div className="mt-6 flex justify-center gap-4">
+              <button
+                onClick={() => {
+                  setSearchParams({ ...searchParams, selectedVendors: selectedVendorIds });
+                  setCurrentPage(1);
+                }}
+                className="px-12 py-3 bg-blue-900 text-white font-medium rounded hover:bg-blue-800 transition-colors"
+              >
+                検索
+              </button>
               <button
                 onClick={() => {
                   setSearchParams({});
+                  setStartYear('');
+                  setStartMonth('');
+                  setStartDay('');
+                  setEndYear('');
+                  setEndMonth('');
+                  setEndDay('');
+                  setSelectedVendorIds([]);
                   setCurrentPage(1);
                 }}
-                className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                className="px-12 py-3 bg-gray-400 text-white font-medium rounded hover:bg-gray-500 transition-colors"
               >
-                検索条件をクリア
+                入力クリア
+              </button>
+              <button
+                onClick={() => router.push('/quotations/new')}
+                className="px-12 py-3 bg-blue-900 text-white font-medium rounded hover:bg-blue-800 transition-colors"
+              >
+                新規見積依頼
               </button>
             </div>
           </div>
 
           {/* 件数表示 */}
-          <div className="mb-6">
+          <div className="mb-6 mt-8">
             <h2 className="text-lg font-bold text-gray-900">
               見積依頼一覧（{filteredQuotations.length}件）
             </h2>
