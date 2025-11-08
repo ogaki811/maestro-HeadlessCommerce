@@ -138,11 +138,10 @@ export default function Header() {
                   {/* 統合された検索バー */}
                   <div className="flex border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-gray-700 focus-within:border-transparent transition-all bg-white">
                     {/* カテゴリセレクター */}
-                    <div className="flex-shrink-0 border-r border-gray-200 rounded-l-lg overflow-hidden">
+                    <div className="flex-shrink-0 border-r border-gray-200">
                       <CategorySelector
                         value={selectedCategory}
                         onChange={setSelectedCategory}
-                        className="border-0"
                       />
                     </div>
 

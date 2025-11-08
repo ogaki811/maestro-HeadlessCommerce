@@ -117,6 +117,9 @@ export default function CategorySelector({
     setHoveredMedium(null);
   };
 
+  // デバッグ用
+  console.log('CategorySelector isOpen:', isOpen);
+
   // カテゴリデータ取得
   const largeCategories = getLargeCategories();
   const mediumCategories = hoveredLarge ? getMediumCategories(hoveredLarge.id) : [];
@@ -146,10 +149,12 @@ export default function CategorySelector({
         focus:outline-none focus:ring-0
         transition-colors
         h-full
+        rounded-l-lg
+        ${className}
       `;
 
   return (
-    <div className={`relative ${className}`} ref={dropdownRef}>
+    <div className="relative" ref={dropdownRef}>
       {/* セレクターボタン */}
       <div className="relative flex">
         <button
@@ -211,9 +216,9 @@ export default function CategorySelector({
             border border-gray-300
             rounded-lg
             shadow-xl
-            z-50
             flex
           "
+          style={{ zIndex: 999999 }}
         >
           {/* 大カテゴリ列 */}
           <div className="w-48 border-r border-gray-200">
