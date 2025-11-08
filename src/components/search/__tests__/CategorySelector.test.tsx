@@ -62,39 +62,32 @@ describe('CategorySelector', () => {
 
   describe('中カテゴリ選択', () => {
     it('大カテゴリ選択後、中カテゴリ一覧が表示されること', () => {
-      const selection: CategorySelection = {
-        large: {
-          id: 'stationery',
-          name: '文具・事務用品',
-          slug: 'stationery',
-          level: 'large',
-        },
-      };
+      render(<CategorySelector value={undefined} onChange={mockOnChange} />);
 
-      render(<CategorySelector value={selection} onChange={mockOnChange} />);
-
-      const button = screen.getByText('文具・事務用品');
+      // ドロップダウンを開く
+      const button = screen.getByText('すべてのカテゴリ');
       fireEvent.click(button);
+
+      // 大カテゴリにホバーして中カテゴリを表示
+      const stationery = screen.getByText('文具・事務用品');
+      fireEvent.mouseEnter(stationery);
 
       expect(screen.getByText('筆記用具')).toBeInTheDocument();
       expect(screen.getByText('ノート類')).toBeInTheDocument();
     });
 
     it('中カテゴリ選択時にonChangeが呼ばれること', () => {
-      const selection: CategorySelection = {
-        large: {
-          id: 'stationery',
-          name: '文具・事務用品',
-          slug: 'stationery',
-          level: 'large',
-        },
-      };
+      render(<CategorySelector value={undefined} onChange={mockOnChange} />);
 
-      render(<CategorySelector value={selection} onChange={mockOnChange} />);
-
-      const button = screen.getByText('文具・事務用品');
+      // ドロップダウンを開く
+      const button = screen.getByText('すべてのカテゴリ');
       fireEvent.click(button);
 
+      // 大カテゴリにホバー
+      const stationery = screen.getByText('文具・事務用品');
+      fireEvent.mouseEnter(stationery);
+
+      // 中カテゴリをクリックして選択
       const writingInstruments = screen.getByText('筆記用具');
       fireEvent.click(writingInstruments);
 
@@ -112,53 +105,40 @@ describe('CategorySelector', () => {
 
   describe('小カテゴリ選択', () => {
     it('中カテゴリ選択後、小カテゴリ一覧が表示されること', () => {
-      const selection: CategorySelection = {
-        large: {
-          id: 'stationery',
-          name: '文具・事務用品',
-          slug: 'stationery',
-          level: 'large',
-        },
-        medium: {
-          id: 'writing-instruments',
-          name: '筆記用具',
-          slug: 'writing-instruments',
-          level: 'medium',
-          parentId: 'stationery',
-        },
-      };
+      render(<CategorySelector value={undefined} onChange={mockOnChange} />);
 
-      render(<CategorySelector value={selection} onChange={mockOnChange} />);
-
-      const button = screen.getByText('文具・事務用品 > 筆記用具');
+      // ドロップダウンを開く
+      const button = screen.getByText('すべてのカテゴリ');
       fireEvent.click(button);
+
+      // 大カテゴリにホバー
+      const stationery = screen.getByText('文具・事務用品');
+      fireEvent.mouseEnter(stationery);
+
+      // 中カテゴリにホバーして小カテゴリを表示
+      const writingInstruments = screen.getByText('筆記用具');
+      fireEvent.mouseEnter(writingInstruments);
 
       expect(screen.getByText('ボールペン')).toBeInTheDocument();
       expect(screen.getByText('シャープペンシル')).toBeInTheDocument();
     });
 
     it('小カテゴリ選択時にonChangeが呼ばれること', () => {
-      const selection: CategorySelection = {
-        large: {
-          id: 'stationery',
-          name: '文具・事務用品',
-          slug: 'stationery',
-          level: 'large',
-        },
-        medium: {
-          id: 'writing-instruments',
-          name: '筆記用具',
-          slug: 'writing-instruments',
-          level: 'medium',
-          parentId: 'stationery',
-        },
-      };
+      render(<CategorySelector value={undefined} onChange={mockOnChange} />);
 
-      render(<CategorySelector value={selection} onChange={mockOnChange} />);
-
-      const button = screen.getByText('文具・事務用品 > 筆記用具');
+      // ドロップダウンを開く
+      const button = screen.getByText('すべてのカテゴリ');
       fireEvent.click(button);
 
+      // 大カテゴリにホバー
+      const stationery = screen.getByText('文具・事務用品');
+      fireEvent.mouseEnter(stationery);
+
+      // 中カテゴリにホバー
+      const writingInstruments = screen.getByText('筆記用具');
+      fireEvent.mouseEnter(writingInstruments);
+
+      // 小カテゴリをクリックして選択
       const ballpointPens = screen.getByText('ボールペン');
       fireEvent.click(ballpointPens);
 

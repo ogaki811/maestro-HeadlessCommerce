@@ -117,9 +117,6 @@ export default function CategorySelector({
     setHoveredMedium(null);
   };
 
-  // デバッグ用
-  console.log('CategorySelector isOpen:', isOpen);
-
   // カテゴリデータ取得
   const largeCategories = getLargeCategories();
   const mediumCategories = hoveredLarge ? getMediumCategories(hoveredLarge.id) : [];
