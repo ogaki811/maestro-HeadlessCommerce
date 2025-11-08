@@ -69,12 +69,14 @@ export default function QuotationsPage() {
   const filteredQuotations = useMemo(() => {
     let results = quotations;
 
+    // 見積依頼番号フィルター
     if (searchParams.quotationNumber) {
       results = results.filter(q =>
         q.id.toLowerCase().includes(searchParams.quotationNumber!.toLowerCase())
       );
     }
 
+    // 商品コードフィルター
     if (searchParams.productCode) {
       results = results.filter(q =>
         q.products.some(p =>
@@ -83,10 +85,16 @@ export default function QuotationsPage() {
       );
     }
 
+    // 販売店フィルター
     if (searchParams.selectedVendors && searchParams.selectedVendors.length > 0) {
       results = results.filter(q =>
         q.vendors.some(v => searchParams.selectedVendors!.includes(v.id))
       );
+    }
+
+    // ステータスフィルター
+    if (searchParams.status) {
+      results = results.filter(q => q.status === searchParams.status);
     }
 
     return results;
@@ -144,6 +152,99 @@ export default function QuotationsPage() {
             >
               新規見積依頼を作成
             </Button>
+          </div>
+
+          {/* 検索フィルター */}
+          <div className="mb-8 p-6 bg-gray-50 rounded-lg border border-gray-200">
+            <h2 className="text-lg font-bold text-gray-900 mb-4">
+              検索条件
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {/* 見積依頼番号 */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  見積依頼番号
+                </label>
+                <input
+                  type="text"
+                  placeholder="Q-2024-0115"
+                  value={searchParams.quotationNumber || ''}
+                  onChange={(e) => setSearchParams({ ...searchParams, quotationNumber: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                />
+              </div>
+
+              {/* 商品コード */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  商品コード
+                </label>
+                <input
+                  type="text"
+                  placeholder="PEN-JETSTREAM-001"
+                  value={searchParams.productCode || ''}
+                  onChange={(e) => setSearchParams({ ...searchParams, productCode: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                />
+              </div>
+
+              {/* ステータス */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  ステータス
+                </label>
+                <select
+                  value={searchParams.status || ''}
+                  onChange={(e) => setSearchParams({ ...searchParams, status: e.target.value as QuotationSearchParams['status'] })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                >
+                  <option value="">すべて</option>
+                  <option value="draft">下書き</option>
+                  <option value="pending">回答待ち</option>
+                  <option value="partially_responded">一部回答済み</option>
+                  <option value="responded">回答済み</option>
+                  <option value="accepted">承認済み</option>
+                  <option value="rejected">却下</option>
+                  <option value="expired">期限切れ</option>
+                </select>
+              </div>
+
+              {/* 販売店選択 */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  販売店
+                </label>
+                <select
+                  multiple
+                  value={searchParams.selectedVendors || []}
+                  onChange={(e) => {
+                    const selected = Array.from(e.target.selectedOptions, option => option.value);
+                    setSearchParams({ ...searchParams, selectedVendors: selected });
+                  }}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                  size={3}
+                >
+                  {vendors.map((vendor) => (
+                    <option key={vendor.id} value={vendor.id}>
+                      {vendor.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {/* クリアボタン */}
+            <div className="mt-4 flex justify-end">
+              <button
+                onClick={() => {
+                  setSearchParams({});
+                  setCurrentPage(1);
+                }}
+                className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                検索条件をクリア
+              </button>
+            </div>
           </div>
 
           {/* 件数表示 */}
