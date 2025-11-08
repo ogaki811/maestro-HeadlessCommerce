@@ -1,0 +1,311 @@
+{
+  "quotations": [
+    {
+      "id": "Q-2024-0115",
+      "requestDate": "2024-01-15",
+      "requestUser": "user_001",
+      "requestUserName": "山田 太郎",
+      "vendors": [
+        {
+          "id": "vendor_001",
+          "name": "プラス株式会社",
+          "userCode": "11100",
+          "webId": "1588847004",
+          "contactPerson": "本部共有デモ"
+        },
+        {
+          "id": "vendor_002",
+          "name": "スマートオパスント株式会社",
+          "userCode": "21100",
+          "webId": "1594762002",
+          "contactPerson": "調達担当者"
+        }
+      ],
+      "products": [
+        {
+          "id": "prod_001",
+          "productCode": "PEN-JETSTREAM-001",
+          "productName": "ジェットストリーム 0.5mm 黒",
+          "quantity": 100,
+          "specifications": "黒色、0.5mm、100本入り",
+          "imageUrl": "/img/product/pen-jetstream-001.jpg"
+        },
+        {
+          "id": "prod_002",
+          "productCode": "NOTE-CAMPUS-001",
+          "productName": "キャンパスノート B5 5冊パック",
+          "quantity": 50,
+          "specifications": "B5サイズ、5冊パック",
+          "imageUrl": "/img/product/campus-note-001.jpg"
+        },
+        {
+          "id": "prod_005",
+          "productCode": "FILE-CLEAR-001",
+          "productName": "クリアファイル A4 10枚パック",
+          "quantity": 30,
+          "specifications": "A4サイズ、透明、10枚パック",
+          "imageUrl": "/img/product/clear-file-001.jpg"
+        }
+      ],
+      "status": "pending",
+      "createdAt": "2024-01-15T10:30:00Z",
+      "updatedAt": "2024-01-15T10:30:00Z"
+    },
+    {
+      "id": "Q-2024-0112",
+      "requestDate": "2024-01-12",
+      "requestUser": "user_001",
+      "requestUserName": "山田 太郎",
+      "vendors": [
+        {
+          "id": "vendor_003",
+          "name": "オフィスサプライ株式会社",
+          "userCode": "31100",
+          "webId": "1588900001",
+          "contactPerson": "営業担当 山田"
+        }
+      ],
+      "products": [
+        {
+          "id": "prod_004",
+          "productCode": "DESK-CHAIR-001",
+          "productName": "オフィスチェア エルゴノミクス",
+          "quantity": 10,
+          "specifications": "黒色、背もたれ調整機能付き",
+          "imageUrl": "/img/product/office-chair-001.jpg"
+        }
+      ],
+      "status": "responded",
+      "responses": [
+        {
+          "vendorId": "vendor_003",
+          "responseDate": "2024-01-13",
+          "totalAmount": 450000,
+          "validUntil": "2024-02-12",
+          "message": "ご依頼ありがとうございます。下記見積内容をご確認ください。"
+        }
+      ],
+      "createdAt": "2024-01-12T14:20:00Z",
+      "updatedAt": "2024-01-13T11:45:00Z"
+    },
+    {
+      "id": "Q-2024-0110",
+      "requestDate": "2024-01-10",
+      "requestUser": "user_001",
+      "requestUserName": "山田 太郎",
+      "vendors": [
+        {
+          "id": "vendor_001",
+          "name": "プラス株式会社",
+          "userCode": "11100",
+          "webId": "1588847004",
+          "contactPerson": "本部共有デモ"
+        },
+        {
+          "id": "vendor_004",
+          "name": "文具センター株式会社",
+          "userCode": "41100",
+          "webId": "1588900002",
+          "contactPerson": "営業担当 佐藤"
+        }
+      ],
+      "products": [
+        {
+          "id": "prod_001",
+          "productCode": "PEN-JETSTREAM-001",
+          "productName": "ジェットストリーム 0.5mm 黒",
+          "quantity": 200,
+          "specifications": "黒色、0.5mm、200本入り",
+          "imageUrl": "/img/product/pen-jetstream-001.jpg"
+        }
+      ],
+      "status": "partially_responded",
+      "responses": [
+        {
+          "vendorId": "vendor_001",
+          "responseDate": "2024-01-11",
+          "totalAmount": 30000,
+          "validUntil": "2024-02-10",
+          "message": "お見積もり提出いたします。"
+        }
+      ],
+      "createdAt": "2024-01-10T09:15:00Z",
+      "updatedAt": "2024-01-11T16:30:00Z"
+    },
+    {
+      "id": "Q-2024-0108",
+      "requestDate": "2024-01-08",
+      "requestUser": "user_001",
+      "requestUserName": "山田 太郎",
+      "vendors": [
+        {
+          "id": "vendor_005",
+          "name": "ビジネスグッズ販売株式会社",
+          "userCode": "51100",
+          "webId": "1588900003",
+          "contactPerson": "営業担当 鈴木"
+        }
+      ],
+      "products": [
+        {
+          "id": "prod_007",
+          "productCode": "DESK-001",
+          "productName": "オフィスデスク 幅120cm",
+          "quantity": 5,
+          "specifications": "幅120cm、奥行60cm、高さ70cm",
+          "imageUrl": "/img/product/office-desk-001.jpg"
+        }
+      ],
+      "status": "responded",
+      "responses": [
+        {
+          "vendorId": "vendor_005",
+          "responseDate": "2024-01-09",
+          "totalAmount": 175000,
+          "validUntil": "2024-02-08",
+          "message": "ご依頼いただきありがとうございます。お見積書をご確認ください。"
+        }
+      ],
+      "createdAt": "2024-01-08T13:45:00Z",
+      "updatedAt": "2024-01-09T10:20:00Z"
+    },
+    {
+      "id": "Q-2024-0105",
+      "requestDate": "2024-01-05",
+      "requestUser": "user_001",
+      "requestUserName": "山田 太郎",
+      "vendors": [
+        {
+          "id": "vendor_002",
+          "name": "スマートオパスント株式会社",
+          "userCode": "21100",
+          "webId": "1594762002",
+          "contactPerson": "調達担当者"
+        }
+      ],
+      "products": [
+        {
+          "id": "prod_003",
+          "productCode": "PEN-FRIXION-001",
+          "productName": "フリクションボールペン 3色セット",
+          "quantity": 150,
+          "specifications": "黒・赤・青3色セット",
+          "imageUrl": "/img/product/frixion-001.jpg"
+        },
+        {
+          "id": "prod_006",
+          "productCode": "PEN-SHARP-001",
+          "productName": "シャープペンシル 0.5mm",
+          "quantity": 100,
+          "specifications": "0.5mm、グリップ付き",
+          "imageUrl": "/img/product/sharp-pencil-001.jpg"
+        }
+      ],
+      "status": "responded",
+      "responses": [
+        {
+          "vendorId": "vendor_002",
+          "responseDate": "2024-01-06",
+          "totalAmount": 85500,
+          "validUntil": "2024-02-05",
+          "message": "お見積もりをご確認ください。納期は2週間程度となります。"
+        }
+      ],
+      "createdAt": "2024-01-05T11:00:00Z",
+      "updatedAt": "2024-01-06T14:15:00Z"
+    },
+    {
+      "id": "Q-2024-0103",
+      "requestDate": "2024-01-03",
+      "requestUser": "user_001",
+      "requestUserName": "山田 太郎",
+      "vendors": [
+        {
+          "id": "vendor_001",
+          "name": "プラス株式会社",
+          "userCode": "11100",
+          "webId": "1588847004",
+          "contactPerson": "本部共有デモ"
+        }
+      ],
+      "products": [
+        {
+          "id": "prod_008",
+          "productCode": "MARKER-001",
+          "productName": "マーカーペン 12色セット",
+          "quantity": 20,
+          "specifications": "12色セット、水性",
+          "imageUrl": "/img/product/marker-001.jpg"
+        }
+      ],
+      "status": "expired",
+      "createdAt": "2024-01-03T15:30:00Z",
+      "updatedAt": "2024-01-03T15:30:00Z"
+    },
+    {
+      "id": "Q-2023-1228",
+      "requestDate": "2023-12-28",
+      "requestUser": "user_001",
+      "requestUserName": "山田 太郎",
+      "vendors": [
+        {
+          "id": "vendor_003",
+          "name": "オフィスサプライ株式会社",
+          "userCode": "31100",
+          "webId": "1588900001",
+          "contactPerson": "営業担当 山田"
+        },
+        {
+          "id": "vendor_004",
+          "name": "文具センター株式会社",
+          "userCode": "41100",
+          "webId": "1588900002",
+          "contactPerson": "営業担当 佐藤"
+        }
+      ],
+      "products": [
+        {
+          "id": "prod_002",
+          "productCode": "NOTE-CAMPUS-001",
+          "productName": "キャンパスノート B5 5冊パック",
+          "quantity": 100,
+          "specifications": "B5サイズ、5冊パック",
+          "imageUrl": "/img/product/campus-note-001.jpg"
+        },
+        {
+          "id": "prod_005",
+          "productCode": "FILE-CLEAR-001",
+          "productName": "クリアファイル A4 10枚パック",
+          "quantity": 50,
+          "specifications": "A4サイズ、透明、10枚パック",
+          "imageUrl": "/img/product/clear-file-001.jpg"
+        }
+      ],
+      "status": "responded",
+      "responses": [
+        {
+          "vendorId": "vendor_003",
+          "responseDate": "2023-12-29",
+          "totalAmount": 65000,
+          "validUntil": "2024-01-28",
+          "message": "年末のご依頼ありがとうございます。お見積もり内容をご確認ください。"
+        },
+        {
+          "vendorId": "vendor_004",
+          "responseDate": "2023-12-30",
+          "totalAmount": 62000,
+          "validUntil": "2024-01-28",
+          "message": "お見積もり提出いたします。ご検討のほどよろしくお願いいたします。"
+        }
+      ],
+      "createdAt": "2023-12-28T16:45:00Z",
+      "updatedAt": "2023-12-30T11:00:00Z"
+    }
+  ],
+  "pagination": {
+    "total": 7,
+    "page": 1,
+    "perPage": 10,
+    "totalPages": 1
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "vendors": [
+    {
+      "id": "vendor_001",
+      "name": "プラス株式会社",
+      "userCode": "11100",
+      "webId": "1588847004",
+      "contactPerson": "本部共有デモ",
+      "department": "プラス市役所（A事務機）",
+      "email": "demo-a@plus.co.jp",
+      "phone": "03-1234-5678"
+    },
+    {
+      "id": "vendor_002",
+      "name": "スマートオパスント株式会社",
+      "userCode": "21100",
+      "webId": "1594762002",
+      "contactPerson": "調達担当者",
+      "department": "プラス市役所（B事務機）",
+      "email": "procurement@smart-opasant.co.jp",
+      "phone": "03-2345-6789"
+    },
+    {
+      "id": "vendor_003",
+      "name": "オフィスサプライ株式会社",
+      "userCode": "31100",
+      "webId": "1588900001",
+      "contactPerson": "営業担当 山田",
+      "department": "営業部",
+      "email": "yamada@office-supply.co.jp",
+      "phone": "03-3456-7890"
+    },
+    {
+      "id": "vendor_004",
+      "name": "文具センター株式会社",
+      "userCode": "41100",
+      "webId": "1588900002",
+      "contactPerson": "営業担当 佐藤",
+      "department": "卸売部",
+      "email": "sato@bungu-center.co.jp",
+      "phone": "03-4567-8901"
+    },
+    {
+      "id": "vendor_005",
+      "name": "ビジネスグッズ販売株式会社",
+      "userCode": "51100",
+      "webId": "1588900003",
+      "contactPerson": "営業担当 鈴木",
+      "department": "法人営業部",
+      "email": "suzuki@business-goods.co.jp",
+      "phone": "03-5678-9012"
+    }
+  ]
+}
