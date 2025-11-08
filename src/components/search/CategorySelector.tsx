@@ -126,7 +126,7 @@ export default function CategorySelector({
   const buttonClassName = variant === 'standalone'
     ? `
         flex items-center justify-between
-        flex-1 min-w-[200px] max-w-[300px]
+        w-full min-w-[200px]
         px-4 py-3
         bg-white
         border border-gray-300
@@ -135,18 +135,15 @@ export default function CategorySelector({
         hover:bg-gray-50
         focus:outline-none focus:ring-2 focus:ring-gray-700 focus:border-transparent
         transition-colors
-        h-full
       `
     : `
         flex items-center justify-between
-        flex-1 min-w-[200px] max-w-[300px]
+        min-w-[200px] max-w-[280px]
         px-4 py-3
-        bg-white
-        border border-gray-300 border-r-0
-        rounded-l-lg
+        bg-transparent
         text-sm text-gray-700
         hover:bg-gray-50
-        focus:outline-none focus:ring-2 focus:ring-gray-700 focus:border-transparent
+        focus:outline-none focus:ring-0
         transition-colors
         h-full
       `;
@@ -160,7 +157,7 @@ export default function CategorySelector({
           onClick={() => setIsOpen(!isOpen)}
           className={buttonClassName}
         >
-          <span className="truncate">{getDisplayText()}</span>
+          <span className={`truncate ${value?.large ? 'pr-6' : ''}`}>{getDisplayText()}</span>
 
           {/* プルダウンアイコン */}
           <svg
@@ -179,10 +176,14 @@ export default function CategorySelector({
           <span
             onClick={handleClear}
             className="
-              absolute right-8 top-1/2 -translate-y-1/2
-              text-gray-400 hover:text-gray-600
+              absolute right-2 top-1/2 -translate-y-1/2
+              w-5 h-5
+              flex items-center justify-center
+              text-gray-400 hover:text-gray-600 hover:bg-gray-100
+              rounded-full
               cursor-pointer
-              transition-colors
+              transition-all
+              z-10
             "
             aria-label="カテゴリをクリア"
             role="button"
@@ -194,7 +195,7 @@ export default function CategorySelector({
               }
             }}
           >
-            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M6 18L18 6M6 6l12 12" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </span>

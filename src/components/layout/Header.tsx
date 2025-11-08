@@ -135,16 +135,20 @@ export default function Header() {
               {/* 検索エリア */}
               <div className="ec-header__search flex-1 relative">
                 <form onSubmit={handleSearch} className="ec-header__search-form relative">
-                  <div className="flex">
+                  {/* 統合された検索バー */}
+                  <div className="flex border border-gray-300 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-gray-700 focus-within:border-transparent transition-all bg-white">
                     {/* カテゴリセレクター */}
-                    <CategorySelector
-                      value={selectedCategory}
-                      onChange={setSelectedCategory}
-                    />
+                    <div className="flex-shrink-0 border-r border-gray-200">
+                      <CategorySelector
+                        value={selectedCategory}
+                        onChange={setSelectedCategory}
+                        className="border-0"
+                      />
+                    </div>
 
                     {/* 検索入力 */}
-                    <div className="flex-1 relative">
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                    <div className="flex-1 relative flex items-center">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="absolute left-3 text-gray-400 pointer-events-none">
                         <circle cx="11" cy="11" r="8"></circle>
                         <path d="m21 21-4.35-4.35"></path>
                       </svg>
@@ -153,13 +157,14 @@ export default function Header() {
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         placeholder="商品名やメーカー、品番から探す"
-                        className="ec-header__search-input w-full pr-12 py-3 border border-gray-300 border-l-0 focus:ring-2 focus:ring-gray-700 focus:border-transparent"
-                        style={{ paddingLeft: '40px', borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
+                        className="w-full h-full py-3 pl-10 pr-4 border-0 focus:outline-none focus:ring-0 bg-transparent"
                       />
-                      <button type="submit" className="ec-header__search-button absolute right-0 top-0 h-full px-4 bg-black text-white rounded-r-lg hover:bg-gray-900 transition-colors">
-                        <span>検索</span>
-                      </button>
                     </div>
+
+                    {/* 検索ボタン */}
+                    <button type="submit" className="flex-shrink-0 px-6 bg-black text-white hover:bg-gray-900 transition-colors font-medium">
+                      検索
+                    </button>
                   </div>
                 </form>
               </div>
@@ -325,8 +330,8 @@ export default function Header() {
             />
 
             {/* 検索入力（モバイル） */}
-            <div className="relative">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+            <div className="relative border border-gray-300 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-gray-700 focus-within:border-transparent bg-white flex items-center">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="absolute left-3 text-gray-400 pointer-events-none">
                 <circle cx="11" cy="11" r="8"></circle>
                 <path d="m21 21-4.35-4.35"></path>
               </svg>
@@ -335,9 +340,9 @@ export default function Header() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="商品を検索"
-                className="ec-header__search-input w-full pl-10 pr-16 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-700 focus:border-transparent"
+                className="flex-1 pl-10 pr-2 py-2.5 border-0 focus:outline-none focus:ring-0 bg-transparent"
               />
-              <button type="submit" className="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-black text-white text-sm rounded hover:bg-gray-900 transition-colors">
+              <button type="submit" className="flex-shrink-0 px-4 py-2 bg-black text-white text-sm font-medium hover:bg-gray-900 transition-colors">
                 検索
               </button>
             </div>
