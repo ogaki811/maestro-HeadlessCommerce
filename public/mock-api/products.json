@@ -1,0 +1,210 @@
+{
+  "products": [
+    {
+      "id": "prod_001",
+      "productCode": "PEN-JETSTREAM-001",
+      "productName": "ジェットストリーム 0.5mm 黒",
+      "maker": "三菱鉛筆",
+      "category": {
+        "large": {
+          "id": "stationery",
+          "name": "文具・事務用品"
+        },
+        "medium": {
+          "id": "writing-instruments",
+          "name": "筆記用具"
+        },
+        "small": {
+          "id": "ballpoint-pens",
+          "name": "ボールペン"
+        }
+      },
+      "price": 150,
+      "stock": 500,
+      "imageUrl": "/images/products/pen-jetstream-001.jpg",
+      "description": "なめらかな書き味のジェットストリームボールペン",
+      "businessType": "toc"
+    },
+    {
+      "id": "prod_002",
+      "productCode": "NOTE-CAMPUS-001",
+      "productName": "キャンパスノート B5 5冊パック",
+      "maker": "コクヨ",
+      "category": {
+        "large": {
+          "id": "stationery",
+          "name": "文具・事務用品"
+        },
+        "medium": {
+          "id": "notebooks",
+          "name": "ノート類"
+        },
+        "small": {
+          "id": "campus-notes",
+          "name": "キャンパスノート"
+        }
+      },
+      "price": 500,
+      "stock": 200,
+      "imageUrl": "/images/products/campus-note-001.jpg",
+      "description": "定番のキャンパスノート5冊セット",
+      "businessType": "toc"
+    },
+    {
+      "id": "prod_003",
+      "productCode": "PEN-FRIXION-001",
+      "productName": "フリクションボールペン 3色セット",
+      "maker": "パイロット",
+      "category": {
+        "large": {
+          "id": "stationery",
+          "name": "文具・事務用品"
+        },
+        "medium": {
+          "id": "writing-instruments",
+          "name": "筆記用具"
+        },
+        "small": {
+          "id": "ballpoint-pens",
+          "name": "ボールペン"
+        }
+      },
+      "price": 450,
+      "stock": 150,
+      "imageUrl": "/images/products/frixion-001.jpg",
+      "description": "消せるボールペン3色セット（黒・赤・青）",
+      "businessType": "toc"
+    },
+    {
+      "id": "prod_004",
+      "productCode": "DESK-CHAIR-001",
+      "productName": "オフィスチェア エルゴノミクス",
+      "maker": "オカムラ",
+      "category": {
+        "large": {
+          "id": "furniture",
+          "name": "家具"
+        },
+        "medium": {
+          "id": "chairs",
+          "name": "椅子"
+        },
+        "small": {
+          "id": "office-chairs",
+          "name": "オフィスチェア"
+        }
+      },
+      "price": 45000,
+      "stock": 20,
+      "imageUrl": "/images/products/office-chair-001.jpg",
+      "description": "長時間作業に最適なエルゴノミクスチェア",
+      "businessType": "toc"
+    },
+    {
+      "id": "prod_005",
+      "productCode": "FILE-CLEAR-001",
+      "productName": "クリアファイル A4 10枚パック",
+      "maker": "キングジム",
+      "category": {
+        "large": {
+          "id": "stationery",
+          "name": "文具・事務用品"
+        },
+        "medium": {
+          "id": "filing",
+          "name": "ファイリング用品"
+        },
+        "small": {
+          "id": "clear-files",
+          "name": "クリアファイル"
+        }
+      },
+      "price": 300,
+      "stock": 300,
+      "imageUrl": "/images/products/clear-file-001.jpg",
+      "description": "書類整理に便利なA4クリアファイル",
+      "businessType": "toc"
+    },
+    {
+      "id": "prod_006",
+      "productCode": "PEN-SHARP-001",
+      "productName": "シャープペンシル 0.5mm",
+      "maker": "ぺんてる",
+      "category": {
+        "large": {
+          "id": "stationery",
+          "name": "文具・事務用品"
+        },
+        "medium": {
+          "id": "writing-instruments",
+          "name": "筆記用具"
+        },
+        "small": {
+          "id": "mechanical-pencils",
+          "name": "シャープペンシル"
+        }
+      },
+      "price": 180,
+      "stock": 400,
+      "imageUrl": "/images/products/sharp-pencil-001.jpg",
+      "description": "書きやすいグリップのシャープペンシル",
+      "businessType": "toc"
+    },
+    {
+      "id": "prod_007",
+      "productCode": "DESK-001",
+      "productName": "オフィスデスク 幅120cm",
+      "maker": "イトーキ",
+      "category": {
+        "large": {
+          "id": "furniture",
+          "name": "家具"
+        },
+        "medium": {
+          "id": "desks",
+          "name": "机"
+        },
+        "small": {
+          "id": "office-desks",
+          "name": "オフィスデスク"
+        }
+      },
+      "price": 35000,
+      "stock": 15,
+      "imageUrl": "/images/products/office-desk-001.jpg",
+      "description": "シンプルで機能的なオフィスデスク",
+      "businessType": "toc"
+    },
+    {
+      "id": "prod_008",
+      "productCode": "MARKER-001",
+      "productName": "マーカーペン 12色セット",
+      "maker": "ゼブラ",
+      "category": {
+        "large": {
+          "id": "stationery",
+          "name": "文具・事務用品"
+        },
+        "medium": {
+          "id": "writing-instruments",
+          "name": "筆記用具"
+        },
+        "small": {
+          "id": "markers",
+          "name": "マーカー"
+        }
+      },
+      "price": 800,
+      "stock": 100,
+      "imageUrl": "/images/products/marker-001.jpg",
+      "description": "カラフルなマーカーペン12色セット",
+      "businessType": "toc"
+    }
+  ],
+  "pagination": {
+    "total": 8,
+    "page": 1,
+    "perPage": 20,
+    "totalPages": 1
+  }
+}

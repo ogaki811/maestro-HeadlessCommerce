@@ -1,9 +1,31 @@
 /**
  * API Client for Headless Commerce (Composer Backend)
  * ヘッドレスコマース用APIクライアント（Composerバックエンド）
+ *
+ * S3静的ホスティング対応: モックモード切り替え機能搭載
  */
 
 import { getBusinessType, getApiEndpoint } from './frontend-context';
+
+/**
+ * モックモード判定
+ * 環境変数 NEXT_PUBLIC_USE_MOCK_DATA が true の場合、モックデータを使用
+ */
+function isMockMode(): boolean {
+  return process.env.NEXT_PUBLIC_USE_MOCK_DATA === 'true';
+}
+
+/**
+ * モックデータ取得ヘルパー
+ * public/mock-api/ からJSONファイルを取得
+ */
+async function fetchMockData<T>(path: string): Promise<T> {
+  const response = await fetch(`/mock-api/${path}.json`);
+  if (!response.ok) {
+    throw new Error(`Mock data not found: /mock-api/${path}.json`);
+  }
+  return response.json();
+}
 
 /**
  * API Client Configuration
@@ -147,6 +169,7 @@ export const apiClient = {
 export const productsApi = {
   /**
    * Get products list
+   * モックモード対応: public/mock-api/products.json から取得
    */
   async getProducts(params?: {
     category?: string;
@@ -154,6 +177,41 @@ export const productsApi = {
     page?: number;
     limit?: number;
   }) {
+    // モックモードの場合
+    if (isMockMode()) {
+      const mockData = await fetchMockData<{
+        products: any[];
+        pagination: {
+          page: number;
+          perPage: number;
+          total: number;
+          totalPages: number;
+        };
+      }>('products');
+
+      // パラメータによるフィルタリング（簡易版）
+      let filteredProducts = mockData.products;
+
+      if (params?.search) {
+        const searchLower = params.search.toLowerCase();
+        filteredProducts = filteredProducts.filter(p =>
+          p.productName.toLowerCase().includes(searchLower) ||
+          p.productCode.toLowerCase().includes(searchLower)
+        );
+      }
+
+      return {
+        products: filteredProducts,
+        pagination: {
+          page: params?.page || 1,
+          limit: params?.limit || 20,
+          total: filteredProducts.length,
+          totalPages: Math.ceil(filteredProducts.length / (params?.limit || 20)),
+        },
+      };
+    }
+
+    // 本番APIモード
     const searchParams = new URLSearchParams();
     if (params?.category) searchParams.set('category', params.category);
     if (params?.search) searchParams.set('search', params.search);
@@ -174,8 +232,23 @@ export const productsApi = {
 
   /**
    * Get product detail
+   * モックモード対応: products.jsonから該当IDの商品を検索
    */
   async getProduct(id: string) {
+    // モックモードの場合
+    if (isMockMode()) {
+      const mockData = await fetchMockData<{
+        products: any[];
+      }>('products');
+
+      const product = mockData.products.find(p => p.id === id);
+      if (!product) {
+        throw new Error(`Product not found: ${id}`);
+      }
+      return product;
+    }
+
+    // 本番APIモード
     return apiClient.get<any>(`/api/products/${id}`);
   },
 };
@@ -186,8 +259,35 @@ export const productsApi = {
 export const cartApi = {
   /**
    * Get cart
+   * モックモード対応: localStorageから取得
    */
   async getCart() {
+    // モックモードの場合
+    if (isMockMode()) {
+      const mockCart = typeof window !== 'undefined'
+        ? localStorage.getItem('mock-cart')
+        : null;
+
+      if (mockCart) {
+        return JSON.parse(mockCart);
+      }
+
+      // デフォルトの空カート
+      const defaultCart = await fetchMockData<{
+        items: any[];
+        totalAmount: number;
+        totalQuantity: number;
+      }>('cart');
+
+      return {
+        cartId: 'mock-cart-id',
+        items: defaultCart.items,
+        total: defaultCart.totalAmount,
+        itemCount: defaultCart.totalQuantity,
+      };
+    }
+
+    // 本番APIモード
     return apiClient.get<{
       cartId?: string;
       items: any[];
@@ -198,8 +298,37 @@ export const cartApi = {
 
   /**
    * Add to cart
+   * モックモード対応: localStorageに保存
    */
   async addToCart(productId: string, quantity: number) {
+    // モックモードの場合
+    if (isMockMode()) {
+      const cart = await this.getCart();
+      const existingItem = cart.items.find((item: any) => item.productId === productId);
+
+      if (existingItem) {
+        existingItem.quantity += quantity;
+      } else {
+        cart.items.push({
+          productId,
+          quantity,
+          addedAt: new Date().toISOString(),
+        });
+      }
+
+      cart.itemCount = cart.items.reduce((sum: number, item: any) => sum + item.quantity, 0);
+
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('mock-cart', JSON.stringify(cart));
+      }
+
+      return {
+        message: 'Product added to cart (mock)',
+        cartId: 'mock-cart-id',
+      };
+    }
+
+    // 本番APIモード
     return apiClient.post<{
       message: string;
       cartId: string;
@@ -208,8 +337,19 @@ export const cartApi = {
 
   /**
    * Clear cart
+   * モックモード対応: localStorageをクリア
    */
   async clearCart() {
+    // モックモードの場合
+    if (isMockMode()) {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('mock-cart');
+      }
+
+      return { message: 'Cart cleared (mock)' };
+    }
+
+    // 本番APIモード
     return apiClient.delete<{ message: string }>('/api/cart');
   },
 };
@@ -220,8 +360,38 @@ export const cartApi = {
 export const ordersApi = {
   /**
    * Get orders
+   * モックモード対応: localStorageから取得
    */
   async getOrders(params?: { page?: number; limit?: number }) {
+    // モックモードの場合
+    if (isMockMode()) {
+      const mockOrders = typeof window !== 'undefined'
+        ? localStorage.getItem('mock-orders')
+        : null;
+
+      if (mockOrders) {
+        const orders = JSON.parse(mockOrders);
+        return {
+          orders,
+          pagination: {
+            page: params?.page || 1,
+            limit: params?.limit || 10,
+            total: orders.length,
+            totalPages: Math.ceil(orders.length / (params?.limit || 10)),
+          },
+        };
+      }
+
+      // デフォルトの空注文履歴
+      const defaultOrders = await fetchMockData<{
+        orders: any[];
+        pagination: any;
+      }>('orders');
+
+      return defaultOrders;
+    }
+
+    // 本番APIモード
     const searchParams = new URLSearchParams();
     if (params?.page) searchParams.set('page', params.page.toString());
     if (params?.limit) searchParams.set('limit', params.limit.toString());
@@ -240,6 +410,7 @@ export const ordersApi = {
 
   /**
    * Create order
+   * モックモード対応: localStorageに保存
    */
   async createOrder(data: {
     items: Array<{
@@ -254,6 +425,50 @@ export const ordersApi = {
     paymentMethod: string;
     usePoints?: number;
   }) {
+    // モックモードの場合
+    if (isMockMode()) {
+      const orderNumber = `MOCK-${Date.now()}`;
+      const totalAmount = data.items.reduce(
+        (sum, item) => sum + item.price * item.quantity,
+        0
+      );
+
+      const newOrder = {
+        orderId: `order_${Date.now()}`,
+        orderNumber,
+        totalAmount,
+        pointsEarned: Math.floor(totalAmount * 0.01), // 1%ポイント還元
+        pointsUsed: data.usePoints || 0,
+        items: data.items,
+        shippingAddress: data.shippingAddress,
+        billingAddress: data.billingAddress,
+        paymentMethod: data.paymentMethod,
+        status: 'pending',
+        createdAt: new Date().toISOString(),
+      };
+
+      // 既存の注文履歴を取得
+      const existingOrders = typeof window !== 'undefined'
+        ? JSON.parse(localStorage.getItem('mock-orders') || '[]')
+        : [];
+
+      // 新しい注文を追加
+      existingOrders.unshift(newOrder);
+
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('mock-orders', JSON.stringify(existingOrders));
+      }
+
+      return {
+        orderId: newOrder.orderId,
+        orderNumber: newOrder.orderNumber,
+        totalAmount: newOrder.totalAmount,
+        pointsEarned: newOrder.pointsEarned,
+        pointsUsed: newOrder.pointsUsed,
+      };
+    }
+
+    // 本番APIモード
     return apiClient.post<{
       orderId: string;
       orderNumber: string;
