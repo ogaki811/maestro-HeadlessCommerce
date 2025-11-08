@@ -6,8 +6,10 @@ import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import useAuthStore from '@/store/useAuthStore';
 import useFavoritesStore from '@/store/useFavoritesStore';
+import useCustomMenuStore from '@/store/useCustomMenuStore';
 import useKeyboardNavigation from '@/hooks/useKeyboardNavigation';
 import { drawerMenuSections } from '@/config/drawerMenuConfig';
+import { headerNavigationIcons } from '@/config/headerNavigationConfig';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -18,6 +20,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   const router = useRouter();
   const { isAuthenticated, user, logout } = useAuthStore();
   const favoriteCount = useFavoritesStore((state) => state.getFavoriteCount());
+  const { customMenuIds, addCustomMenu, removeCustomMenu } = useCustomMenuStore();
 
   // Escapeキーでメニューを閉じる
   useKeyboardNavigation({
@@ -47,6 +50,19 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
 
   const handleLinkClick = () => {
     onClose();
+  };
+
+  const handleToggleFavorite = (e: React.MouseEvent, menuId: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (customMenuIds.includes(menuId)) {
+      removeCustomMenu(menuId);
+      toast.success('カスタムメニューから削除しました');
+    } else {
+      addCustomMenu(menuId);
+      toast.success('カスタムメニューに追加しました');
+    }
   };
 
   return (
@@ -110,40 +126,65 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                   const badgeCount = item.id === 'favorites' ? favoriteCount : item.getBadgeCount?.() || 0;
                   const showBadge = item.badge && badgeCount > 0;
 
+                  // headerNavigationIconsから対応する設定を取得
+                  const navIcon = headerNavigationIcons.find(icon => icon.id === item.id);
+                  const isCustomizable = navIcon?.customizable !== false;
+                  const isFavorited = customMenuIds.includes(item.id);
+
                   return (
-                    <Link
-                      key={item.id}
-                      href={item.href}
-                      onClick={handleLinkClick}
-                      className="ec-mobile-menu__link flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
-                    >
-                      {/* アイコン */}
-                      <svg
-                        className="ec-mobile-menu__icon w-5 h-5 mr-3 flex-shrink-0"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
+                    <div key={item.id} className="relative">
+                      <Link
+                        href={item.href}
+                        onClick={handleLinkClick}
+                        className="ec-mobile-menu__link flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
                       >
-                        {Array.isArray(item.iconPath) ? (
-                          item.iconPath.map((path, index) => <path key={index} d={path} />)
-                        ) : (
-                          <path d={item.iconPath} />
+                        {/* アイコン */}
+                        <svg
+                          className="ec-mobile-menu__icon w-5 h-5 mr-3 flex-shrink-0"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          {Array.isArray(item.iconPath) ? (
+                            item.iconPath.map((path, index) => <path key={index} d={path} />)
+                          ) : (
+                            <path d={item.iconPath} />
+                          )}
+                        </svg>
+
+                        {/* ラベル */}
+                        <span className="flex-1">{item.label}</span>
+
+                        {/* 星アイコン（カスタムメニュー追加用） */}
+                        {isAuthenticated && isCustomizable && (
+                          <button
+                            onClick={(e) => handleToggleFavorite(e, item.id)}
+                            className="ml-2 p-1 hover:bg-gray-200 rounded transition-colors"
+                            aria-label={isFavorited ? 'カスタムメニューから削除' : 'カスタムメニューに追加'}
+                          >
+                            <svg
+                              className="w-5 h-5"
+                              viewBox="0 0 24 24"
+                              fill={isFavorited ? 'currentColor' : 'none'}
+                              stroke="currentColor"
+                              strokeWidth="2"
+                            >
+                              <path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                            </svg>
+                          </button>
                         )}
-                      </svg>
 
-                      {/* ラベル */}
-                      <span className="flex-1">{item.label}</span>
-
-                      {/* バッジ */}
-                      {showBadge && (
-                        <span className="ec-mobile-menu__badge ml-auto bg-red-500 text-white text-xs px-2 py-1 rounded-full">
-                          {badgeCount}
-                        </span>
-                      )}
-                    </Link>
+                        {/* バッジ */}
+                        {showBadge && (
+                          <span className="ec-mobile-menu__badge ml-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+                            {badgeCount}
+                          </span>
+                        )}
+                      </Link>
+                    </div>
                   );
                 })}
               </div>
