@@ -126,19 +126,34 @@ This is a complex BtoB e-commerce system designed for business-to-business trans
    - **E2E Tests**: Test critical user journeys (checkout, login)
    - Run tests before committing: `npm test`
 
+9. **Performance & Quality Metrics（パフォーマンス・品質指標）**
+   - **CRITICAL**: All pages must achieve **Lighthouse score of 90+ points** in all categories
+   - **CRITICAL**: Lighthouse audits must be performed at **Planning Phase** and **Testing Phase**
+   - Lighthouse categories to monitor:
+     - **Performance**: 90+ (page load speed, Core Web Vitals)
+     - **Accessibility**: 90+ (ARIA, semantic HTML, keyboard navigation)
+     - **Best Practices**: 90+ (HTTPS, console errors, image optimization)
+     - **SEO**: 90+ (meta tags, structured data, mobile-friendly)
+   - Verification timing:
+     - **Planning Phase**: Estimate performance impact and plan optimizations
+     - **Testing Phase**: Run full Lighthouse audit before merge/deployment
+   - Run Lighthouse audits before committing major changes
+   - Optimize images, lazy loading, code splitting to maintain performance
+   - Use Next.js Image component for automatic optimization
+
 ### Styling & CSS（スタイリング）
 
-9. **Tailwind CSS First（Tailwind優先）**
+10. **Tailwind CSS First（Tailwind優先）**
    - Use Tailwind utility classes for all styling
    - Avoid custom CSS unless absolutely necessary
    - Use Tailwind's design tokens for consistency (colors, spacing, typography)
    - If custom CSS is needed, document the reason in comments
 
-10. **BEM Methodology（BEM方法論）**
+11. **BEM Methodology（BEM方法論）**
     - When custom CSS is required, use BEM naming convention
     - Example: `.product-card__title--featured`
 
-11. **Icon Usage（アイコン使用）**
+12. **Icon Usage（アイコン使用）**
     - **CRITICAL: Never use emoji icons in UI components**
     - Use monochrome SVG icons only
     - Icons should be single-color and consistent with the design system
@@ -147,7 +162,7 @@ This is a complex BtoB e-commerce system designed for business-to-business trans
 
 ### Git & Commits（Git・コミット）
 
-12. **Clear Commit Messages（わかりやすいコミット）**
+13. **Clear Commit Messages（わかりやすいコミット）**
     - Write descriptive commit messages in Japanese
     - Format: `[type] 実装内容の説明`
     - Types: `feat`, `fix`, `refactor`, `test`, `docs`, `style`, `chore`
@@ -157,7 +172,7 @@ This is a complex BtoB e-commerce system designed for business-to-business trans
       - `test: useCartStoreのユニットテストを追加`
       - `refactor: ProductCardコンポーネントをAtomic Design原則に従って再構成`
 
-13. **Commit Workflow（コミットワークフロー）**
+14. **Commit Workflow（コミットワークフロー）**
     - **CRITICAL: Document added requirements BEFORE committing**
     - **CRITICAL: Refactor code before committing (Red-Green-Refactor cycle)**
     - **CRITICAL: Always include detailed development content in commit messages**
@@ -181,7 +196,7 @@ This is a complex BtoB e-commerce system designed for business-to-business trans
       - Optimize performance if needed
       - Ensure consistency with project patterns
 
-14. **Testing & Merge Workflow（テスト・マージワークフロー）**
+15. **Testing & Merge Workflow（テスト・マージワークフロー）**
     - **CRITICAL: Tests are run BEFORE merge, not on every commit**
     - **CRITICAL: Do NOT merge to main without explicit user instruction**
     - Before merging to main branch:
