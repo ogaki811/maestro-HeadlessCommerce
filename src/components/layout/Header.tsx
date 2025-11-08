@@ -13,15 +13,18 @@ import DealerSelectorButton from './DealerSelectorButton';
 import CustomMenuBar from './CustomMenuBar';
 import UserNameDisplay from './UserNameDisplay';
 import ImportantNotice from './ImportantNotice';
+import CategorySelector from '@/components/search/CategorySelector';
 import { useScrollDirection } from '@/hooks/useScrollDirection';
 import { Badge } from '@/components/ui/Badge';
 import { headerNavigationIcons } from '@/config/headerNavigationConfig';
 import { notifications } from '@/config/notificationsConfig';
+import type { CategorySelection } from '@/types/category';
 
 export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<CategorySelection | undefined>();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isNotificationVisible, setIsNotificationVisible] = useState(false);
   const [notificationTimeout, setNotificationTimeout] = useState<NodeJS.Timeout | null>(null);
@@ -89,8 +92,24 @@ export default function Header() {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
+    const params = new URLSearchParams();
+
     if (searchQuery.trim()) {
-      router.push(`/search?q=${encodeURIComponent(searchQuery)}`);
+      params.set('q', searchQuery);
+    }
+
+    // カテゴリが選択されている場合、最も詳細なカテゴリIDを使用
+    if (selectedCategory?.small) {
+      params.set('category', selectedCategory.small.id);
+    } else if (selectedCategory?.medium) {
+      params.set('category', selectedCategory.medium.id);
+    } else if (selectedCategory?.large) {
+      params.set('category', selectedCategory.large.id);
+    }
+
+    const queryString = params.toString();
+    if (queryString) {
+      router.push(`/search?${queryString}`);
     }
   };
 
@@ -116,23 +135,32 @@ export default function Header() {
               {/* 検索エリア */}
               <div className="ec-header__search flex-1 relative">
                 <form onSubmit={handleSearch} className="ec-header__search-form relative">
-                  <div className="relative">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                      <circle cx="11" cy="11" r="8"></circle>
-                      <path d="m21 21-4.35-4.35"></path>
-                    </svg>
-                    <input
-                      type="text"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      placeholder="商品名やメーカー、品番から探す"
-                      className="ec-header__search-input w-full pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-700 focus:border-transparent"
-                      style={{ paddingLeft: '40px' }}
+                  <div className="flex gap-2">
+                    {/* カテゴリセレクター */}
+                    <CategorySelector
+                      value={selectedCategory}
+                      onChange={setSelectedCategory}
                     />
+
+                    {/* 検索入力 */}
+                    <div className="flex-1 relative">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                      </svg>
+                      <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="商品名やメーカー、品番から探す"
+                        className="ec-header__search-input w-full pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-700 focus:border-transparent"
+                        style={{ paddingLeft: '40px' }}
+                      />
+                      <button type="submit" className="ec-header__search-button absolute right-0 top-0 h-full px-4 bg-black text-white rounded-r-lg hover:bg-gray-900 transition-colors">
+                        <span>検索</span>
+                      </button>
+                    </div>
                   </div>
-                  <button type="submit" className="ec-header__search-button absolute right-0 top-0 h-full px-4 bg-black text-white rounded-r-lg hover:bg-gray-900 transition-colors">
-                    <span>検索</span>
-                  </button>
                 </form>
               </div>
 
@@ -288,18 +316,29 @@ export default function Header() {
               )}
             </Link>
           </div>
-          <form onSubmit={handleSearch} className="ec-header__search-form relative">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-              <circle cx="11" cy="11" r="8"></circle>
-              <path d="m21 21-4.35-4.35"></path>
-            </svg>
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="商品を検索"
-              className="ec-header__search-input w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg"
-            />
+          <form onSubmit={handleSearch} className="ec-header__search-form">
+            {/* カテゴリセレクター（モバイル） */}
+            <div className="mb-2">
+              <CategorySelector
+                value={selectedCategory}
+                onChange={setSelectedCategory}
+              />
+            </div>
+
+            {/* 検索入力（モバイル） */}
+            <div className="relative">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+              </svg>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="商品を検索"
+                className="ec-header__search-input w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg"
+              />
+            </div>
           </form>
         </div>
       </div>
