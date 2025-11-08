@@ -158,8 +158,8 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                         {/* ラベル */}
                         <span className="flex-1">{item.label}</span>
 
-                        {/* 星アイコン（カスタムメニュー追加用） */}
-                        {isAuthenticated && isCustomizable && (
+                        {/* 星アイコン（カスタムメニュー追加用）- 開発中は常に表示 */}
+                        {isCustomizable && (
                           <button
                             onClick={(e) => handleToggleFavorite(e, item.id)}
                             className="ml-2 p-1 hover:bg-gray-200 rounded transition-colors"

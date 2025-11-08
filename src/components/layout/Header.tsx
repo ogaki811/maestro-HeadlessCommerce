@@ -270,12 +270,8 @@ export default function Header() {
                     メニュー
                   </button>
 
-                  {isAuthenticated && user && (
-                    <>
-                      {/* カスタムメニューバー */}
-                      <CustomMenuBar selectedMenuIds={customMenuIds} />
-                    </>
-                  )}
+                  {/* カスタムメニューバー（開発中は常に表示） */}
+                  <CustomMenuBar selectedMenuIds={customMenuIds} />
                 </div>
 
                 {/* 右側: 販売店選択・配送先・ユーザー名 */}
