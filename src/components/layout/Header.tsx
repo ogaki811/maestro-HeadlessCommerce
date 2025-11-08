@@ -136,9 +136,9 @@ export default function Header() {
               <div className="ec-header__search flex-1 relative">
                 <form onSubmit={handleSearch} className="ec-header__search-form relative">
                   {/* 統合された検索バー */}
-                  <div className="flex border border-gray-300 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-gray-700 focus-within:border-transparent transition-all bg-white">
+                  <div className="flex border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-gray-700 focus-within:border-transparent transition-all bg-white">
                     {/* カテゴリセレクター */}
-                    <div className="flex-shrink-0 border-r border-gray-200">
+                    <div className="flex-shrink-0 border-r border-gray-200 rounded-l-lg overflow-hidden">
                       <CategorySelector
                         value={selectedCategory}
                         onChange={setSelectedCategory}
@@ -163,7 +163,7 @@ export default function Header() {
                     </div>
 
                     {/* 検索ボタン */}
-                    <button type="submit" className="flex-shrink-0 px-6 bg-black text-white hover:bg-gray-900 transition-colors font-medium">
+                    <button type="submit" className="flex-shrink-0 px-6 py-3 bg-black text-white hover:bg-gray-900 transition-colors font-medium rounded-r-lg">
                       検索
                     </button>
                   </div>
@@ -331,7 +331,7 @@ export default function Header() {
             />
 
             {/* 検索入力（モバイル） */}
-            <div className="border border-gray-300 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-gray-700 focus-within:border-transparent bg-white flex items-center gap-2 pl-3">
+            <div className="border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-gray-700 focus-within:border-transparent bg-white flex items-center gap-2 pl-3">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-600 flex-shrink-0">
                 <circle cx="11" cy="11" r="8"></circle>
                 <path d="m21 21-4.35-4.35"></path>
@@ -344,7 +344,7 @@ export default function Header() {
                 className="flex-1 pr-2 py-2.5 text-sm border-none focus:outline-none focus:ring-0 bg-transparent placeholder:text-gray-400"
                 style={{ outline: 'none', boxShadow: 'none', border: 'none' }}
               />
-              <button type="submit" className="flex-shrink-0 px-4 py-2 bg-black text-white text-sm font-medium hover:bg-gray-900 transition-colors">
+              <button type="submit" className="flex-shrink-0 px-4 py-2 bg-black text-white text-sm font-medium hover:bg-gray-900 transition-colors rounded-r-lg">
                 検索
               </button>
             </div>
