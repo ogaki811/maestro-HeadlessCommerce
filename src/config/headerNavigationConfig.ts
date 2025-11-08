@@ -54,8 +54,8 @@ export const headerNavigationIcons: NavigationIconConfig[] = [
     label: '承認',
     iconPath: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
     text: '承認',
-    showInDrawer: true,
-    customizable: true,
+    showInDrawer: false,      // ドロワーには表示しない（Row 1に固定配置）
+    customizable: false,       // カスタムメニューから除外
     badge: true,
     showForRoles: ['admin', 'manager'],
     getBadgeCount: () => 3  // モック: 承認待ち3件

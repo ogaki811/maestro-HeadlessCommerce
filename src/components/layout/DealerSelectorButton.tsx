@@ -51,41 +51,42 @@ export default function DealerSelectorButton() {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="
-          flex items-center gap-2
-          text-sm
+          flex flex-col items-start
           text-[#2d2626]
           border-l border-gray-300
           pl-4
           hover:text-gray-900
           transition-colors
-          font-medium
         "
       >
-        <svg
-          className="w-4 h-4 flex-shrink-0"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          aria-label="販売店選択"
-          role="img"
-        >
-          <title>販売店</title>
-          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-          <polyline points="9 22 9 12 15 12 15 22"></polyline>
-        </svg>
-        <span className="truncate max-w-[150px]">
-          {selectedDealer?.name || sampleDealers[0].name}
-        </span>
-        <svg
-          className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        >
-          <polyline points="6 9 12 15 18 9"></polyline>
-        </svg>
+        <span className="text-[10px] text-gray-500 mb-0.5">販売店選択</span>
+        <div className="flex items-center gap-1">
+          <svg
+            className="w-3 h-3 flex-shrink-0"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            aria-label="販売店選択"
+            role="img"
+          >
+            <title>販売店</title>
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+          <span className="text-xs font-medium truncate max-w-[120px]">
+            {selectedDealer?.name || sampleDealers[0].name}
+          </span>
+          <svg
+            className={`w-3 h-3 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </div>
       </button>
 
       {isOpen && (

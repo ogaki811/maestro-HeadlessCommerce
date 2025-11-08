@@ -17,34 +17,35 @@ export default function DeliveryAddressDisplay({
     <Link
       href="/mypage/settings"
       className="
-        flex items-center
-        text-sm
+        flex flex-col items-start
         text-[#2d2626]
         border-l border-gray-300
         pl-4
         hover:text-gray-900
         transition-colors
-        max-w-md
+        max-w-[200px]
       "
     >
-      <svg
-        className="w-4 h-4 mr-2 flex-shrink-0"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        aria-label="配送先住所"
-        role="img"
-      >
-        <title>配送先</title>
-        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-        <circle cx="12" cy="10" r="3"></circle>
-      </svg>
-      <span className="font-medium mr-1">配送先:</span>
-      <span className="truncate">
-        {postalCode && `〒${postalCode} `}
-        {address}
-      </span>
+      <span className="text-[10px] text-gray-500 mb-0.5">配送先</span>
+      <div className="flex items-center gap-1">
+        <svg
+          className="w-3 h-3 flex-shrink-0"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          aria-label="配送先住所"
+          role="img"
+        >
+          <title>配送先</title>
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+          <circle cx="12" cy="10" r="3"></circle>
+        </svg>
+        <span className="text-xs truncate">
+          {postalCode && `〒${postalCode} `}
+          {address}
+        </span>
+      </div>
     </Link>
   );
 }

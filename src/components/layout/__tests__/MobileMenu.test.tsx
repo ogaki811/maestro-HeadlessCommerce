@@ -60,7 +60,7 @@ describe('MobileMenu', () => {
       });
 
       useCustomMenuStore.setState({
-        customMenuIds: ['quote-request', 'quick-order', 'my-catalog', 'order-history'],
+        customMenuIds: ['quote-request', 'quick-order', 'order-history'],
       });
     });
   });
@@ -101,11 +101,11 @@ describe('MobileMenu', () => {
       });
     });
 
-    it('新しいメニュー項目（注文履歴、承認）が表示されること', () => {
+    it('新しいメニュー項目（注文履歴、マイカタログ）が表示されること', () => {
       render(<MobileMenu isOpen={true} onClose={mockOnClose} />);
 
       expect(screen.getByText('注文履歴')).toBeInTheDocument();
-      expect(screen.getByText('承認')).toBeInTheDocument();
+      expect(screen.getByText('マイカタログ')).toBeInTheDocument();
     });
 
     it('showInDrawerがfalseの項目は表示されないこと', () => {
@@ -157,9 +157,9 @@ describe('MobileMenu', () => {
     it('未選択メニューの星がoutline状態で表示されること', () => {
       const { container } = render(<MobileMenu isOpen={true} onClose={mockOnClose} />);
 
-      // approval は未選択（customMenuIds に含まれない）
-      const approvalLink = screen.getByText('承認').closest('.ec-mobile-menu__custom-item');
-      const starIcon = approvalLink?.querySelector('[data-testid="star-icon"]');
+      // my-catalog は未選択（customMenuIds に含まれない）
+      const myCatalogLink = screen.getByText('マイカタログ').closest('.ec-mobile-menu__custom-item');
+      const starIcon = myCatalogLink?.querySelector('[data-testid="star-icon"]');
 
       // filled クラスがないことを確認
       expect(starIcon).not.toHaveClass('ec-mobile-menu__star--filled');
@@ -178,22 +178,22 @@ describe('MobileMenu', () => {
 
       const { container } = render(<MobileMenu isOpen={true} onClose={mockOnClose} />);
 
-      // approval メニューの星アイコンをクリック
-      const approvalItem = screen.getByText('承認').closest('.ec-mobile-menu__custom-item');
-      const starButton = approvalItem?.querySelector('[data-testid="star-icon"]');
+      // my-catalog メニューの星アイコンをクリック
+      const myCatalogItem = screen.getByText('マイカタログ').closest('.ec-mobile-menu__custom-item');
+      const starButton = myCatalogItem?.querySelector('[data-testid="star-icon"]');
 
       if (starButton) {
         fireEvent.click(starButton);
-        expect(toggleCustomMenu).toHaveBeenCalledWith('approval');
+        expect(toggleCustomMenu).toHaveBeenCalledWith('my-catalog');
       }
     });
 
     it('星をクリックしても選択状態が切り替わること', () => {
       const { container, rerender } = render(<MobileMenu isOpen={true} onClose={mockOnClose} />);
 
-      // 初期状態: approval は未選択
-      let approvalItem = screen.getByText('承認').closest('.ec-mobile-menu__custom-item');
-      let starIcon = approvalItem?.querySelector('[data-testid="star-icon"]');
+      // 初期状態: my-catalog は未選択
+      let myCatalogItem = screen.getByText('マイカタログ').closest('.ec-mobile-menu__custom-item');
+      let starIcon = myCatalogItem?.querySelector('[data-testid="star-icon"]');
       expect(starIcon).not.toHaveClass('ec-mobile-menu__star--filled');
 
       // 星をクリック
@@ -204,39 +204,21 @@ describe('MobileMenu', () => {
       // Store の状態を更新
       act(() => {
         useCustomMenuStore.setState({
-          customMenuIds: ['quote-request', 'quick-order', 'my-catalog', 'order-history', 'approval'],
+          customMenuIds: ['quote-request', 'quick-order', 'my-catalog', 'order-history'],
         });
       });
 
       // 再レンダリング
       rerender(<MobileMenu isOpen={true} onClose={mockOnClose} />);
 
-      // approval が選択状態になっている
-      approvalItem = screen.getByText('承認').closest('.ec-mobile-menu__custom-item');
-      starIcon = approvalItem?.querySelector('[data-testid="star-icon"]');
+      // my-catalog が選択状態になっている
+      myCatalogItem = screen.getByText('マイカタログ').closest('.ec-mobile-menu__custom-item');
+      starIcon = myCatalogItem?.querySelector('[data-testid="star-icon"]');
       expect(starIcon).toHaveClass('ec-mobile-menu__star--filled');
     });
   });
 
   describe('バッジ表示', () => {
-    it('badgeがtrueのメニュー（承認）にバッジが表示されること', () => {
-      render(<MobileMenu isOpen={true} onClose={mockOnClose} />);
-
-      const approvalItem = screen.getByText('承認').closest('.ec-mobile-menu__custom-item');
-      const badge = approvalItem?.querySelector('.ec-mobile-menu__custom-badge');
-
-      expect(badge).toBeInTheDocument();
-    });
-
-    it('バッジに正しい件数（3）が表示されること', () => {
-      render(<MobileMenu isOpen={true} onClose={mockOnClose} />);
-
-      const approvalItem = screen.getByText('承認').closest('.ec-mobile-menu__custom-item');
-      const badge = approvalItem?.querySelector('.ec-mobile-menu__custom-badge');
-
-      expect(badge).toHaveTextContent('3');
-    });
-
     it('badgeがないメニューにはバッジが表示されないこと', () => {
       render(<MobileMenu isOpen={true} onClose={mockOnClose} />);
 
@@ -311,8 +293,8 @@ describe('MobileMenu', () => {
     it('星アイコンボタンに適切なaria-labelが設定されていること', () => {
       const { container } = render(<MobileMenu isOpen={true} onClose={mockOnClose} />);
 
-      const approvalItem = screen.getByText('承認').closest('.ec-mobile-menu__custom-item');
-      const starButton = approvalItem?.querySelector('[data-testid="star-icon"]');
+      const myCatalogItem = screen.getByText('マイカタログ').closest('.ec-mobile-menu__custom-item');
+      const starButton = myCatalogItem?.querySelector('[data-testid="star-icon"]');
 
       expect(starButton).toHaveAttribute('aria-label');
       expect(starButton?.getAttribute('aria-label')).toContain('カスタムメニュー');
@@ -326,8 +308,8 @@ describe('MobileMenu', () => {
       const selectedStar = selectedItem?.querySelector('[data-testid="star-icon"]');
       expect(selectedStar).toHaveAttribute('aria-pressed', 'true');
 
-      // 未選択（approval）
-      const unselectedItem = screen.getByText('承認').closest('.ec-mobile-menu__custom-item');
+      // 未選択（my-catalog）
+      const unselectedItem = screen.getByText('マイカタログ').closest('.ec-mobile-menu__custom-item');
       const unselectedStar = unselectedItem?.querySelector('[data-testid="star-icon"]');
       expect(unselectedStar).toHaveAttribute('aria-pressed', 'false');
     });
@@ -346,8 +328,8 @@ describe('MobileMenu', () => {
       const orderHistoryLink = screen.getByText('注文履歴').closest('a');
       expect(orderHistoryLink).toHaveAttribute('href', '/mypage/orders');
 
-      const approvalLink = screen.getByText('承認').closest('a');
-      expect(approvalLink).toHaveAttribute('href', '/approval');
+      const myCatalogLink = screen.getByText('マイカタログ').closest('a');
+      expect(myCatalogLink).toHaveAttribute('href', '/my-catalog');
     });
 
     it('メニュー項目をクリックするとonCloseが呼ばれること', () => {

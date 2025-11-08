@@ -87,20 +87,20 @@ describe('CustomMenuBar', () => {
   });
 
   describe('バッジ表示', () => {
-    it('バッジがあるメニューに件数が表示されること', () => {
-      render(<CustomMenuBar selectedMenuIds={['approval']} />);
-
-      // 承認メニューのバッジが表示される
-      expect(screen.getByText('承認')).toBeInTheDocument();
-      expect(screen.getByText('3')).toBeInTheDocument(); // モック件数
-    });
-
     it('バッジがないメニューには件数が表示されないこと', () => {
       render(<CustomMenuBar selectedMenuIds={['quote-request']} />);
 
       // 見積り依頼にはバッジがない
       expect(screen.getByText('見積り依頼')).toBeInTheDocument();
       expect(screen.queryByText('3')).not.toBeInTheDocument();
+    });
+
+    it('customizable: false のメニューは表示されないこと', () => {
+      // 承認はcustomizable: falseなので、カスタムメニューに追加されても表示されない
+      render(<CustomMenuBar selectedMenuIds={['approval', 'quote-request']} />);
+
+      expect(screen.getByText('見積り依頼')).toBeInTheDocument();
+      expect(screen.queryByText('承認')).not.toBeInTheDocument();
     });
   });
 

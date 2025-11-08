@@ -42,11 +42,14 @@ export default function CustomMenuBar({ selectedMenuIds }: CustomMenuBarProps) {
   /**
    * 選択されたメニュー項目を取得（メモ化）
    * selectedMenuIdsの順序を保持
+   * customizable: false の項目は除外
    */
   const selectedMenus = useMemo(() => {
     return selectedMenuIds
       .map((id) => headerNavigationIcons.find((icon) => icon.id === id))
-      .filter((menu): menu is NonNullable<typeof menu> => menu !== undefined);
+      .filter((menu): menu is NonNullable<typeof menu> =>
+        menu !== undefined && menu.customizable !== false
+      );
   }, [selectedMenuIds]);
 
   // 選択メニューがない場合は何も表示しない
@@ -57,12 +60,9 @@ export default function CustomMenuBar({ selectedMenuIds }: CustomMenuBarProps) {
   return (
     <div
       className="
-        flex items-center gap-4
+        flex items-center gap-2
         flex-nowrap
         overflow-x-auto
-        px-4 py-2
-        bg-gray-50
-        rounded-md
         scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200
       "
       role="navigation"
@@ -74,8 +74,12 @@ export default function CustomMenuBar({ selectedMenuIds }: CustomMenuBarProps) {
           href={menu.href}
           className="
             flex items-center gap-2
+            px-4 py-2
             text-sm font-medium
             text-[#2d2626]
+            bg-gray-50
+            rounded-md
+            hover:bg-gray-100
             hover:text-gray-900
             transition-colors
           "

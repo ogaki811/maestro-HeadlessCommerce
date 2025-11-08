@@ -12,7 +12,11 @@ import DeliveryAddressDisplay from './DeliveryAddressDisplay';
 import DealerSelectorButton from './DealerSelectorButton';
 import CustomMenuBar from './CustomMenuBar';
 import UserNameDisplay from './UserNameDisplay';
+import ImportantNotice from './ImportantNotice';
 import { useScrollDirection } from '@/hooks/useScrollDirection';
+import { Badge } from '@/components/ui/Badge';
+import { headerNavigationIcons } from '@/config/headerNavigationConfig';
+import { notifications } from '@/config/notificationsConfig';
 
 export default function Header() {
   const router = useRouter();
@@ -31,6 +35,9 @@ export default function Header() {
   const lastAddedItem = useCartStore((state) => state.lastAddedItem);
   const { user, isAuthenticated } = useAuthStore();
   const { customMenuIds } = useCustomMenuStore();
+
+  // 承認項目の設定を取得
+  const approvalMenu = headerNavigationIcons.find(icon => icon.id === 'approval');
 
   // Cleanup timeout on unmount
   useEffect(() => {
@@ -141,6 +148,21 @@ export default function Header() {
                   </Link>
                 )}
 
+                {/* 承認（認証済みユーザーのみ） */}
+                {isAuthenticated && approvalMenu && (
+                  <Link href={approvalMenu.href} className="flex flex-col items-center p-2 text-gray-600 hover:text-gray-700 transition-colors relative">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d={approvalMenu.iconPath}></path>
+                    </svg>
+                    <span className="text-xs mt-1">{approvalMenu.text}</span>
+                    {approvalMenu.badge && approvalMenu.getBadgeCount && approvalMenu.getBadgeCount() > 0 && (
+                      <Badge variant="danger" size="sm" className="absolute -top-1 -right-1">
+                        {approvalMenu.getBadgeCount()}
+                      </Badge>
+                    )}
+                  </Link>
+                )}
+
                 {/* ポイント表示（認証済みユーザーのみ） */}
                 {isAuthenticated && user && user.points > 0 && (
                   <div className="flex flex-col items-center p-2 text-gray-600">
@@ -209,21 +231,20 @@ export default function Header() {
 
                   {isAuthenticated && user && (
                     <>
-                      <DeliveryAddressDisplay
-                        postalCode={user.postalCode}
-                        address={user.address}
-                      />
-
                       {/* カスタムメニューバー */}
                       <CustomMenuBar selectedMenuIds={customMenuIds} />
                     </>
                   )}
                 </div>
 
-                {/* 右側: 販売店選択・ユーザー名 */}
+                {/* 右側: 販売店選択・配送先・ユーザー名 */}
                 {isAuthenticated && user && (
                   <div className="flex items-center space-x-4">
                     <DealerSelectorButton />
+                    <DeliveryAddressDisplay
+                      postalCode={user.postalCode}
+                      address={user.address}
+                    />
                     <UserNameDisplay
                       userName={user.name}
                       userEmail={user.email}
@@ -234,6 +255,9 @@ export default function Header() {
             </div>
           </nav>
         )}
+
+        {/* 重要なお知らせ */}
+        <ImportantNotice notifications={notifications} />
       </div>
 
       {/* モバイルメニュー */}
