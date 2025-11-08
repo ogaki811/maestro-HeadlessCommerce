@@ -3,18 +3,20 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import toast from 'react-hot-toast';
 import useCartStore from '@/store/useCartStore';
 import useAuthStore from '@/store/useAuthStore';
+import useCustomMenuStore from '@/store/useCustomMenuStore';
 import { CartAddedNotification } from '@/components/cart';
 import MobileMenu from './MobileMenu';
 import DeliveryAddressDisplay from './DeliveryAddressDisplay';
 import DealerSelectorButton from './DealerSelectorButton';
-import PointsDisplay from './PointsDisplay';
-import HeaderNavigationIcon from './HeaderNavigationIcon';
+import CustomMenuBar from './CustomMenuBar';
 import UserNameDisplay from './UserNameDisplay';
-import { headerNavigationIcons, headerNavigationGroups } from '@/config/headerNavigationConfig';
+import ImportantNotice from './ImportantNotice';
 import { useScrollDirection } from '@/hooks/useScrollDirection';
+import { Badge } from '@/components/ui/Badge';
+import { headerNavigationIcons } from '@/config/headerNavigationConfig';
+import { notifications } from '@/config/notificationsConfig';
 
 export default function Header() {
   const router = useRouter();
@@ -32,6 +34,10 @@ export default function Header() {
   const itemCount = useCartStore((state) => state.getItemCount());
   const lastAddedItem = useCartStore((state) => state.lastAddedItem);
   const { user, isAuthenticated } = useAuthStore();
+  const { customMenuIds } = useCustomMenuStore();
+
+  // 承認項目の設定を取得
+  const approvalMenu = headerNavigationIcons.find(icon => icon.id === 'approval');
 
   // Cleanup timeout on unmount
   useEffect(() => {
@@ -80,17 +86,6 @@ export default function Header() {
       }
     }
   }, [pathname]);
-
-
-  const handleLogout = () => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('customer');
-    setIsAuthenticated(false);
-    toast.success('ログアウトしました');
-    router.push('/');
-    router.refresh();
-  };
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -143,6 +138,42 @@ export default function Header() {
 
               {/* 機能エリア */}
               <div className="ec-header__actions flex items-center space-x-4">
+                {/* お問い合わせ（認証済みユーザーのみ） */}
+                {isAuthenticated && (
+                  <Link href="/contact" className="flex flex-col items-center p-2 text-gray-600 hover:text-gray-700 transition-colors">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
+                    </svg>
+                    <span className="text-xs mt-1">お問い合わせ</span>
+                  </Link>
+                )}
+
+                {/* 承認（認証済みユーザーのみ） */}
+                {isAuthenticated && approvalMenu && (
+                  <Link href={approvalMenu.href} className="flex flex-col items-center p-2 text-gray-600 hover:text-gray-700 transition-colors relative">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d={approvalMenu.iconPath}></path>
+                    </svg>
+                    <span className="text-xs mt-1">{approvalMenu.text}</span>
+                    {approvalMenu.badge && approvalMenu.getBadgeCount && approvalMenu.getBadgeCount() > 0 && (
+                      <Badge variant="danger" size="sm" className="absolute -top-1 -right-1">
+                        {approvalMenu.getBadgeCount()}
+                      </Badge>
+                    )}
+                  </Link>
+                )}
+
+                {/* ポイント表示（認証済みユーザーのみ） */}
+                {isAuthenticated && user && user.points > 0 && (
+                  <div className="flex flex-col items-center p-2 text-gray-600">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <circle cx="12" cy="12" r="10" strokeWidth="2"></circle>
+                      <path d="M12 6v6l4 2" strokeWidth="2" strokeLinecap="round"></path>
+                    </svg>
+                    <span className="text-xs mt-1 font-semibold">{user.points}pt</span>
+                  </div>
+                )}
+
                 <Link href="/cart" className="ec-header__cart-icon flex flex-col items-center p-2 text-gray-600 hover:text-gray-700 transition-colors">
                   <div className="relative">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -158,24 +189,13 @@ export default function Header() {
                 </Link>
 
                 {isAuthenticated ? (
-                  <>
-                    <Link href="/mypage" className="flex flex-col items-center p-2 text-gray-600 hover:text-green-500 transition-colors">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="12" cy="7" r="4"></circle>
-                      </svg>
-                      <span className="text-xs mt-1">マイページ</span>
-                    </Link>
-
-                    <button onClick={handleLogout} className="flex flex-col items-center p-2 text-gray-600 hover:text-red-500 transition-colors">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                        <polyline points="16 17 21 12 16 7"></polyline>
-                        <line x1="21" y1="12" x2="9" y2="12"></line>
-                      </svg>
-                      <span className="text-xs mt-1">ログアウト</span>
-                    </button>
-                  </>
+                  <Link href="/mypage" className="flex flex-col items-center p-2 text-gray-600 hover:text-green-500 transition-colors">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    <span className="text-xs mt-1">マイページ</span>
+                  </Link>
                 ) : (
                   <Link href="/login" className="ec-header__login-button flex flex-col items-center p-2 text-gray-600 hover:text-gray-700 transition-colors">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -211,45 +231,20 @@ export default function Header() {
 
                   {isAuthenticated && user && (
                     <>
-                      <DeliveryAddressDisplay
-                        postalCode={user.postalCode}
-                        address={user.address}
-                      />
-                      <DealerSelectorButton />
-                      <PointsDisplay points={user.points} />
-                      {/* 左側グループのナビゲーションアイコン */}
-                      {headerNavigationIcons
-                        .filter(icon => headerNavigationGroups.left.includes(icon.id))
-                        .map(icon => (
-                          <HeaderNavigationIcon
-                            key={icon.id}
-                            href={icon.href}
-                            label={icon.label}
-                            iconPath={icon.iconPath}
-                            text={icon.text}
-                          />
-                        ))
-                      }
+                      {/* カスタムメニューバー */}
+                      <CustomMenuBar selectedMenuIds={customMenuIds} />
                     </>
                   )}
                 </div>
 
-                {/* 右側: お問い合わせ・ユーザー名 */}
+                {/* 右側: 販売店選択・配送先・ユーザー名 */}
                 {isAuthenticated && user && (
                   <div className="flex items-center space-x-4">
-                    {/* 右側グループのナビゲーションアイコン */}
-                    {headerNavigationIcons
-                      .filter(icon => headerNavigationGroups.right.includes(icon.id))
-                      .map(icon => (
-                        <HeaderNavigationIcon
-                          key={icon.id}
-                          href={icon.href}
-                          label={icon.label}
-                          iconPath={icon.iconPath}
-                          text={icon.text}
-                        />
-                      ))
-                    }
+                    <DealerSelectorButton />
+                    <DeliveryAddressDisplay
+                      postalCode={user.postalCode}
+                      address={user.address}
+                    />
                     <UserNameDisplay
                       userName={user.name}
                       userEmail={user.email}
@@ -260,6 +255,9 @@ export default function Header() {
             </div>
           </nav>
         )}
+
+        {/* 重要なお知らせ */}
+        <ImportantNotice notifications={notifications} />
       </div>
 
       {/* モバイルメニュー */}
