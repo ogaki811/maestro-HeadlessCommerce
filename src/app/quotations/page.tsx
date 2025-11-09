@@ -245,30 +245,14 @@ export default function QuotationsPage() {
                 <label className="text-sm font-medium text-gray-700 bg-gray-100 px-4 py-3">
                   商品コード
                 </label>
-                <div className="col-span-3 flex items-center gap-4">
+                <div className="col-span-3">
                   <input
                     type="text"
                     placeholder=""
                     value={searchParams.productCode || ''}
                     onChange={(e) => setSearchParams({ ...searchParams, productCode: e.target.value })}
-                    className="flex-1 px-3 py-2 border border-gray-300 focus:outline-none focus:border-gray-500"
+                    className="w-full px-3 py-2 border border-gray-300 focus:outline-none focus:border-gray-500"
                   />
-                  <button
-                    onClick={() => {
-                      setSelectedVendorIds(vendors.map(v => v.id));
-                    }}
-                    className="px-6 py-2 bg-orange-500 text-white font-medium rounded hover:bg-orange-600 transition-colors"
-                  >
-                    全選択
-                  </button>
-                  <button
-                    onClick={() => {
-                      setSelectedVendorIds([]);
-                    }}
-                    className="px-6 py-2 bg-gray-400 text-white font-medium rounded hover:bg-gray-500 transition-colors"
-                  >
-                    選択クリア
-                  </button>
                 </div>
               </div>
             </div>
@@ -280,40 +264,71 @@ export default function QuotationsPage() {
                   販売店選択
                 </label>
                 <div className="col-span-3">
-                  {/* ヘッダー行 */}
-                  <div className="grid grid-cols-3 gap-4 bg-gray-50 px-4 py-2 border border-gray-300 font-medium text-sm text-gray-700">
-                    <div>販売店</div>
-                    <div>ユーザーコード/ユーザー名</div>
-                    <div>WebID/氏名</div>
-                  </div>
-                  {/* データ行 */}
-                  {vendors.map((vendor) => (
-                    <div key={vendor.id} className="grid grid-cols-3 gap-4 px-4 py-3 border-x border-b border-gray-300 hover:bg-gray-50">
-                      <div className="flex items-center gap-3">
-                        <input
-                          type="checkbox"
-                          checked={selectedVendorIds.includes(vendor.id)}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setSelectedVendorIds([...selectedVendorIds, vendor.id]);
-                            } else {
-                              setSelectedVendorIds(selectedVendorIds.filter(id => id !== vendor.id));
-                            }
-                          }}
-                          className="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                        />
-                        <span className="text-sm">{vendor.name}</span>
-                      </div>
-                      <div className="text-sm text-gray-700">
-                        <div>{vendor.userCode}</div>
-                        <div className="text-gray-600">{vendor.department}</div>
-                      </div>
-                      <div className="text-sm text-gray-700">
-                        <div>{vendor.webId}</div>
-                        <div className="text-gray-600">{vendor.contactPerson}</div>
-                      </div>
+                  {/* 操作ボタン領域 */}
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => {
+                          setSelectedVendorIds(vendors.map(v => v.id));
+                        }}
+                        className="px-4 py-1.5 bg-orange-500 text-white text-sm font-medium rounded hover:bg-orange-600 transition-colors"
+                      >
+                        全選択
+                      </button>
+                      <button
+                        onClick={() => {
+                          setSelectedVendorIds([]);
+                        }}
+                        className="px-4 py-1.5 bg-gray-400 text-white text-sm font-medium rounded hover:bg-gray-500 transition-colors"
+                      >
+                        選択クリア
+                      </button>
                     </div>
-                  ))}
+                    {/* 選択状態のフィードバック */}
+                    {selectedVendorIds.length > 0 && (
+                      <span className="text-sm text-gray-600">
+                        {selectedVendorIds.length}件選択中
+                      </span>
+                    )}
+                  </div>
+
+                  {/* テーブル */}
+                  <div className="border border-gray-300 rounded">
+                    {/* ヘッダー行 */}
+                    <div className="grid grid-cols-3 gap-4 bg-gray-50 px-4 py-2 border-b border-gray-300 font-medium text-sm text-gray-700">
+                      <div>販売店</div>
+                      <div>ユーザーコード/ユーザー名</div>
+                      <div>WebID/氏名</div>
+                    </div>
+                    {/* データ行 */}
+                    {vendors.map((vendor) => (
+                      <div key={vendor.id} className="grid grid-cols-3 gap-4 px-4 py-3 border-b last:border-b-0 border-gray-300 hover:bg-gray-50 transition-colors">
+                        <div className="flex items-center gap-3">
+                          <input
+                            type="checkbox"
+                            checked={selectedVendorIds.includes(vendor.id)}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setSelectedVendorIds([...selectedVendorIds, vendor.id]);
+                              } else {
+                                setSelectedVendorIds(selectedVendorIds.filter(id => id !== vendor.id));
+                              }
+                            }}
+                            className="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                          />
+                          <span className="text-sm">{vendor.name}</span>
+                        </div>
+                        <div className="text-sm text-gray-700">
+                          <div>{vendor.userCode}</div>
+                          <div className="text-gray-600">{vendor.department}</div>
+                        </div>
+                        <div className="text-sm text-gray-700">
+                          <div>{vendor.webId}</div>
+                          <div className="text-gray-600">{vendor.contactPerson}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
