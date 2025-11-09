@@ -157,7 +157,7 @@ export default function QuotationsPage() {
             {/* 検索フォーム */}
             <div className="space-y-4">
               {/* 見積依頼番号 */}
-              <div className="grid grid-cols-4 gap-4 items-center">
+              <div className="grid grid-cols-4 gap-4 items-start">
                 <label className="text-sm font-medium text-gray-700 bg-gray-100 px-4 py-3">
                   見積依頼番号
                 </label>
@@ -173,7 +173,7 @@ export default function QuotationsPage() {
               </div>
 
               {/* 依頼日 */}
-              <div className="grid grid-cols-4 gap-4 items-center">
+              <div className="grid grid-cols-4 gap-4 items-start">
                 <label className="text-sm font-medium text-gray-700 bg-gray-100 px-4 py-3">
                   依頼日
                 </label>
@@ -241,7 +241,7 @@ export default function QuotationsPage() {
               </div>
 
               {/* 商品コード */}
-              <div className="grid grid-cols-4 gap-4 items-center">
+              <div className="grid grid-cols-4 gap-4 items-start">
                 <label className="text-sm font-medium text-gray-700 bg-gray-100 px-4 py-3">
                   商品コード
                 </label>
@@ -275,7 +275,7 @@ export default function QuotationsPage() {
 
             {/* 販売店選択テーブル */}
             <div className="mt-6">
-              <div className="grid grid-cols-4 gap-4 items-center mb-2">
+              <div className="grid grid-cols-4 gap-4 items-start mb-2">
                 <label className="text-sm font-medium text-gray-700 bg-gray-100 px-4 py-3">
                   販売店選択
                 </label>
