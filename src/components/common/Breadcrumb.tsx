@@ -26,6 +26,7 @@ const pathLabels: Record<string, string> = {
   '/mypage/settings': 'アカウント設定',
   '/favorites': 'お気に入り',
   '/quick-order': 'クイックオーダー',
+  '/quotations': '見積り依頼検索',
 };
 
 // パスから自動的にBreadcrumbアイテムを生成
