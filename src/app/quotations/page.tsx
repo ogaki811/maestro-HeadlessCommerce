@@ -140,7 +140,7 @@ export default function QuotationsPage() {
           {/* ヘッダー */}
           <header className="mb-8 pb-6 border-b-2 border-gray-200">
             <h1 className="m-0 mb-2 text-3xl md:text-2xl font-bold text-gray-900">
-              見積依頼一覧
+              見積り依頼検索
             </h1>
             <p className="m-0 text-base md:text-sm text-gray-600">
               複数の販売店に対して相見積もりを依頼・管理できます
