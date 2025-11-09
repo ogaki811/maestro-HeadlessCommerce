@@ -106,7 +106,7 @@ export default function QuotationDetailPage() {
       <main className="min-h-screen bg-white">
         <Breadcrumb />
 
-        <div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* ヘッダー */}
           <header className="mb-8 pb-6 border-b-2 border-gray-200">
             <div className="flex flex-col md:flex-row md:justify-between md:items-center">
