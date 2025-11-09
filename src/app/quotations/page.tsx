@@ -148,7 +148,7 @@ export default function QuotationsPage() {
           </header>
 
           {/* 見積を検索する */}
-          <div className="mb-8 p-6 bg-white border-l-4 border-gray-900 rounded-lg shadow-sm">
+          <div className="mb-8 bg-white rounded-lg shadow-sm">
             <h2 className="text-lg font-bold text-gray-900 mb-6 flex items-center">
               <span className="inline-block w-1 h-6 bg-gray-900 mr-3"></span>
               見積を検索する
