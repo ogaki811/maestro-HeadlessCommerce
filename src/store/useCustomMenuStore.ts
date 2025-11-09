@@ -159,6 +159,7 @@ const useCustomMenuStore = create<CustomMenuState>()(
         }
         return localStorage;
       }),
+      skipHydration: true, // SSRハイドレーションをスキップして、クライアントサイドでのみ復元
     }
   )
 );

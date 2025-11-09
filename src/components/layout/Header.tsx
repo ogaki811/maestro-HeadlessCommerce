@@ -42,6 +42,11 @@ export default function Header() {
   // 承認項目の設定を取得
   const approvalMenu = headerNavigationIcons.find(icon => icon.id === 'approval');
 
+  // カスタムメニューストアのハイドレーション（SSR対応）
+  useEffect(() => {
+    useCustomMenuStore.persist.rehydrate();
+  }, []);
+
   // Cleanup timeout on unmount
   useEffect(() => {
     return () => {
