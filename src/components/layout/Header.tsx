@@ -129,7 +129,7 @@ export default function Header() {
         {/* メインヘッダー */}
         <div className="bg-white">
           <div className="w-full px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between py-4 gap-4">
+            <div className="flex items-center justify-between py-2 gap-4">
               {/* ロゴエリア */}
               <div className="ec-header__logo flex-shrink-0">
                 <Link href="/" className="flex items-center space-x-3">
