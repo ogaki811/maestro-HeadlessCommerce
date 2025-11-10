@@ -251,7 +251,7 @@ export default function Header() {
 
         {/* ナビゲーションメニュー */}
         {!isScrolled && (
-          <nav className="ec-header__nav text-gray-700">
+          <nav className="ec-header__nav text-gray-700 border-t border-b border-gray-200">
             <div className="w-full px-4 sm:px-6 lg:px-8">
               <div className="flex items-center justify-between h-12">
                 <div className="flex items-center space-x-4">
