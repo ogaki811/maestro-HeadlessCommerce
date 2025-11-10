@@ -13,15 +13,6 @@ export interface NavigationIconConfig {
 
 export const headerNavigationIcons: NavigationIconConfig[] = [
   {
-    id: 'quote-request',
-    href: '/quotations',
-    label: '見積り依頼',
-    iconPath: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2',
-    text: '見積り依頼',
-    showInDrawer: true,
-    customizable: true
-  },
-  {
     id: 'quick-order',
     href: '/quick-order',
     label: 'クイックオーダー',
@@ -112,6 +103,6 @@ export const headerNavigationIcons: NavigationIconConfig[] = [
 
 // グループ分け設定
 export const headerNavigationGroups = {
-  left: ['quote-request', 'quick-order', 'my-catalog'],
+  left: ['quick-order', 'my-catalog'],
   right: ['contact']
 };

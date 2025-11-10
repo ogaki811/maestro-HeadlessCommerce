@@ -147,6 +147,16 @@ export default function QuotationsPage() {
             </p>
           </header>
 
+          {/* 新規作成ボタン */}
+          <div className="flex justify-center mb-8">
+            <button
+              onClick={() => router.push('/quotations/new')}
+              className="px-12 py-3 bg-blue-900 text-white font-medium rounded hover:bg-blue-800 transition-colors"
+            >
+              新規見積依頼を作成
+            </button>
+          </div>
+
           {/* 見積を検索する */}
           <div className="mb-8 bg-white rounded-lg">
             <h2 className="text-lg font-bold text-gray-900 mb-6 flex items-center">
@@ -271,7 +281,7 @@ export default function QuotationsPage() {
                         onClick={() => {
                           setSelectedVendorIds(vendors.map(v => v.id));
                         }}
-                        className="px-4 py-1.5 bg-orange-500 text-white text-sm font-medium rounded hover:bg-orange-600 transition-colors"
+                        className="px-4 py-1.5 bg-[#2d2626] text-white text-sm font-medium rounded hover:bg-gray-900 transition-colors"
                       >
                         全選択
                       </button>
