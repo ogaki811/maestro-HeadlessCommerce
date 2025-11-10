@@ -33,7 +33,6 @@ export default function UserNameDisplay({
         className="
           flex items-center gap-2
           text-sm text-[#2d2626]
-          border-l border-gray-300
           pl-4
           hover:text-gray-900
           transition-colors
