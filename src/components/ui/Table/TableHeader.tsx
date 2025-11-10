@@ -12,7 +12,7 @@ export interface TableHeaderProps {
  */
 export default function TableHeader({ children, className = '' }: TableHeaderProps) {
   return (
-    <thead className={`bg-gray-50 ${className}`}>
+    <thead className={className}>
       {children}
     </thead>
   );

@@ -129,7 +129,7 @@ export default function Header() {
         {/* メインヘッダー */}
         <div className="bg-white">
           <div className="w-full px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between py-4 gap-4">
+            <div className="flex items-center justify-between py-1 gap-4">
               {/* ロゴエリア */}
               <div className="ec-header__logo flex-shrink-0">
                 <Link href="/" className="flex items-center space-x-3">
@@ -251,7 +251,7 @@ export default function Header() {
 
         {/* ナビゲーションメニュー */}
         {!isScrolled && (
-          <nav className="ec-header__nav bg-gray-100 text-gray-700">
+          <nav className="ec-header__nav text-gray-700">
             <div className="w-full px-4 sm:px-6 lg:px-8">
               <div className="flex items-center justify-between h-12">
                 <div className="flex items-center space-x-4">
@@ -291,7 +291,7 @@ export default function Header() {
         )}
 
         {/* 重要なお知らせ */}
-        <ImportantNotice notifications={notifications} />
+        {!isScrolled && <ImportantNotice notifications={notifications} />}
       </div>
 
       {/* モバイルメニュー */}
