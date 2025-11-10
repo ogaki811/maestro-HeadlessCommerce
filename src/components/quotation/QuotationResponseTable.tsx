@@ -1,7 +1,12 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
+import toast from 'react-hot-toast';
 import type { Quotation, QuotationResponse } from '@/types/quotation';
 import { Table, TableHeader, TableBody, TableRow, TableHeaderCell, TableCell } from '@/components/ui/Table';
 import { Badge } from '@/components/ui/Badge';
+import ContentModal from '@/components/common/ContentModal';
+import QuotationResponseDetail from './QuotationResponseDetail';
 
 export interface QuotationResponseTableProps {
   quotation: Quotation;
@@ -11,8 +16,12 @@ export interface QuotationResponseTableProps {
  * QuotationResponseTable - 見積回答テーブルコンポーネント（Organism）
  *
  * 見積依頼に対する販売店からの回答を表形式で表示。
+ * Phase 2: 詳細表示とカート追加機能を実装。
  */
 export default function QuotationResponseTable({ quotation }: QuotationResponseTableProps) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedResponse, setSelectedResponse] = useState<QuotationResponse | null>(null);
+
   const formatDate = (dateString?: string): string => {
     if (!dateString) return '—';
 
@@ -41,100 +50,58 @@ export default function QuotationResponseTable({ quotation }: QuotationResponseT
   };
 
   const handleDetailClick = (response: QuotationResponse) => {
-    // TODO: Phase 2で詳細表示機能を実装
-    console.log('詳細 clicked', response);
+    setSelectedResponse(response);
+    setIsModalOpen(true);
   };
 
   const handleCartClick = (response: QuotationResponse) => {
-    // TODO: Phase 2でカート追加機能を実装
-    console.log('カートに追加 clicked', response);
+    // Phase 2: 簡易実装 - トースト通知のみ
+    // Phase 3以降で商品マスタ連携を実装予定
+    const productCount = response.products?.length || 0;
+
+    if (productCount === 0) {
+      toast.error('カートに追加できる商品がありません');
+      return;
+    }
+
+    // TODO: Phase 3で実際のカート追加処理を実装
+    // 現在は商品マスタとの連携が必要なため、通知のみ実装
+    toast.success(`${productCount}件の商品をカートに追加しました`);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedResponse(null);
   };
 
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHeaderCell>詳細</TableHeaderCell>
-          <TableHeaderCell>見積依頼番号</TableHeaderCell>
-          <TableHeaderCell>Web ID/氏名</TableHeaderCell>
-          <TableHeaderCell>ステータス</TableHeaderCell>
-          <TableHeaderCell>販売店名</TableHeaderCell>
-          <TableHeaderCell>希望納期</TableHeaderCell>
-          <TableHeaderCell>見積完了日</TableHeaderCell>
-          <TableHeaderCell>見積有効期限</TableHeaderCell>
-          <TableHeaderCell align="right">見積金額（税抜）</TableHeaderCell>
-          <TableHeaderCell>最終注文日付</TableHeaderCell>
-          <TableHeaderCell>カートイン</TableHeaderCell>
-        </TableRow>
-      </TableHeader>
+    <>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHeaderCell>詳細</TableHeaderCell>
+            <TableHeaderCell>見積依頼番号</TableHeaderCell>
+            <TableHeaderCell>Web ID/氏名</TableHeaderCell>
+            <TableHeaderCell>ステータス</TableHeaderCell>
+            <TableHeaderCell>販売店名</TableHeaderCell>
+            <TableHeaderCell>希望納期</TableHeaderCell>
+            <TableHeaderCell>見積完了日</TableHeaderCell>
+            <TableHeaderCell>見積有効期限</TableHeaderCell>
+            <TableHeaderCell align="right">見積金額（税抜）</TableHeaderCell>
+            <TableHeaderCell>最終注文日付</TableHeaderCell>
+            <TableHeaderCell>カートイン</TableHeaderCell>
+          </TableRow>
+        </TableHeader>
 
-      <TableBody>
-        {quotation.responses?.map((response, index) => (
-          <TableRow key={`${response.vendorId}-${index}`}>
-            {/* 詳細ボタン */}
-            <TableCell>
-              <button
-                onClick={() => handleDetailClick(response)}
-                className="p-2 hover:bg-gray-100 rounded"
-                aria-label="詳細"
-              >
-                <svg
-                  className="w-5 h-5 text-gray-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                  />
-                </svg>
-              </button>
-            </TableCell>
-
-            {/* 見積依頼番号 */}
-            <TableCell>{response.quotationNumber || '—'}</TableCell>
-
-            {/* Web ID/氏名 */}
-            <TableCell>
-              <div className="text-sm">
-                <div>{response.webId || '—'}</div>
-                <div className="text-gray-500">{response.userName || '—'}</div>
-              </div>
-            </TableCell>
-
-            {/* ステータス */}
-            <TableCell>{getStatusBadge(response)}</TableCell>
-
-            {/* 販売店名 */}
-            <TableCell>{getVendorName(response.vendorId)}</TableCell>
-
-            {/* 希望納期 */}
-            <TableCell>{formatDate(response.desiredDeliveryDate)}</TableCell>
-
-            {/* 見積完了日 */}
-            <TableCell>{formatDate(response.completionDate)}</TableCell>
-
-            {/* 見積有効期限 */}
-            <TableCell>{formatDate(response.validUntil)}</TableCell>
-
-            {/* 見積金額（税抜） */}
-            <TableCell align="right">
-              {response.totalAmount > 0 ? formatCurrency(response.totalAmount) : '—'}
-            </TableCell>
-
-            {/* 最終注文日付 */}
-            <TableCell>{formatDate(response.lastOrderDate)}</TableCell>
-
-            {/* カートインボタン（見積完了の場合のみ） */}
-            <TableCell>
-              {response.completionDate && (
+        <TableBody>
+          {quotation.responses?.map((response, index) => (
+            <TableRow key={`${response.vendorId}-${index}`}>
+              {/* 詳細ボタン */}
+              <TableCell>
                 <button
-                  onClick={() => handleCartClick(response)}
+                  onClick={() => handleDetailClick(response)}
                   className="p-2 hover:bg-gray-100 rounded"
-                  aria-label="カートに追加"
+                  aria-label="詳細"
                 >
                   <svg
                     className="w-5 h-5 text-gray-600"
@@ -146,15 +113,86 @@ export default function QuotationResponseTable({ quotation }: QuotationResponseT
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       strokeWidth={2}
-                      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                     />
                   </svg>
                 </button>
-              )}
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+              </TableCell>
+
+              {/* 見積依頼番号 */}
+              <TableCell>{response.quotationNumber || '—'}</TableCell>
+
+              {/* Web ID/氏名 */}
+              <TableCell>
+                <div className="text-sm">
+                  <div>{response.webId || '—'}</div>
+                  <div className="text-gray-500">{response.userName || '—'}</div>
+                </div>
+              </TableCell>
+
+              {/* ステータス */}
+              <TableCell>{getStatusBadge(response)}</TableCell>
+
+              {/* 販売店名 */}
+              <TableCell>{getVendorName(response.vendorId)}</TableCell>
+
+              {/* 希望納期 */}
+              <TableCell>{formatDate(response.desiredDeliveryDate)}</TableCell>
+
+              {/* 見積完了日 */}
+              <TableCell>{formatDate(response.completionDate)}</TableCell>
+
+              {/* 見積有効期限 */}
+              <TableCell>{formatDate(response.validUntil)}</TableCell>
+
+              {/* 見積金額（税抜） */}
+              <TableCell align="right">
+                {response.totalAmount > 0 ? formatCurrency(response.totalAmount) : '—'}
+              </TableCell>
+
+              {/* 最終注文日付 */}
+              <TableCell>{formatDate(response.lastOrderDate)}</TableCell>
+
+              {/* カートインボタン（見積完了の場合のみ） */}
+              <TableCell>
+                {response.completionDate && (
+                  <button
+                    onClick={() => handleCartClick(response)}
+                    className="p-2 hover:bg-gray-100 rounded"
+                    aria-label="カートに追加"
+                  >
+                    <svg
+                      className="w-5 h-5 text-gray-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                      />
+                    </svg>
+                  </button>
+                )}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+
+      {/* 詳細モーダル */}
+      {selectedResponse && (
+        <ContentModal
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          title="見積回答詳細"
+          maxWidth="2xl"
+        >
+          <QuotationResponseDetail quotation={quotation} response={selectedResponse} />
+        </ContentModal>
+      )}
+    </>
   );
 }

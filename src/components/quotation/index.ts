@@ -6,6 +6,8 @@
 
 export { default as QuotationDetailHeader } from './QuotationDetailHeader';
 export { default as QuotationResponseTable } from './QuotationResponseTable';
+export { default as QuotationResponseDetail } from './QuotationResponseDetail';
 
 export type { QuotationDetailHeaderProps } from './QuotationDetailHeader';
 export type { QuotationResponseTableProps } from './QuotationResponseTable';
+export type { QuotationResponseDetailProps } from './QuotationResponseDetail';
