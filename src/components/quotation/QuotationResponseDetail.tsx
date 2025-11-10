@@ -78,7 +78,7 @@ export default function QuotationResponseDetail({
       <section className="mb-6">
         <h3 className="text-lg font-bold text-gray-900 mb-4">商品明細</h3>
         <div className="overflow-x-auto">
-          <Table>
+          <Table className="[&_td]:border-l-0 [&_th]:border-l-0">
             <TableHeader>
               <TableRow>
                 <TableHeaderCell>商品ID</TableHeaderCell>
@@ -88,7 +88,7 @@ export default function QuotationResponseDetail({
                 <TableHeaderCell>備考</TableHeaderCell>
               </TableRow>
             </TableHeader>
-            <TableBody>
+            <TableBody className="divide-y-0">
               {response.products?.map((product, index) => (
                 <TableRow key={`${product.productId}-${index}`}>
                   <TableCell>{product.productId}</TableCell>
