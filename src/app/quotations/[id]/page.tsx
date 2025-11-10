@@ -221,9 +221,9 @@ export default function QuotationDetailPage() {
                 相見積もり比較
               </h2>
 
-              <div className="mb-4 p-3 bg-orange-50 border border-orange-200 rounded">
-                <p className="text-sm text-orange-900">
-                  <strong>最安値</strong>の価格は <strong className="text-orange-600">オレンジ色</strong> でハイライトされています
+              <div className="mb-4 p-3 bg-gray-50 border border-gray-300 rounded">
+                <p className="text-sm text-gray-900">
+                  <strong>最安値</strong>の価格は <strong className="text-gray-900">黒色</strong> でハイライトされています
                 </p>
               </div>
 
@@ -242,18 +242,18 @@ export default function QuotationDetailPage() {
                         key={response.vendorId}
                         className={`p-4 border-2 rounded-lg ${
                           isLowest
-                            ? 'border-orange-500 bg-orange-50'
+                            ? 'border-gray-900 bg-gray-100'
                             : 'border-gray-300 bg-white'
                         }`}
                       >
                         <p className="text-sm text-gray-600 mb-1">{vendor?.name}</p>
                         <p className={`text-2xl font-bold ${
-                          isLowest ? 'text-orange-600' : 'text-gray-900'
+                          isLowest ? 'text-gray-900' : 'text-gray-900'
                         }`}>
                           ¥{response.totalAmount.toLocaleString()}
                         </p>
                         {isLowest && (
-                          <span className="inline-block mt-2 px-2 py-1 text-xs font-medium text-orange-800 bg-orange-200 rounded">
+                          <span className="inline-block mt-2 px-2 py-1 text-xs font-medium text-white bg-gray-900 rounded">
                             最安値
                           </span>
                         )}

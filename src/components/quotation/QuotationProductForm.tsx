@@ -139,7 +139,7 @@ export default function QuotationProductForm({
           ${
             filledCount === 0
               ? 'bg-gray-400 text-white cursor-not-allowed'
-              : 'bg-orange-500 text-white hover:bg-orange-600 active:bg-orange-700 cursor-pointer'
+              : 'bg-[#2d2626] text-white hover:bg-gray-900 active:bg-black cursor-pointer'
           }
         `}
         aria-label={

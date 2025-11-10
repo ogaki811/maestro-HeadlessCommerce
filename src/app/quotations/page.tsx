@@ -271,7 +271,7 @@ export default function QuotationsPage() {
                         onClick={() => {
                           setSelectedVendorIds(vendors.map(v => v.id));
                         }}
-                        className="px-4 py-1.5 bg-orange-500 text-white text-sm font-medium rounded hover:bg-orange-600 transition-colors"
+                        className="px-4 py-1.5 bg-[#2d2626] text-white text-sm font-medium rounded hover:bg-gray-900 transition-colors"
                       >
                         全選択
                       </button>

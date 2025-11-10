@@ -172,7 +172,7 @@ export default function NewQuotationPage() {
               <div className="flex gap-4">
                 <button
                   onClick={() => setSelectedVendorIds(vendors.map(v => v.id))}
-                  className="px-6 py-2 bg-orange-500 text-white font-medium rounded hover:bg-orange-600 transition-colors"
+                  className="px-6 py-2 bg-[#2d2626] text-white font-medium rounded hover:bg-gray-900 transition-colors"
                 >
                   全選択
                 </button>

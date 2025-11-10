@@ -71,7 +71,7 @@ describe('QuotationDetailHeader', () => {
     render(<QuotationDetailHeader quotation={mockQuotation} />);
 
     const button = screen.getByRole('button', { name: '見積をコピー' });
-    expect(button).toHaveClass('bg-orange-500');
+    expect(button).toHaveClass('bg-[#2d2626]');
     expect(button).toHaveClass('text-white');
   });
 });

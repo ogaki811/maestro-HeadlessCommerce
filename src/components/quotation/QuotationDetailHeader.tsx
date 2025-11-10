@@ -37,7 +37,7 @@ export default function QuotationDetailHeader({ quotation }: QuotationDetailHead
         {/* 見積をコピーボタン */}
         <Button
           onClick={handleCopyClick}
-          className="bg-orange-500 text-white hover:bg-orange-600 focus:ring-orange-500"
+          className="bg-[#2d2626] text-white hover:bg-gray-900 focus:ring-gray-900"
         >
           見積をコピー
         </Button>
