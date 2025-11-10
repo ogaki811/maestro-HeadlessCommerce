@@ -112,8 +112,8 @@ export default function QuotationDetailPage() {
           <QuotationDetailHeader quotation={quotation} />
 
           {/* 基本情報 */}
-          <div className="mb-8 p-6 bg-white border-l-4 border-gray-900 rounded-lg shadow-sm">
-            <h2 className="text-lg font-bold text-gray-900 mb-6 flex items-center">
+          <div className="mb-4 p-6 bg-white rounded-lg shadow-sm">
+            <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
               <span className="inline-block w-1 h-6 bg-gray-900 mr-3"></span>
               基本情報
             </h2>
@@ -156,26 +156,26 @@ export default function QuotationDetailPage() {
           </div>
 
           {/* 依頼商品一覧 */}
-          <div className="mb-8 p-6 bg-white border-l-4 border-gray-900 rounded-lg shadow-sm">
-            <h2 className="text-lg font-bold text-gray-900 mb-6 flex items-center">
+          <div className="mb-4 p-6 bg-white rounded-lg shadow-sm">
+            <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
               <span className="inline-block w-1 h-6 bg-gray-900 mr-3"></span>
               依頼商品一覧（{quotation.products.length}件）
             </h2>
 
             <div className="overflow-x-auto">
-              <table className="w-full border border-gray-300">
+              <table className="w-full">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b border-gray-300">
+                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">
                       商品コード
                     </th>
-                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b border-gray-300">
+                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">
                       商品名
                     </th>
-                    <th className="px-4 py-2 text-right text-sm font-medium text-gray-700 border-b border-gray-300">
+                    <th className="px-4 py-2 text-right text-sm font-medium text-gray-700">
                       数量
                     </th>
-                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b border-gray-300">
+                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">
                       仕様・備考
                     </th>
                   </tr>
@@ -183,16 +183,16 @@ export default function QuotationDetailPage() {
                 <tbody>
                   {quotation.products.map((product) => (
                     <tr key={product.id} className="hover:bg-gray-50">
-                      <td className="px-4 py-3 text-sm text-gray-900 border-b border-gray-200">
+                      <td className="px-4 py-3 text-sm text-gray-900">
                         {product.productCode}
                       </td>
-                      <td className="px-4 py-3 text-sm text-gray-900 border-b border-gray-200">
+                      <td className="px-4 py-3 text-sm text-gray-900">
                         {product.productName}
                       </td>
-                      <td className="px-4 py-3 text-sm text-right text-gray-900 border-b border-gray-200">
+                      <td className="px-4 py-3 text-sm text-right text-gray-900">
                         {product.quantity}
                       </td>
-                      <td className="px-4 py-3 text-sm text-gray-600 border-b border-gray-200">
+                      <td className="px-4 py-3 text-sm text-gray-600">
                         {product.specifications || '-'}
                       </td>
                     </tr>
@@ -204,8 +204,9 @@ export default function QuotationDetailPage() {
 
           {/* 販売店別回答テーブル */}
           {quotation.responses && quotation.responses.length > 0 && (
-            <div className="mb-8">
-              <h2 className="text-lg font-bold text-gray-900 mb-4">
+            <div className="mb-4 p-6 bg-white rounded-lg shadow-sm">
+              <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                <span className="inline-block w-1 h-6 bg-gray-900 mr-3"></span>
                 販売店別回答（{quotation.responses.length}社）
               </h2>
               <QuotationResponseTable quotation={quotation} />
@@ -214,9 +215,9 @@ export default function QuotationDetailPage() {
 
           {/* 相見積もり比較テーブル */}
           {quotation.responses && quotation.responses.length > 1 && (
-            <div className="mb-8 p-6 bg-white border-l-4 border-orange-500 rounded-lg shadow-sm">
-              <h2 className="text-lg font-bold text-gray-900 mb-6 flex items-center">
-                <span className="inline-block w-1 h-6 bg-orange-500 mr-3"></span>
+            <div className="mb-4 p-6 bg-white rounded-lg shadow-sm">
+              <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                <span className="inline-block w-1 h-6 bg-gray-900 mr-3"></span>
                 相見積もり比較
               </h2>
 
@@ -266,7 +267,7 @@ export default function QuotationDetailPage() {
 
           {/* 回答待ちメッセージ */}
           {(!quotation.responses || quotation.responses.length === 0) && (
-            <div className="mb-8 p-6 bg-blue-50 border border-blue-200 rounded-lg">
+            <div className="mb-4 p-6 bg-blue-50 border border-blue-200 rounded-lg">
               <p className="text-sm text-blue-900">
                 販売店からの回答をお待ちください。回答が届き次第、こちらに表示されます。
               </p>
