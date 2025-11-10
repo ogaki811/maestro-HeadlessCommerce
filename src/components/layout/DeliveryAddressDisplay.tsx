@@ -19,7 +19,9 @@ export default function DeliveryAddressDisplay({
       className="
         flex flex-col items-start
         text-[#2d2626]
-        pl-4
+        pl-4 pr-4 py-2
+        rounded-md
+        hover:bg-gray-100
         hover:text-gray-900
         transition-colors
         max-w-[200px]
