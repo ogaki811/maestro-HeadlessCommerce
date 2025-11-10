@@ -13,6 +13,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import Breadcrumb from '@/components/common/Breadcrumb';
 import { Button } from '@/components/ui/Button';
+import { QuotationProductForm } from '@/components/quotation';
 import useAuthStore from '@/store/useAuthStore';
 import toast from 'react-hot-toast';
 import type { Vendor, QuotationProduct } from '@/types/quotation';
@@ -26,12 +27,6 @@ export default function NewQuotationPage() {
   const [selectedVendorIds, setSelectedVendorIds] = useState<string[]>([]);
   const [products, setProducts] = useState<QuotationProduct[]>([]);
   const [loading, setLoading] = useState(true);
-
-  // 商品追加フォーム
-  const [productCode, setProductCode] = useState('');
-  const [productName, setProductName] = useState('');
-  const [quantity, setQuantity] = useState<number>(1);
-  const [specifications, setSpecifications] = useState('');
 
   // 販売店データ読み込み
   useEffect(() => {
@@ -57,37 +52,6 @@ export default function NewQuotationPage() {
   //     router.push('/login');
   //   }
   // }, [isAuthenticated, router]);
-
-  // 商品追加
-  const handleAddProduct = () => {
-    if (!productCode.trim() || !productName.trim()) {
-      toast.error('商品コードと商品名を入力してください');
-      return;
-    }
-
-    if (quantity <= 0) {
-      toast.error('数量は1以上で入力してください');
-      return;
-    }
-
-    const newProduct: QuotationProduct = {
-      id: `temp_${Date.now()}`,
-      productCode: productCode.trim(),
-      productName: productName.trim(),
-      quantity,
-      specifications: specifications.trim(),
-    };
-
-    setProducts([...products, newProduct]);
-
-    // フォームをクリア
-    setProductCode('');
-    setProductName('');
-    setQuantity(1);
-    setSpecifications('');
-
-    toast.success('商品を追加しました');
-  };
 
   // 商品削除
   const handleRemoveProduct = (productId: string) => {
@@ -250,75 +214,13 @@ export default function NewQuotationPage() {
               商品を追加
             </h2>
 
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* 商品コード */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    商品コード <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={productCode}
-                    onChange={(e) => setProductCode(e.target.value)}
-                    placeholder="例: PEN-JETSTREAM-001"
-                    className="w-full px-3 py-2 border border-gray-300 focus:outline-none focus:border-gray-500"
-                  />
-                </div>
-
-                {/* 商品名 */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    商品名 <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={productName}
-                    onChange={(e) => setProductName(e.target.value)}
-                    placeholder="例: ジェットストリーム 0.5mm 黒"
-                    className="w-full px-3 py-2 border border-gray-300 focus:outline-none focus:border-gray-500"
-                  />
-                </div>
-
-                {/* 数量 */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    数量 <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="number"
-                    value={quantity}
-                    onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
-                    min="1"
-                    className="w-full px-3 py-2 border border-gray-300 focus:outline-none focus:border-gray-500"
-                  />
-                </div>
-
-                {/* 仕様 */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    仕様・備考
-                  </label>
-                  <input
-                    type="text"
-                    value={specifications}
-                    onChange={(e) => setSpecifications(e.target.value)}
-                    placeholder="例: 黒色、0.5mm"
-                    className="w-full px-3 py-2 border border-gray-300 focus:outline-none focus:border-gray-500"
-                  />
-                </div>
-              </div>
-
-              {/* 追加ボタン */}
-              <div className="flex justify-end">
-                <button
-                  onClick={handleAddProduct}
-                  className="px-8 py-2 bg-orange-500 text-white font-medium rounded hover:bg-orange-600 transition-colors"
-                >
-                  商品を追加
-                </button>
-              </div>
-            </div>
+            <QuotationProductForm
+              products={products}
+              onProductsChange={(newProducts) => {
+                setProducts(newProducts);
+                toast.success('商品を追加しました');
+              }}
+            />
           </div>
 
           {/* 依頼商品一覧 */}
