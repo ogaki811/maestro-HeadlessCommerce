@@ -7,6 +7,7 @@ import { Table, TableHeader, TableBody, TableRow, TableHeaderCell, TableCell } f
 import { Badge } from '@/components/ui/Badge';
 import ContentModal from '@/components/common/ContentModal';
 import QuotationResponseDetail from './QuotationResponseDetail';
+import useCartStore from '@/store/useCartStore';
 
 export interface QuotationResponseTableProps {
   quotation: Quotation;
@@ -21,6 +22,7 @@ export interface QuotationResponseTableProps {
 export default function QuotationResponseTable({ quotation }: QuotationResponseTableProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedResponse, setSelectedResponse] = useState<QuotationResponse | null>(null);
+  const { addItem } = useCartStore();
 
   const formatDate = (dateString?: string): string => {
     if (!dateString) return '—';
@@ -55,18 +57,55 @@ export default function QuotationResponseTable({ quotation }: QuotationResponseT
   };
 
   const handleCartClick = (response: QuotationResponse) => {
-    // Phase 2: 簡易実装 - トースト通知のみ
-    // Phase 3以降で商品マスタ連携を実装予定
-    const productCount = response.products?.length || 0;
+    // Phase 3: 実際のカート追加処理
+    const products = response.products || [];
 
-    if (productCount === 0) {
+    if (products.length === 0) {
       toast.error('カートに追加できる商品がありません');
       return;
     }
 
-    // TODO: Phase 3で実際のカート追加処理を実装
-    // 現在は商品マスタとの連携が必要なため、通知のみ実装
-    toast.success(`${productCount}件の商品をカートに追加しました`);
+    let successCount = 0;
+    let errorCount = 0;
+
+    // 見積回答の各商品をカートに追加
+    products.forEach((responseProduct) => {
+      // quotation.productsから商品詳細を取得
+      const productDetail = quotation.products.find(
+        (p) => p.id === responseProduct.productId
+      );
+
+      if (!productDetail) {
+        console.warn(`Product not found: ${responseProduct.productId}`);
+        errorCount++;
+        return;
+      }
+
+      try {
+        // カートアイテムとして追加
+        addItem({
+          id: productDetail.id,
+          productCode: productDetail.productCode,
+          name: productDetail.productName,
+          price: responseProduct.unitPrice,
+          quantity: productDetail.quantity,
+          image: productDetail.imageUrl,
+        });
+        successCount++;
+      } catch (error) {
+        console.error('Failed to add item to cart:', error);
+        errorCount++;
+      }
+    });
+
+    // 結果に応じたトースト通知
+    if (successCount > 0 && errorCount === 0) {
+      toast.success(`${successCount}件の商品をカートに追加しました`);
+    } else if (successCount > 0 && errorCount > 0) {
+      toast.success(`${successCount}件の商品をカートに追加しました（${errorCount}件は失敗）`);
+    } else {
+      toast.error('カートへの追加に失敗しました');
+    }
   };
 
   const handleCloseModal = () => {

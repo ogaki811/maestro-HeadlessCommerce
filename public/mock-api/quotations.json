@@ -72,7 +72,30 @@
           "completionDate": "2025-10-30",
           "totalAmount": 12299,
           "validUntil": "2025-11-30",
-          "message": "お見積もりを提出いたします。"
+          "message": "お見積もりを提出いたします。",
+          "products": [
+            {
+              "productId": "prod_001",
+              "unitPrice": 100,
+              "totalPrice": 10000,
+              "leadTime": "2024-12-29",
+              "notes": "在庫あり、即日発送可能"
+            },
+            {
+              "productId": "prod_002",
+              "unitPrice": 45,
+              "totalPrice": 2250,
+              "leadTime": "2024-12-29",
+              "notes": "在庫あり"
+            },
+            {
+              "productId": "prod_005",
+              "unitPrice": 1.63,
+              "totalPrice": 49,
+              "leadTime": "2024-12-25",
+              "notes": "大量注文のため特別価格"
+            }
+          ]
         }
       ],
       "createdAt": "2025-10-30T10:30:00Z",
