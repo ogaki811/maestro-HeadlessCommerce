@@ -159,8 +159,8 @@ export default function NewQuotationPage() {
           </header>
 
           {/* 販売店選択セクション */}
-          <div className="mb-8 p-6 bg-white border-l-4 border-gray-900 rounded-lg shadow-sm">
-            <h2 className="text-lg font-bold text-gray-900 mb-6 flex items-center">
+          <div className="mb-4 p-6 bg-white rounded-lg shadow-sm">
+            <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
               <span className="inline-block w-1 h-6 bg-gray-900 mr-3"></span>
               販売店を選択
             </h2>
@@ -169,14 +169,14 @@ export default function NewQuotationPage() {
               {/* 販売店選択テーブル */}
               <div>
                 {/* ヘッダー行 */}
-                <div className="grid grid-cols-3 gap-4 bg-gray-50 px-4 py-2 border border-gray-300 font-medium text-sm text-gray-700">
+                <div className="grid grid-cols-3 gap-4 bg-gray-50 px-4 py-2 font-medium text-sm text-gray-700">
                   <div>販売店</div>
                   <div>ユーザーコード/ユーザー名</div>
                   <div>WebID/氏名</div>
                 </div>
                 {/* データ行 */}
                 {vendors.map((vendor) => (
-                  <div key={vendor.id} className="grid grid-cols-3 gap-4 px-4 py-3 border-x border-b border-gray-300 hover:bg-gray-50">
+                  <div key={vendor.id} className="grid grid-cols-3 gap-4 px-4 py-3 hover:bg-gray-50">
                     <div className="flex items-center gap-3">
                       <input
                         type="checkbox"
@@ -244,8 +244,8 @@ export default function NewQuotationPage() {
           </div>
 
           {/* 商品追加フォーム */}
-          <div className="mb-8 p-6 bg-white border-l-4 border-gray-900 rounded-lg shadow-sm">
-            <h2 className="text-lg font-bold text-gray-900 mb-6 flex items-center">
+          <div className="mb-4 p-6 bg-white rounded-lg shadow-sm">
+            <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
               <span className="inline-block w-1 h-6 bg-gray-900 mr-3"></span>
               商品を追加
             </h2>
@@ -323,29 +323,29 @@ export default function NewQuotationPage() {
 
           {/* 依頼商品一覧 */}
           {products.length > 0 && (
-            <div className="mb-8 p-6 bg-white border-l-4 border-gray-900 rounded-lg shadow-sm">
-              <h2 className="text-lg font-bold text-gray-900 mb-6 flex items-center">
+            <div className="mb-4 p-6 bg-white rounded-lg shadow-sm">
+              <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
                 <span className="inline-block w-1 h-6 bg-gray-900 mr-3"></span>
                 依頼商品一覧（{products.length}件）
               </h2>
 
               <div className="overflow-x-auto">
-                <table className="w-full border border-gray-300">
+                <table className="w-full">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b border-gray-300">
+                      <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">
                         商品コード
                       </th>
-                      <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b border-gray-300">
+                      <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">
                         商品名
                       </th>
-                      <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b border-gray-300">
+                      <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">
                         数量
                       </th>
-                      <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b border-gray-300">
+                      <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">
                         仕様・備考
                       </th>
-                      <th className="px-4 py-2 text-center text-sm font-medium text-gray-700 border-b border-gray-300">
+                      <th className="px-4 py-2 text-center text-sm font-medium text-gray-700">
                         操作
                       </th>
                     </tr>
@@ -353,19 +353,19 @@ export default function NewQuotationPage() {
                   <tbody>
                     {products.map((product) => (
                       <tr key={product.id} className="hover:bg-gray-50">
-                        <td className="px-4 py-3 text-sm text-gray-900 border-b border-gray-200">
+                        <td className="px-4 py-3 text-sm text-gray-900">
                           {product.productCode}
                         </td>
-                        <td className="px-4 py-3 text-sm text-gray-900 border-b border-gray-200">
+                        <td className="px-4 py-3 text-sm text-gray-900">
                           {product.productName}
                         </td>
-                        <td className="px-4 py-3 text-sm text-gray-900 border-b border-gray-200">
+                        <td className="px-4 py-3 text-sm text-gray-900">
                           {product.quantity}
                         </td>
-                        <td className="px-4 py-3 text-sm text-gray-600 border-b border-gray-200">
+                        <td className="px-4 py-3 text-sm text-gray-600">
                           {product.specifications || '-'}
                         </td>
-                        <td className="px-4 py-3 text-center border-b border-gray-200">
+                        <td className="px-4 py-3 text-center">
                           <button
                             onClick={() => handleRemoveProduct(product.id)}
                             className="px-4 py-1 text-sm text-red-600 hover:text-red-800 font-medium"
