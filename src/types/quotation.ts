@@ -59,6 +59,14 @@ export interface QuotationResponse {
   totalAmount: number;
   validUntil: string;        // 見積有効期限
   message?: string;          // 営業担当者からのメッセージ
+
+  // 新規追加フィールド（テーブル表示用）
+  quotationNumber?: string;      // 見積依頼番号（販売店ごと）
+  webId?: string;               // Web ID（例: "1594762002"）
+  userName?: string;            // 氏名（例: "齋藤担当者"）
+  desiredDeliveryDate?: string; // 希望納期
+  completionDate?: string;      // 見積完了日
+  lastOrderDate?: string;       // 最終注文日付
 }
 
 /**
@@ -73,6 +81,10 @@ export interface Quotation {
   products: QuotationProduct[];   // 依頼商品リスト（複数可）
   status: QuotationStatus;        // ステータス
   groupId?: string;               // 見積グループID（Phase 3で使用）
+
+  // 新規追加フィールド（ヘッダー表示用）
+  subject?: string;               // 件名（例: "1030テスト"）
+  description?: string;           // 依頼内容（例: "1030テスト見積依頼"）
 
   // Phase 4: 追跡機能で使用
   responses?: QuotationResponse[]; // 営業担当者からの回答

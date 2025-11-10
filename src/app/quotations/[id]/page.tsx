@@ -14,6 +14,7 @@ import Footer from '@/components/layout/Footer';
 import Breadcrumb from '@/components/common/Breadcrumb';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
+import { QuotationDetailHeader, QuotationResponseTable } from '@/components/quotation';
 import useAuthStore from '@/store/useAuthStore';
 import type { Quotation, QuotationResponse } from '@/types/quotation';
 import { getStatusLabel, getStatusBadgeVariant } from '@/types/quotation';
@@ -107,24 +108,8 @@ export default function QuotationDetailPage() {
         <Breadcrumb />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* ヘッダー */}
-          <header className="mb-8 pb-6 border-b-2 border-gray-200">
-            <div className="flex flex-col md:flex-row md:justify-between md:items-center">
-              <div>
-                <h1 className="m-0 mb-2 text-3xl md:text-2xl font-bold text-gray-900">
-                  見積依頼詳細
-                </h1>
-                <p className="m-0 text-base md:text-sm text-gray-600">
-                  {quotation.id}
-                </p>
-              </div>
-              <div className="mt-4 md:mt-0">
-                <Badge variant={getStatusBadgeVariant(quotation.status)}>
-                  {getStatusLabel(quotation.status)}
-                </Badge>
-              </div>
-            </div>
-          </header>
+          {/* QuotationDetailHeader コンポーネント */}
+          <QuotationDetailHeader quotation={quotation} />
 
           {/* 基本情報 */}
           <div className="mb-8 p-6 bg-white border-l-4 border-gray-900 rounded-lg shadow-sm">
@@ -217,53 +202,13 @@ export default function QuotationDetailPage() {
             </div>
           </div>
 
-          {/* 販売店別回答 */}
+          {/* 販売店別回答テーブル */}
           {quotation.responses && quotation.responses.length > 0 && (
-            <div className="mb-8 p-6 bg-white border-l-4 border-gray-900 rounded-lg shadow-sm">
-              <h2 className="text-lg font-bold text-gray-900 mb-6 flex items-center">
-                <span className="inline-block w-1 h-6 bg-gray-900 mr-3"></span>
+            <div className="mb-8">
+              <h2 className="text-lg font-bold text-gray-900 mb-4">
                 販売店別回答（{quotation.responses.length}社）
               </h2>
-
-              <div className="space-y-6">
-                {quotation.responses.map((response) => {
-                  const vendor = quotation.vendors.find(v => v.id === response.vendorId);
-
-                  return (
-                    <div key={response.vendorId} className="border border-gray-300 rounded-lg p-4">
-                      <div className="flex justify-between items-center mb-4">
-                        <h3 className="text-base font-bold text-gray-900">
-                          {vendor?.name || '不明'}
-                        </h3>
-                        <span className="text-sm text-gray-600">
-                          回答日: {new Date(response.responseDate).toLocaleDateString('ja-JP')}
-                        </span>
-                      </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 text-sm">
-                        <div>
-                          <p className="text-gray-600 mb-1">見積金額</p>
-                          <p className="text-lg font-bold text-gray-900">
-                            ¥{response.totalAmount.toLocaleString()}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-gray-600 mb-1">有効期限</p>
-                          <p className="font-medium text-gray-900">
-                            {new Date(response.validUntil).toLocaleDateString('ja-JP')}
-                          </p>
-                        </div>
-                      </div>
-
-                      {response.message && (
-                        <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded">
-                          <p className="text-sm text-gray-700">{response.message}</p>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
+              <QuotationResponseTable quotation={quotation} />
             </div>
           )}
 

@@ -2,7 +2,9 @@
   "quotations": [
     {
       "id": "Q-2024-0115",
-      "requestDate": "2024-01-15",
+      "subject": "1030テスト",
+      "description": "1030テスト見積依頼",
+      "requestDate": "2025-10-30",
       "requestUser": "user_001",
       "requestUserName": "山田 太郎",
       "vendors": [
@@ -15,10 +17,10 @@
         },
         {
           "id": "vendor_002",
-          "name": "スマートオパスント株式会社",
+          "name": "スマートガバメント株式会社",
           "userCode": "21100",
           "webId": "1594762002",
-          "contactPerson": "調達担当者"
+          "contactPerson": "齋藤担当者"
         }
       ],
       "products": [
@@ -47,9 +49,34 @@
           "imageUrl": "/img/product/clear-file-001.jpg"
         }
       ],
-      "status": "pending",
-      "createdAt": "2024-01-15T10:30:00Z",
-      "updatedAt": "2024-01-15T10:30:00Z"
+      "status": "partially_responded",
+      "responses": [
+        {
+          "vendorId": "vendor_002",
+          "quotationNumber": "00000766",
+          "webId": "1594762002",
+          "userName": "齋藤担当者",
+          "responseDate": "2025-10-30",
+          "desiredDeliveryDate": "2024-12-29",
+          "status": "pending",
+          "totalAmount": 0,
+          "validUntil": "2025-11-30"
+        },
+        {
+          "vendorId": "vendor_001",
+          "quotationNumber": "00000765",
+          "webId": "1588847004",
+          "userName": "本部共有デモ",
+          "responseDate": "2025-10-30",
+          "desiredDeliveryDate": "2024-12-29",
+          "completionDate": "2025-10-30",
+          "totalAmount": 12299,
+          "validUntil": "2025-11-30",
+          "message": "お見積もりを提出いたします。"
+        }
+      ],
+      "createdAt": "2025-10-30T10:30:00Z",
+      "updatedAt": "2025-10-30T10:30:00Z"
     },
     {
       "id": "Q-2024-0112",
