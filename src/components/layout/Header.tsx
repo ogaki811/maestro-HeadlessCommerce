@@ -291,7 +291,7 @@ export default function Header() {
         )}
 
         {/* 重要なお知らせ */}
-        <ImportantNotice notifications={notifications} />
+        {!isScrolled && <ImportantNotice notifications={notifications} />}
       </div>
 
       {/* モバイルメニュー */}
