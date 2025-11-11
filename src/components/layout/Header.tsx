@@ -1,13 +1,13 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { useRouter, usePathname } from 'next/navigation';
 import useCartStore from '@/store/useCartStore';
 import useAuthStore from '@/store/useAuthStore';
 import useCustomMenuStore from '@/store/useCustomMenuStore';
 import { CartAddedNotification } from '@/components/cart';
-import MobileMenu from './MobileMenu';
 import DeliveryAddressDisplay from './DeliveryAddressDisplay';
 import DealerSelectorButton from './DealerSelectorButton';
 import CustomMenuBar from './CustomMenuBar';
@@ -20,6 +20,12 @@ import { headerNavigationIcons } from '@/config/headerNavigationConfig';
 import { notifications } from '@/config/notificationsConfig';
 import type { CategorySelection } from '@/types/category';
 
+// MobileMenuを動的インポート（遅延ロード）
+const MobileMenu = dynamic(() => import('./MobileMenu'), {
+  ssr: false,
+  loading: () => null,
+});
+
 export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
@@ -27,9 +33,9 @@ export default function Header() {
   const [selectedCategory, setSelectedCategory] = useState<CategorySelection | undefined>();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isNotificationVisible, setIsNotificationVisible] = useState(false);
-  const [notificationTimeout, setNotificationTimeout] = useState<NodeJS.Timeout | null>(null);
   const [badgeAnimation, setBadgeAnimation] = useState(false);
   const prevItemCountRef = useRef<number>(0);
+  const notificationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // スクロール方向検知カスタムフック
   const { isScrolled, showHeader } = useScrollDirection(100);
@@ -50,18 +56,18 @@ export default function Header() {
   // Cleanup timeout on unmount
   useEffect(() => {
     return () => {
-      if (notificationTimeout) {
-        clearTimeout(notificationTimeout);
+      if (notificationTimeoutRef.current) {
+        clearTimeout(notificationTimeoutRef.current);
       }
     };
-  }, [notificationTimeout]);
+  }, []);
 
   // カート追加時に通知表示
   useEffect(() => {
     if (itemCount > prevItemCountRef.current && prevItemCountRef.current > 0) {
       // カートにアイテムが追加された
-      if (notificationTimeout) {
-        clearTimeout(notificationTimeout);
+      if (notificationTimeoutRef.current) {
+        clearTimeout(notificationTimeoutRef.current);
       }
 
       // 通知トーストを即座に表示
@@ -75,12 +81,12 @@ export default function Header() {
       const timeout = setTimeout(() => {
         setIsNotificationVisible(false);
       }, 3500);
-      setNotificationTimeout(timeout);
+      notificationTimeoutRef.current = timeout;
     }
 
     // 現在のitemCountを保存
     prevItemCountRef.current = itemCount;
-  }, [itemCount, notificationTimeout]);
+  }, [itemCount]);
 
   // URLのクエリパラメータから検索キーワードを取得して検索窓に反映
   useEffect(() => {
@@ -95,7 +101,7 @@ export default function Header() {
     }
   }, [pathname]);
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = useCallback((e: React.FormEvent) => {
     e.preventDefault();
     const params = new URLSearchParams();
 
@@ -116,7 +122,15 @@ export default function Header() {
     if (queryString) {
       router.push(`/search?${queryString}`);
     }
-  };
+  }, [searchQuery, selectedCategory, router]);
+
+  const handleMobileMenuOpen = useCallback(() => {
+    setIsMobileMenuOpen(true);
+  }, []);
+
+  const handleMobileMenuClose = useCallback(() => {
+    setIsMobileMenuOpen(false);
+  }, []);
 
   return (
     <>
@@ -176,6 +190,16 @@ export default function Header() {
 
               {/* 機能エリア */}
               <div className="ec-header__actions flex items-center space-x-4">
+                {/* よくある質問 */}
+                <Link href="/faq" className="flex flex-col items-center p-2 text-gray-600 hover:text-gray-700 transition-colors">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                  </svg>
+                  <span className="text-xs mt-1">よくある質問</span>
+                </Link>
+
                 {/* お問い合わせ（認証済みユーザーのみ） */}
                 {isAuthenticated && (
                   <Link href="/contact" className="flex flex-col items-center p-2 text-gray-600 hover:text-gray-700 transition-colors">
@@ -225,25 +249,6 @@ export default function Header() {
                   </div>
                   <span className="text-xs mt-1">カート</span>
                 </Link>
-
-                {isAuthenticated ? (
-                  <Link href="/mypage" className="flex flex-col items-center p-2 text-gray-600 hover:text-green-500 transition-colors">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                      <circle cx="12" cy="7" r="4"></circle>
-                    </svg>
-                    <span className="text-xs mt-1">マイページ</span>
-                  </Link>
-                ) : (
-                  <Link href="/login" className="ec-header__login-button flex flex-col items-center p-2 text-gray-600 hover:text-gray-700 transition-colors">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                      <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
-                      <polyline points="10 17 15 12 10 7"></polyline>
-                      <line x1="15" y1="12" x2="3" y2="12"></line>
-                    </svg>
-                    <span className="text-xs mt-1">ログイン</span>
-                  </Link>
-                )}
               </div>
             </div>
           </div>
@@ -256,7 +261,7 @@ export default function Header() {
               <div className="flex items-center justify-between h-12">
                 <div className="flex items-center space-x-4">
                   <button
-                    onClick={() => setIsMobileMenuOpen(true)}
+                    onClick={handleMobileMenuOpen}
                     className="flex items-center gap-2 hover:text-black transition-colors font-medium"
                   >
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -271,8 +276,8 @@ export default function Header() {
                   <CustomMenuBar selectedMenuIds={customMenuIds} />
                 </div>
 
-                {/* 右側: 販売店選択・配送先・ユーザー名 */}
-                {isAuthenticated && user && (
+                {/* 右側: 販売店選択・配送先・ユーザー名 or ログインボタン */}
+                {isAuthenticated && user ? (
                   <div className="flex items-center space-x-4">
                     <DealerSelectorButton />
                     <DeliveryAddressDisplay
@@ -283,6 +288,18 @@ export default function Header() {
                       userName={user.name}
                       userEmail={user.email}
                     />
+                  </div>
+                ) : (
+                  <div className="flex items-center">
+                    <Link
+                      href="/login"
+                      className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-colors"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                      </svg>
+                      ログイン
+                    </Link>
                   </div>
                 )}
               </div>
@@ -295,13 +312,13 @@ export default function Header() {
       </div>
 
       {/* モバイルメニュー */}
-      <MobileMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
+      <MobileMenu isOpen={isMobileMenuOpen} onClose={handleMobileMenuClose} />
 
       {/* モバイルヘッダー */}
       <div className="ec-header--mobile lg:hidden bg-white">
         <div className="px-4 py-3">
           <div className="flex items-center justify-between mb-3">
-            <button onClick={() => setIsMobileMenuOpen(true)} className="ec-header__mobile-toggle p-2 text-gray-700 hover:text-black transition-colors">
+            <button onClick={handleMobileMenuOpen} className="ec-header__mobile-toggle p-2 text-gray-700 hover:text-black transition-colors">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                 <line x1="3" y1="12" x2="21" y2="12"></line>
                 <line x1="3" y1="6" x2="21" y2="6"></line>

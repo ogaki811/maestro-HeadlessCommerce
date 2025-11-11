@@ -77,7 +77,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
       />
 
       {/* ドロワーメニュー */}
-      <div className={`ec-mobile-menu fixed top-0 left-0 h-full w-80 bg-white shadow-xl z-[130] overflow-y-auto transition-transform duration-300 ease-in-out ${
+      <div className={`ec-mobile-menu fixed top-0 left-0 h-full w-96 bg-white shadow-xl z-[130] overflow-y-auto transition-transform duration-300 ease-in-out ${
         isOpen ? 'translate-x-0' : '-translate-x-full'
       }`}>
         {/* ヘッダー */}
