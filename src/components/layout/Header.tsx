@@ -239,25 +239,6 @@ export default function Header() {
                   </div>
                   <span className="text-xs mt-1">カート</span>
                 </Link>
-
-                {isAuthenticated ? (
-                  <Link href="/mypage" className="flex flex-col items-center p-2 text-gray-600 hover:text-green-500 transition-colors">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                      <circle cx="12" cy="7" r="4"></circle>
-                    </svg>
-                    <span className="text-xs mt-1">マイページ</span>
-                  </Link>
-                ) : (
-                  <Link href="/login" className="ec-header__login-button flex flex-col items-center p-2 text-gray-600 hover:text-gray-700 transition-colors">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                      <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
-                      <polyline points="10 17 15 12 10 7"></polyline>
-                      <line x1="15" y1="12" x2="3" y2="12"></line>
-                    </svg>
-                    <span className="text-xs mt-1">ログイン</span>
-                  </Link>
-                )}
               </div>
             </div>
           </div>
