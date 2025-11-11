@@ -190,6 +190,16 @@ export default function Header() {
 
               {/* 機能エリア */}
               <div className="ec-header__actions flex items-center space-x-4">
+                {/* よくある質問 */}
+                <Link href="/faq" className="flex flex-col items-center p-2 text-gray-600 hover:text-gray-700 transition-colors">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                  </svg>
+                  <span className="text-xs mt-1">よくある質問</span>
+                </Link>
+
                 {/* お問い合わせ（認証済みユーザーのみ） */}
                 {isAuthenticated && (
                   <Link href="/contact" className="flex flex-col items-center p-2 text-gray-600 hover:text-gray-700 transition-colors">
