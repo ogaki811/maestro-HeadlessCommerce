@@ -1,6 +1,6 @@
 .main-banner-slider {
   padding: 0;
-  height: 280px;
+  height: 200px;
   overflow: hidden;
 }
 
@@ -9,8 +9,8 @@
 }
 
 .main-banner-slider .swiper-slide {
-  height: 280px;
-  width: 900px !important;
+  height: 200px;
+  width: 360px !important;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -27,11 +27,11 @@
 }
 
 .main-banner-slider .swiper-button-prev {
-  left: calc(50% - 470px);
+  left: calc(50% - 200px);
 }
 
 .main-banner-slider .swiper-button-next {
-  right: calc(50% - 470px);
+  right: calc(50% - 200px);
 }
 
 .main-banner-slider .swiper-button-next:hover,

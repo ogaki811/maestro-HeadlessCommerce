@@ -147,7 +147,7 @@ export default function MainBanner() {
                   src={banner.imageUrl}
                   alt={banner.message || banner.title || 'バナー'}
                   className="ec-main-banner__image rounded-lg"
-                  style={{ width: '900px', height: '280px', objectFit: 'contain', display: 'block' }}
+                  style={{ width: '360px', height: '200px', objectFit: 'contain', display: 'block' }}
                   loading="eager"
                 />
               </Link>
