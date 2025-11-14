@@ -13,6 +13,10 @@ const config = {
   testEnvironment: 'jest-environment-jsdom',
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
+    '^swiper/css$': '<rootDir>/__mocks__/styleMock.js',
+    '^swiper/css/navigation$': '<rootDir>/__mocks__/styleMock.js',
+    '^swiper/css/pagination$': '<rootDir>/__mocks__/styleMock.js',
+    '\\.css$': '<rootDir>/__mocks__/styleMock.js',
   },
   collectCoverageFrom: [
     'src/**/*.{ts,tsx}',

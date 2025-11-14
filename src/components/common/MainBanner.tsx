@@ -11,69 +11,127 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import './MainBanner.css';
 
-// デフォルトバナー（初期表示用・API未起動時用）
+// ===== 定数定義 =====
+
+/** バナーサイズ定数 */
+const BANNER_DIMENSIONS = {
+  width: 360,
+  height: 200,
+} as const;
+
+/** Swiper設定定数 */
+const SWIPER_SETTINGS = {
+  /** 自動再生の遅延時間（ミリ秒） */
+  autoplayDelay: 5000,
+  /** eager loadingする画像の枚数 */
+  eagerLoadCount: 2,
+} as const;
+
+/** レスポンシブ用spaceBetween設定 */
+const SPACE_BETWEEN_BREAKPOINTS = {
+  320: 20,
+  640: 20,
+  1024: 24,
+  1280: 30,
+} as const;
+
+// ===== デフォルトバナーデータ =====
+
+/** デフォルトバナー（初期表示用・API未起動時用） */
 const defaultBanners: BannerConfig[] = [
   {
-    id: 'fallback-1',
-    title: 'Welcome to Maestro TOC',
-    description: 'Orchestra非依存で動作中！',
-    imageUrl: '/images/banner-placeholder-1.svg',
+    id: 'mainbanner-1',
+    title: 'メインバナー1',
+    description: 'バナー1',
+    imageUrl: '/img/mainbanner/Group 1.png',
     linkUrl: '/products',
     buttonText: '商品を見る',
     isActive: true,
     displayOrder: 1,
   },
   {
-    id: 'fallback-2',
-    title: 'New Products',
-    description: '新商品続々入荷',
-    imageUrl: '/images/banner-placeholder-2.svg',
-    linkUrl: '/products?tag=新商品',
-    buttonText: '新商品を見る',
+    id: 'mainbanner-2',
+    title: 'メインバナー2',
+    description: 'バナー2',
+    imageUrl: '/img/mainbanner/Group 2.png',
+    linkUrl: '/products',
+    buttonText: '商品を見る',
     isActive: true,
     displayOrder: 2,
   },
   {
-    id: 'fallback-3',
-    title: 'Special Sale',
-    description: '期間限定セール開催中',
-    imageUrl: '/images/banner-placeholder-3.svg',
-    linkUrl: '/products?tag=セール',
-    buttonText: 'セール商品を見る',
+    id: 'mainbanner-3',
+    title: 'メインバナー3',
+    description: 'バナー3',
+    imageUrl: '/img/mainbanner/Group 3.png',
+    linkUrl: '/products',
+    buttonText: '商品を見る',
     isActive: true,
     displayOrder: 3,
   },
   {
-    id: 'fallback-4',
-    title: 'Premium Collection',
-    description: 'プレミアム商品特集',
-    imageUrl: '/images/banner-placeholder-4.svg',
-    linkUrl: '/products?tag=プレミアム',
-    buttonText: 'プレミアム商品を見る',
+    id: 'mainbanner-4',
+    title: 'メインバナー4',
+    description: 'バナー4',
+    imageUrl: '/img/mainbanner/Group 4.png',
+    linkUrl: '/products',
+    buttonText: '商品を見る',
     isActive: true,
     displayOrder: 4,
   },
   {
-    id: 'fallback-5',
-    title: 'Best Sellers',
-    description: '人気商品ランキング',
-    imageUrl: '/images/banner-placeholder-5.svg',
-    linkUrl: '/products?sort=popular',
-    buttonText: 'ランキングを見る',
+    id: 'mainbanner-5',
+    title: 'メインバナー5',
+    description: 'バナー5',
+    imageUrl: '/img/mainbanner/Group 5.png',
+    linkUrl: '/products',
+    buttonText: '商品を見る',
     isActive: true,
     displayOrder: 5,
   },
   {
-    id: 'fallback-6',
-    title: 'Free Shipping',
-    description: '送料無料キャンペーン',
-    imageUrl: '/images/banner-placeholder-6.svg',
+    id: 'mainbanner-6',
+    title: 'メインバナー6',
+    description: 'バナー6',
+    imageUrl: '/img/mainbanner/Group 6.png',
     linkUrl: '/products',
-    buttonText: '対象商品を見る',
+    buttonText: '商品を見る',
     isActive: true,
     displayOrder: 6,
   },
 ];
+
+// ===== 型定義 =====
+
+/** SwiperSlideのレンダープロップス型 */
+type SwiperSlideRenderProps = {
+  isActive: boolean;
+};
+
+// ===== ヘルパー関数 =====
+
+/**
+ * アクティブ状態に応じたリンククラス名を生成
+ * @param isActive - スライドがアクティブかどうか
+ * @returns クラス名文字列
+ */
+const getLinkClassName = (isActive: boolean): string => {
+  const baseClasses = 'ec-main-banner__link block h-full';
+  const activeClasses = isActive
+    ? 'ec-main-banner__link--active scale-105'
+    : 'scale-95';
+  return `${baseClasses} ${activeClasses}`;
+};
+
+/**
+ * インデックスに応じた画像読み込み戦略を返す
+ * @param index - バナーのインデックス
+ * @returns 'eager' または 'lazy'
+ */
+const getImageLoadingStrategy = (index: number): 'eager' | 'lazy' =>
+  index < SWIPER_SETTINGS.eagerLoadCount ? 'eager' : 'lazy';
+
+// ===== メインコンポーネント =====
 
 export default function MainBanner() {
   const [banners, setBanners] = useState<BannerConfig[]>(defaultBanners);
@@ -98,57 +156,58 @@ export default function MainBanner() {
     return null; // バナーがない場合は何も表示しない（通常は発生しない）
   }
 
+  // Swiper設定（バナー数に応じて動的生成）
+  const swiperConfig = {
+    modules: [Navigation, Pagination, Autoplay],
+    spaceBetween: SPACE_BETWEEN_BREAKPOINTS[320],
+    centeredSlides: true,
+    slidesPerView: 'auto' as const,
+    loop: true,
+    loopedSlides: banners.length,
+    autoplay: {
+      delay: SWIPER_SETTINGS.autoplayDelay,
+      disableOnInteraction: false,
+    },
+    pagination: {
+      clickable: true,
+    },
+    navigation: true,
+    breakpoints: {
+      320: {
+        slidesPerView: 'auto' as const,
+        spaceBetween: SPACE_BETWEEN_BREAKPOINTS[320],
+      },
+      640: {
+        slidesPerView: 'auto' as const,
+        spaceBetween: SPACE_BETWEEN_BREAKPOINTS[640],
+      },
+      1024: {
+        slidesPerView: 'auto' as const,
+        spaceBetween: SPACE_BETWEEN_BREAKPOINTS[1024],
+      },
+      1280: {
+        slidesPerView: 'auto' as const,
+        spaceBetween: SPACE_BETWEEN_BREAKPOINTS[1280],
+      },
+    },
+    className: 'ec-main-banner__container main-banner-slider',
+  };
+
   return (
     <section className="ec-main-banner main-banner-section relative w-full bg-gray-100">
-      <Swiper
-        modules={[Navigation, Pagination, Autoplay]}
-        spaceBetween={20}
-        centeredSlides={true}
-        slidesPerView="auto"
-        loop={true}
-        autoplay={{
-          delay: 5000,
-          disableOnInteraction: false,
-        }}
-        pagination={{
-          clickable: true,
-        }}
-        navigation={true}
-        breakpoints={{
-          320: {
-            slidesPerView: 'auto',
-            spaceBetween: 20,
-          },
-          640: {
-            slidesPerView: 'auto',
-            spaceBetween: 20,
-          },
-          1024: {
-            slidesPerView: 'auto',
-            spaceBetween: 24,
-          },
-          1280: {
-            slidesPerView: 'auto',
-            spaceBetween: 30,
-          },
-        }}
-        className="ec-main-banner__container main-banner-slider"
-      >
-        {banners.map((banner) => (
+      <Swiper {...swiperConfig}>
+        {banners.map((banner, index) => (
           <SwiperSlide key={banner.id} className="ec-main-banner__slide">
-            {({ isActive }: { isActive: boolean }) => (
+            {({ isActive }: SwiperSlideRenderProps) => (
               <Link
                 href={banner.actionUrl || banner.linkUrl || '#'}
-                className={`ec-main-banner__link ${isActive ? 'ec-main-banner__link--active' : ''} block h-full ${
-                  isActive ? 'scale-105' : 'scale-95'
-                }`}
+                className={getLinkClassName(isActive)}
               >
                 <img
                   src={banner.imageUrl}
                   alt={banner.message || banner.title || 'バナー'}
-                  className="ec-main-banner__image rounded-lg"
-                  style={{ width: '360px', height: '200px', objectFit: 'contain', display: 'block' }}
-                  loading="eager"
+                  className="ec-main-banner__image rounded-lg w-[360px] h-[200px] object-contain block"
+                  loading={getImageLoadingStrategy(index)}
                 />
               </Link>
             )}
