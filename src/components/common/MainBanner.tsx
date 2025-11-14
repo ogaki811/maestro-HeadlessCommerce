@@ -4,8 +4,11 @@ import { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import Link from 'next/link';
+import Image from 'next/image';
 import { bannersApi } from '@/lib/api-client';
 import type { BannerConfig } from '@/types/banner';
+
+// Swiper CSS（動的インポート）
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -203,11 +206,14 @@ export default function MainBanner() {
                 href={banner.actionUrl || banner.linkUrl || '#'}
                 className={getLinkClassName(isActive)}
               >
-                <img
+                <Image
                   src={banner.imageUrl}
                   alt={banner.message || banner.title || 'バナー'}
-                  className="ec-main-banner__image rounded-lg w-[360px] h-[200px] object-contain block"
-                  loading={getImageLoadingStrategy(index)}
+                  width={BANNER_DIMENSIONS.width}
+                  height={BANNER_DIMENSIONS.height}
+                  className="ec-main-banner__image rounded-lg object-contain block"
+                  priority={index < SWIPER_SETTINGS.eagerLoadCount}
+                  quality={90}
                 />
               </Link>
             )}
