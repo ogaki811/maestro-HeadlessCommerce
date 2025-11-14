@@ -165,6 +165,7 @@ export default function MainBanner() {
     spaceBetween: SPACE_BETWEEN_BREAKPOINTS[320],
     centeredSlides: true,
     slidesPerView: 'auto' as const,
+    initialSlide: 0, // 初期スライドを明示的に指定
     loop: true,
     loopedSlides: banners.length,
     loopAdditionalSlides: banners.length, // 無限ループの安定性向上
@@ -180,6 +181,7 @@ export default function MainBanner() {
     },
     navigation: true,
     speed: 600, // スライド切り替え速度（ミリ秒）
+    runCallbacksOnInit: false, // 初期化時のコールバックを無効化
     breakpoints: {
       320: {
         slidesPerView: 'auto' as const,
