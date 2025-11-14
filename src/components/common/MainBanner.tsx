@@ -165,7 +165,7 @@ export default function MainBanner() {
     spaceBetween: 20,
     centeredSlides: true,
     slidesPerView: 'auto' as const,
-    loop: true,
+    loop: false, // loop + centeredSlides + auto の組み合わせは不安定なため無効化
     autoplay: {
       delay: SWIPER_SETTINGS.autoplayDelay,
       disableOnInteraction: false,
