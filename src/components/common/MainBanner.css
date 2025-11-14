@@ -1,13 +1,25 @@
+/* スケルトンローディング */
+.ec-main-banner__skeleton {
+  z-index: 10;
+  background: #f3f4f6;
+}
+
+/* ローディング中は非表示 */
+.ec-main-banner__loading {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ロード完了後にフェードイン */
+.ec-main-banner__loaded {
+  opacity: 1;
+  transition: opacity 0.5s ease-in;
+}
+
 .main-banner-slider {
   padding: 0 40px;
   height: 200px;
   overflow: visible;
-  opacity: 0;
-  transition: opacity 0.3s ease-in;
-}
-
-.main-banner-slider.swiper-initialized {
-  opacity: 1;
 }
 
 .main-banner-slider .swiper-wrapper {

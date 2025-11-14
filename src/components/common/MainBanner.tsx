@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import Link from 'next/link';
@@ -138,6 +138,9 @@ const getImageLoadingStrategy = (index: number): 'eager' | 'lazy' =>
 
 export default function MainBanner() {
   const [banners, setBanners] = useState<BannerConfig[]>(defaultBanners);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [loadedCount, setLoadedCount] = useState(0);
+  const totalImages = useRef(defaultBanners.length);
 
   useEffect(() => {
     async function fetchBanners() {
@@ -145,6 +148,9 @@ export default function MainBanner() {
         const response = await bannersApi.getBanners();
         if (response.success) {
           setBanners(response.data);
+          totalImages.current = response.data.length;
+          setLoadedCount(0); // リセット
+          setImagesLoaded(false); // リセット
           console.log('✅ Loaded banners from Composer API:', response.data.length);
         }
       } catch (error) {
@@ -154,6 +160,17 @@ export default function MainBanner() {
     }
     fetchBanners();
   }, []);
+
+  // 画像ロード完了時のハンドラー
+  const handleImageLoad = () => {
+    setLoadedCount((prev) => {
+      const newCount = prev + 1;
+      if (newCount >= totalImages.current) {
+        setImagesLoaded(true);
+      }
+      return newCount;
+    });
+  };
 
   if (banners.length === 0) {
     return null; // バナーがない場合は何も表示しない（通常は発生しない）
@@ -186,28 +203,39 @@ export default function MainBanner() {
 
   return (
     <section className="ec-main-banner main-banner-section relative w-full bg-gray-100">
-      <Swiper {...swiperConfig}>
-        {banners.map((banner, index) => (
-          <SwiperSlide key={banner.id} className="ec-main-banner__slide">
-            {({ isActive }: SwiperSlideRenderProps) => (
-              <Link
-                href={banner.actionUrl || banner.linkUrl || '#'}
-                className={getLinkClassName(isActive)}
-              >
-                <Image
-                  src={banner.imageUrl}
-                  alt={banner.message || banner.title || 'バナー'}
-                  width={BANNER_DIMENSIONS.width}
-                  height={BANNER_DIMENSIONS.height}
-                  className="ec-main-banner__image rounded-lg object-contain block"
-                  priority={index < SWIPER_SETTINGS.eagerLoadCount}
-                  quality={90}
-                />
-              </Link>
-            )}
-          </SwiperSlide>
-        ))}
-      </Swiper>
+      {/* スケルトンローディング */}
+      {!imagesLoaded && (
+        <div className="ec-main-banner__skeleton absolute inset-0 flex items-center justify-center px-10">
+          <div className="w-[360px] h-[200px] bg-gray-200 rounded-lg animate-pulse" />
+        </div>
+      )}
+
+      {/* 実際のバナースライダー */}
+      <div className={imagesLoaded ? 'ec-main-banner__loaded' : 'ec-main-banner__loading'}>
+        <Swiper {...swiperConfig}>
+          {banners.map((banner, index) => (
+            <SwiperSlide key={banner.id} className="ec-main-banner__slide">
+              {({ isActive }: SwiperSlideRenderProps) => (
+                <Link
+                  href={banner.actionUrl || banner.linkUrl || '#'}
+                  className={getLinkClassName(isActive)}
+                >
+                  <Image
+                    src={banner.imageUrl}
+                    alt={banner.message || banner.title || 'バナー'}
+                    width={BANNER_DIMENSIONS.width}
+                    height={BANNER_DIMENSIONS.height}
+                    className="ec-main-banner__image rounded-lg object-contain block"
+                    priority={index < SWIPER_SETTINGS.eagerLoadCount}
+                    quality={90}
+                    onLoad={handleImageLoad}
+                  />
+                </Link>
+              )}
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
     </section>
   );
 }
