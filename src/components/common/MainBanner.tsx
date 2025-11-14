@@ -159,13 +159,13 @@ export default function MainBanner() {
     return null; // バナーがない場合は何も表示しない（通常は発生しない）
   }
 
-  // Swiper設定
+  // Swiper設定（シンプルで安定した標準設定）
   const swiperConfig = {
     modules: [Navigation, Pagination, Autoplay],
-    spaceBetween: 20,
-    centeredSlides: true,
-    slidesPerView: 'auto' as const,
-    loop: false, // loop + centeredSlides + auto の組み合わせは不安定なため無効化
+    spaceBetween: 30,
+    centeredSlides: false,
+    slidesPerView: 1,
+    loop: false,
     autoplay: {
       delay: SWIPER_SETTINGS.autoplayDelay,
       disableOnInteraction: false,

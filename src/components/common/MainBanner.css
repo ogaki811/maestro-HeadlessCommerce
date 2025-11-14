@@ -1,7 +1,7 @@
 .main-banner-slider {
-  padding: 0 40px; /* 左右にパディングを追加して両端のスライドを表示 */
+  padding: 0 60px; /* ナビゲーションボタンのスペース確保 */
   height: 200px;
-  overflow: visible; /* 両端のスライドを表示するためvisibleに変更 */
+  overflow: hidden;
 }
 
 .main-banner-slider .swiper-wrapper {
@@ -10,10 +10,11 @@
 
 .main-banner-slider .swiper-slide {
   height: 200px;
-  width: 360px !important;
+  width: 360px;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 0 auto; /* センタリング */
 }
 
 .main-banner-slider .swiper-button-next,
