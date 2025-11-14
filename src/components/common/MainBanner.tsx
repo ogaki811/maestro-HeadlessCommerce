@@ -167,14 +167,20 @@ export default function MainBanner() {
     slidesPerView: 'auto' as const,
     initialSlide: 0,
     loop: false,
+    observer: true,
+    observeParents: true,
+    watchOverflow: true,
     autoplay: {
       delay: SWIPER_SETTINGS.autoplayDelay,
       disableOnInteraction: false,
+      waitForTransition: true,
     },
     pagination: {
       clickable: true,
     },
     navigation: true,
+    speed: 400,
+    cssMode: false,
     className: 'ec-main-banner__container main-banner-slider',
   };
 
