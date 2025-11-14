@@ -159,47 +159,21 @@ export default function MainBanner() {
     return null; // バナーがない場合は何も表示しない（通常は発生しない）
   }
 
-  // Swiper設定（無限ループ対応）
+  // Swiper設定
   const swiperConfig = {
     modules: [Navigation, Pagination, Autoplay],
-    spaceBetween: SPACE_BETWEEN_BREAKPOINTS[320],
+    spaceBetween: 20,
     centeredSlides: true,
     slidesPerView: 'auto' as const,
-    initialSlide: 0, // 初期スライドを明示的に指定
     loop: true,
-    loopedSlides: banners.length,
-    loopAdditionalSlides: banners.length, // 無限ループの安定性向上
-    watchSlidesProgress: true, // スライド進行を監視
     autoplay: {
       delay: SWIPER_SETTINGS.autoplayDelay,
       disableOnInteraction: false,
-      pauseOnMouseEnter: false, // マウスオーバーでも停止しない
     },
     pagination: {
       clickable: true,
-      dynamicBullets: false, // ページネーション数を固定
     },
     navigation: true,
-    speed: 600, // スライド切り替え速度（ミリ秒）
-    runCallbacksOnInit: false, // 初期化時のコールバックを無効化
-    breakpoints: {
-      320: {
-        slidesPerView: 'auto' as const,
-        spaceBetween: SPACE_BETWEEN_BREAKPOINTS[320],
-      },
-      640: {
-        slidesPerView: 'auto' as const,
-        spaceBetween: SPACE_BETWEEN_BREAKPOINTS[640],
-      },
-      1024: {
-        slidesPerView: 'auto' as const,
-        spaceBetween: SPACE_BETWEEN_BREAKPOINTS[1024],
-      },
-      1280: {
-        slidesPerView: 'auto' as const,
-        spaceBetween: SPACE_BETWEEN_BREAKPOINTS[1280],
-      },
-    },
     className: 'ec-main-banner__container main-banner-slider',
   };
 
