@@ -1,7 +1,7 @@
 .main-banner-slider {
-  padding: 0;
+  padding: 0 40px; /* 左右にパディングを追加して両端のスライドを表示 */
   height: 200px;
-  overflow: hidden;
+  overflow: visible; /* 両端のスライドを表示するためvisibleに変更 */
 }
 
 .main-banner-slider .swiper-wrapper {
