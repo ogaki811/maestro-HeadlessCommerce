@@ -28,6 +28,13 @@ export default function MyPageSidebar() {
       section: 'general',
     },
     {
+      path: '/favorites',
+      label: 'お気に入り',
+      icon: 'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z',
+      requiredRoles: ['super_admin', 'admin', 'general'], // 全員
+      section: 'general',
+    },
+    {
       path: '/mypage/purchase-management',
       label: '購買管理',
       icon: 'M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z',
@@ -47,13 +54,6 @@ export default function MyPageSidebar() {
       icon: 'M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z',
       requiredRoles: ['super_admin'], // スーパー管理者のみ
       section: 'admin',
-    },
-    {
-      path: '/favorites',
-      label: 'お気に入り',
-      icon: 'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z',
-      requiredRoles: ['super_admin', 'admin', 'general'], // 全員
-      section: 'general',
     },
   ];
 
