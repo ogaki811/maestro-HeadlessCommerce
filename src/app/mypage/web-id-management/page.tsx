@@ -6,6 +6,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import Breadcrumb from '@/components/common/Breadcrumb';
 import MyPageSidebar from '@/components/mypage/MyPageSidebar';
+import { Button } from '@/components/ui/Button';
 import useAuthStore from '@/store/useAuthStore';
 import toast from 'react-hot-toast';
 
@@ -50,7 +51,7 @@ export default function WebIdManagementPage() {
             {/* メインコンテンツ */}
             <div className="lg:col-span-3">
               <div className="bg-white rounded-lg shadow-sm p-8">
-                <h1 className="text-2xl font-bold text-gray-900 mb-4 border-b-4 border-orange-500 pb-2">
+                <h1 className="text-2xl font-bold text-gray-900 mb-6">
                   Web ID管理部署選択
                 </h1>
 
@@ -69,15 +70,11 @@ export default function WebIdManagementPage() {
 
                 {/* 検索・ダウンロードエリア */}
                 <div className="flex items-center gap-4 mb-6">
-                  <button className="px-6 py-2 bg-teal-600 text-white rounded hover:bg-teal-700 transition-colors">
-                    ▼ユーザー検索
-                  </button>
+                  <Button>ユーザー検索</Button>
                   <select className="px-4 py-2 border border-gray-300 rounded">
                     <option>CSV</option>
                   </select>
-                  <button className="px-6 py-2 bg-teal-600 text-white rounded hover:bg-teal-700 transition-colors">
-                    一括ダウンロード
-                  </button>
+                  <Button>一括ダウンロード</Button>
                 </div>
 
                 {/* ページネーション（上部） */}
@@ -123,9 +120,9 @@ export default function WebIdManagementPage() {
                     <tbody className="bg-white divide-y divide-gray-200">
                       <tr>
                         <td className="px-6 py-4">
-                          <button className="px-4 py-2 bg-orange-500 text-white text-sm font-semibold rounded hover:bg-orange-600 transition-colors mb-2 block">
-                            WebID一覧
-                          </button>
+                          <div className="mb-2">
+                            <Button size="sm">WebID一覧</Button>
+                          </div>
                           <span className="text-sm text-gray-900">012345</span>
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-900">子ユーザー</td>
@@ -136,9 +133,9 @@ export default function WebIdManagementPage() {
                       </tr>
                       <tr>
                         <td className="px-6 py-4">
-                          <button className="px-4 py-2 bg-orange-500 text-white text-sm font-semibold rounded hover:bg-orange-600 transition-colors mb-2 block">
-                            WebID一覧
-                          </button>
+                          <div className="mb-2">
+                            <Button size="sm">WebID一覧</Button>
+                          </div>
                           <span className="text-sm text-gray-900">5000000004</span>
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-900">株式会社松村テスト</td>
@@ -149,9 +146,9 @@ export default function WebIdManagementPage() {
                       </tr>
                       <tr>
                         <td className="px-6 py-4">
-                          <button className="px-4 py-2 bg-orange-500 text-white text-sm font-semibold rounded hover:bg-orange-600 transition-colors mb-2 block">
-                            WebID一覧
-                          </button>
+                          <div className="mb-2">
+                            <Button size="sm">WebID一覧</Button>
+                          </div>
                           <span className="text-sm text-gray-900">5000000006</span>
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-900">株式会社松村テスト</td>
@@ -162,9 +159,9 @@ export default function WebIdManagementPage() {
                       </tr>
                       <tr>
                         <td className="px-6 py-4">
-                          <button className="px-4 py-2 bg-orange-500 text-white text-sm font-semibold rounded hover:bg-orange-600 transition-colors mb-2 block">
-                            WebID一覧
-                          </button>
+                          <div className="mb-2">
+                            <Button size="sm">WebID一覧</Button>
+                          </div>
                           <span className="text-sm text-gray-900">9040301425</span>
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-900">
@@ -177,9 +174,9 @@ export default function WebIdManagementPage() {
                       </tr>
                       <tr>
                         <td className="px-6 py-4">
-                          <button className="px-4 py-2 bg-orange-500 text-white text-sm font-semibold rounded hover:bg-orange-600 transition-colors mb-2 block">
-                            WebID一覧
-                          </button>
+                          <div className="mb-2">
+                            <Button size="sm">WebID一覧</Button>
+                          </div>
                           <span className="text-sm text-gray-900">9040301426</span>
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-900">株式会社松村テスト</td>
@@ -215,9 +212,9 @@ export default function WebIdManagementPage() {
 
                 {/* 戻るボタン */}
                 <div className="flex justify-center">
-                  <button className="px-16 py-3 bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors">
+                  <Button variant="secondary" size="lg">
                     戻る
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>
