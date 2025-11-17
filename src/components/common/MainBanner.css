@@ -1,7 +1,25 @@
+/* スケルトンローディング */
+.ec-main-banner__skeleton {
+  z-index: 10;
+  background: #f3f4f6;
+}
+
+/* ローディング中は非表示 */
+.ec-main-banner__loading {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ロード完了後にフェードイン */
+.ec-main-banner__loaded {
+  opacity: 1;
+  transition: opacity 0.5s ease-in;
+}
+
 .main-banner-slider {
-  padding: 0;
-  height: 280px;
-  overflow: hidden;
+  height: 200px;
+  padding: 0 60px;
+  overflow: visible;
 }
 
 .main-banner-slider .swiper-wrapper {
@@ -9,11 +27,12 @@
 }
 
 .main-banner-slider .swiper-slide {
-  height: 280px;
-  width: 900px !important;
+  height: 200px;
+  width: 360px !important;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
 }
 
 .main-banner-slider .swiper-button-next,
@@ -27,11 +46,11 @@
 }
 
 .main-banner-slider .swiper-button-prev {
-  left: calc(50% - 470px);
+  left: calc(50% - 200px);
 }
 
 .main-banner-slider .swiper-button-next {
-  right: calc(50% - 470px);
+  right: calc(50% - 200px);
 }
 
 .main-banner-slider .swiper-button-next:hover,

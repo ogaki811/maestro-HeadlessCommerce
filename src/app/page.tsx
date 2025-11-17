@@ -41,6 +41,10 @@ export default function HomePage() {
 
   return (
     <>
+      {/* Preload hints for banner images - LCP optimization */}
+      <link rel="preload" as="image" href="/img/mainbanner/Group 1.png" />
+      <link rel="preload" as="image" href="/img/mainbanner/Group 2.png" />
+
       {/* Structured Data - WebSite */}
       <script
         type="application/ld+json"
