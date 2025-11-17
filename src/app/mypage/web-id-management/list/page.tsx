@@ -119,78 +119,74 @@ export default function WebIdListPage() {
                   </div>
                 </div>
 
-                {/* データテーブル */}
-                <div className="overflow-x-auto border border-gray-200 rounded-lg mb-6">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-100">
-                      <tr>
-                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700">Web ID</th>
-                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700">氏名</th>
-                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700">役職</th>
-                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700">メールアドレス</th>
-                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700">パスワード</th>
-                        <th className="px-4 py-3 text-center text-xs font-semibold text-gray-700">
-                          <div>各種メール</div>
-                          <div className="flex justify-center gap-1">
-                            <span className="text-xs">受注確認</span>
-                            <span className="text-xs">メルマガ</span>
-                          </div>
-                        </th>
-                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700">承認者</th>
-                        <th className="px-4 py-3 text-center text-xs font-semibold text-gray-700">
-                          <div>ID権限</div>
-                          <div>管理者</div>
-                        </th>
-                        <th className="px-4 py-3 text-center text-xs font-semibold text-gray-700">修正</th>
-                        <th className="px-4 py-3 text-center text-xs font-semibold text-gray-700">引継ぎ</th>
-                        <th className="px-4 py-3 text-center text-xs font-semibold text-gray-700">削除</th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {[
-                        { id: '1613578005', name: 'ＩＤ修正', position: '', email: 'ahasebe@jointex.jp', password: '********', orderMail: '要', magazine: '要', approver: '', admin: true },
-                        { id: '1613578007', name: 'テスト大竹０６０３', position: '住宅事業部\n守都営第１営業部', email: 'mootake@jointex.jp', password: '********', orderMail: '要', magazine: '不要', approver: '', admin: false },
-                        { id: '1613578008', name: 'はせべ６６０３', position: '', email: 'ahasebe@jointex.jp', password: '********', orderMail: '不要', magazine: '不要', approver: '', admin: false },
-                        { id: '1613578009', name: 'テスト大竹', position: '', email: 'mootake@jointex.jp', password: '********', orderMail: '要', magazine: '要', approver: '', admin: true },
-                        { id: '1613578010', name: '松土テスト', position: '', email: 'smatsudo@jointex.jp', password: '********', orderMail: '不要', magazine: '不要', approver: '', admin: false },
-                        { id: '1613578011', name: 'テスト', position: '', email: 'rkato@jointex.jp', password: '********', orderMail: '要', magazine: '要', approver: '', admin: false },
-                        { id: '1613578012', name: '森本華澄テスト', position: '', email: 'kmorimoto@jointex.jp', password: '********', orderMail: '不要', magazine: '不要', approver: '', admin: false },
-                      ].map((row, index) => (
-                        <tr key={index} className="hover:bg-gray-50">
-                          <td className="px-4 py-3 text-sm text-gray-900">{row.id}</td>
-                          <td className="px-4 py-3 text-sm text-gray-900 whitespace-pre-line">{row.name}</td>
-                          <td className="px-4 py-3 text-sm text-gray-900 whitespace-pre-line">{row.position}</td>
-                          <td className="px-4 py-3 text-sm text-gray-900">{row.email}</td>
-                          <td className="px-4 py-3 text-sm text-gray-900">{row.password}</td>
-                          <td className="px-4 py-3">
-                            <div className="flex justify-center gap-4 text-sm">
-                              <span>{row.orderMail}</span>
-                              <span>{row.magazine}</span>
-                            </div>
-                          </td>
-                          <td className="px-4 py-3 text-sm text-gray-900">{row.approver}</td>
-                          <td className="px-4 py-3 text-center">
-                            {row.admin && (
-                              <input type="checkbox" checked readOnly className="w-4 h-4" />
-                            )}
-                          </td>
-                          <td className="px-4 py-3 text-center">
-                            <Button size="sm">修正</Button>
-                          </td>
-                          <td className="px-4 py-3 text-center">
-                            <Button size="sm" variant="secondary">引継ぎ</Button>
-                          </td>
-                          <td className="px-4 py-3 text-center">
-                            <button className="text-gray-400 hover:text-gray-600">
-                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                              </svg>
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                {/* データテーブル - 2段組みデザイン */}
+                <div className="border border-gray-200 rounded-lg mb-6">
+                  {[
+                    { id: '1613578005', name: 'ＩＤ修正', position: '', email: 'ahasebe@jointex.jp', password: '********', orderMail: '要', magazine: '要', approver: '', admin: true },
+                    { id: '1613578007', name: 'テスト大竹０６０３', position: '住宅事業部 守都営第１営業部', email: 'mootake@jointex.jp', password: '********', orderMail: '要', magazine: '不要', approver: '', admin: false },
+                    { id: '1613578008', name: 'はせべ６６０３', position: '', email: 'ahasebe@jointex.jp', password: '********', orderMail: '不要', magazine: '不要', approver: '', admin: false },
+                    { id: '1613578009', name: 'テスト大竹', position: '', email: 'mootake@jointex.jp', password: '********', orderMail: '要', magazine: '要', approver: '', admin: true },
+                    { id: '1613578010', name: '松土テスト', position: '', email: 'smatsudo@jointex.jp', password: '********', orderMail: '不要', magazine: '不要', approver: '', admin: false },
+                    { id: '1613578011', name: 'テスト', position: '', email: 'rkato@jointex.jp', password: '********', orderMail: '要', magazine: '要', approver: '', admin: false },
+                    { id: '1613578012', name: '森本華澄テスト', position: '', email: 'kmorimoto@jointex.jp', password: '********', orderMail: '不要', magazine: '不要', approver: '', admin: false },
+                  ].map((row, index) => (
+                    <div key={index} className="border-b border-gray-200 last:border-b-0 hover:bg-gray-50 p-4">
+                      {/* 1段目: メイン情報 */}
+                      <div className="grid grid-cols-12 gap-4 mb-2">
+                        <div className="col-span-2">
+                          <div className="text-xs text-gray-500">Web ID</div>
+                          <div className="text-sm font-medium text-gray-900">{row.id}</div>
+                        </div>
+                        <div className="col-span-2">
+                          <div className="text-xs text-gray-500">氏名</div>
+                          <div className="text-sm text-gray-900">{row.name}</div>
+                        </div>
+                        <div className="col-span-2">
+                          <div className="text-xs text-gray-500">役職</div>
+                          <div className="text-sm text-gray-900">{row.position || '-'}</div>
+                        </div>
+                        <div className="col-span-3">
+                          <div className="text-xs text-gray-500">メールアドレス</div>
+                          <div className="text-sm text-gray-900">{row.email}</div>
+                        </div>
+                        <div className="col-span-3 flex items-end gap-2">
+                          <Button size="sm">修正</Button>
+                          <Button size="sm" variant="secondary">引継ぎ</Button>
+                          <button className="text-gray-400 hover:text-gray-600">
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* 2段目: サブ情報 */}
+                      <div className="grid grid-cols-12 gap-4 pt-2 border-t border-gray-100">
+                        <div className="col-span-2">
+                          <span className="text-xs text-gray-500">パスワード: </span>
+                          <span className="text-sm text-gray-900">{row.password}</span>
+                        </div>
+                        <div className="col-span-2">
+                          <span className="text-xs text-gray-500">受注確認: </span>
+                          <span className="text-sm text-gray-900">{row.orderMail}</span>
+                        </div>
+                        <div className="col-span-2">
+                          <span className="text-xs text-gray-500">メルマガ: </span>
+                          <span className="text-sm text-gray-900">{row.magazine}</span>
+                        </div>
+                        <div className="col-span-2">
+                          <span className="text-xs text-gray-500">承認者: </span>
+                          <span className="text-sm text-gray-900">{row.approver || '-'}</span>
+                        </div>
+                        <div className="col-span-2">
+                          <span className="text-xs text-gray-500">管理者: </span>
+                          {row.admin && (
+                            <input type="checkbox" checked readOnly className="w-4 h-4 align-middle ml-1" />
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
 
                 {/* ページネーション（下部） */}
