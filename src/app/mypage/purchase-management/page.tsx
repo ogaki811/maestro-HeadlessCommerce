@@ -1,24 +1,35 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import Breadcrumb from '@/components/common/Breadcrumb';
 import MyPageSidebar from '@/components/mypage/MyPageSidebar';
 import useAuthStore from '@/store/useAuthStore';
+import toast from 'react-hot-toast';
 
 export default function PurchaseManagementPage() {
   const router = useRouter();
   const { isAuthenticated, user } = useAuthStore();
+  const [hasAccess, setHasAccess] = useState(false);
 
   useEffect(() => {
     if (!isAuthenticated) {
       router.push('/login');
+      return;
     }
-  }, [isAuthenticated, router]);
 
-  if (!isAuthenticated || !user) {
+    // ロールチェック: 管理者のみアクセス可能
+    if (user && (user.role === 'super_admin' || user.role === 'admin')) {
+      setHasAccess(true);
+    } else {
+      toast.error('このページへのアクセス権限がありません');
+      router.push('/mypage');
+    }
+  }, [isAuthenticated, user, router]);
+
+  if (!isAuthenticated || !hasAccess) {
     return null; // リダイレクト中
   }
 

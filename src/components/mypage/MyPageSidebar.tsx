@@ -31,8 +31,8 @@ export default function MyPageSidebar() {
       path: '/mypage/purchase-management',
       label: '購買管理',
       icon: 'M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z',
-      requiredRoles: ['super_admin', 'admin', 'general'], // 全員
-      section: 'general',
+      requiredRoles: ['super_admin', 'admin'], // 管理者のみ
+      section: 'admin',
     },
     {
       path: '/mypage/approval',
