@@ -50,74 +50,174 @@ export default function WebIdManagementPage() {
             {/* メインコンテンツ */}
             <div className="lg:col-span-3">
               <div className="bg-white rounded-lg shadow-sm p-8">
-                <h1 className="text-2xl font-bold text-gray-900 mb-6">Web ID管理</h1>
+                <h1 className="text-2xl font-bold text-gray-900 mb-4 border-b-4 border-orange-500 pb-2">
+                  Web ID管理部署選択
+                </h1>
 
-                {/* 機能一覧テーブル */}
-                <div className="overflow-hidden border border-gray-200 rounded-lg">
+                {/* 説明文 */}
+                <div className="mb-6">
+                  <p className="text-sm text-gray-700 mb-2">
+                    Web IDの新規登録や情報修正、管理者変更ができます。
+                  </p>
+                  <p className="text-sm text-gray-700 mb-2">
+                    メンテナンスしたい部署（ユーザーコード）を選択してください。
+                    <a href="#" className="text-blue-600 hover:underline ml-2">
+                      ご利用ガイドへ
+                    </a>
+                  </p>
+                </div>
+
+                {/* 検索・ダウンロードエリア */}
+                <div className="flex items-center gap-4 mb-6">
+                  <button className="px-6 py-2 bg-teal-600 text-white rounded hover:bg-teal-700 transition-colors">
+                    ▼ユーザー検索
+                  </button>
+                  <select className="px-4 py-2 border border-gray-300 rounded">
+                    <option>CSV</option>
+                  </select>
+                  <button className="px-6 py-2 bg-teal-600 text-white rounded hover:bg-teal-700 transition-colors">
+                    一括ダウンロード
+                  </button>
+                </div>
+
+                {/* ページネーション（上部） */}
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-4">
+                    <button className="px-6 py-2 border border-gray-300 rounded hover:bg-gray-50 transition-colors">
+                      ◀ 前ページ
+                    </button>
+                    <button className="px-6 py-2 border border-gray-300 rounded hover:bg-gray-50 transition-colors">
+                      次ページ ▶
+                    </button>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="text"
+                      value="1"
+                      className="w-16 px-2 py-1 text-center border border-gray-300 rounded"
+                      readOnly
+                    />
+                    <span className="text-gray-600">/ 1</span>
+                  </div>
+                </div>
+
+                {/* データテーブル */}
+                <div className="overflow-x-auto border border-gray-200 rounded-lg mb-6">
                   <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-100">
+                      <tr>
+                        <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
+                          ユーザーコード
+                        </th>
+                        <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
+                          法人名
+                        </th>
+                        <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
+                          部署名
+                        </th>
+                        <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
+                          住所
+                        </th>
+                      </tr>
+                    </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                      <tr className="hover:bg-gray-50">
-                        <td className="px-6 py-4 w-1/3 bg-gray-50">
-                          <a href="#" className="text-blue-600 hover:text-blue-800 hover:underline">
-                            Web ID一覧
-                          </a>
+                      <tr>
+                        <td className="px-6 py-4">
+                          <button className="px-4 py-2 bg-orange-500 text-white text-sm font-semibold rounded hover:bg-orange-600 transition-colors mb-2 block">
+                            WebID一覧
+                          </button>
+                          <span className="text-sm text-gray-900">012345</span>
                         </td>
-                        <td className="px-6 py-4 text-sm text-gray-600">
-                          登録されているWeb IDの一覧を表示します。編集・削除もこちらから行えます。
-                        </td>
-                      </tr>
-                      <tr className="hover:bg-gray-50">
-                        <td className="px-6 py-4 w-1/3 bg-gray-50">
-                          <a href="#" className="text-blue-600 hover:text-blue-800 hover:underline">
-                            新規Web ID作成
-                          </a>
-                        </td>
-                        <td className="px-6 py-4 text-sm text-gray-600">
-                          新しいWeb IDを作成します。ユーザー名、パスワード、権限などを設定できます。
+                        <td className="px-6 py-4 text-sm text-gray-900">子ユーザー</td>
+                        <td className="px-6 py-4 text-sm text-gray-900"></td>
+                        <td className="px-6 py-4 text-sm text-gray-900">
+                          神奈川県川崎市麻生区あいう町１－１
                         </td>
                       </tr>
-                      <tr className="hover:bg-gray-50">
-                        <td className="px-6 py-4 w-1/3 bg-gray-50">
-                          <a href="#" className="text-blue-600 hover:text-blue-800 hover:underline">
-                            アクセス権限設定
-                          </a>
+                      <tr>
+                        <td className="px-6 py-4">
+                          <button className="px-4 py-2 bg-orange-500 text-white text-sm font-semibold rounded hover:bg-orange-600 transition-colors mb-2 block">
+                            WebID一覧
+                          </button>
+                          <span className="text-sm text-gray-900">5000000004</span>
                         </td>
-                        <td className="px-6 py-4 text-sm text-gray-600">
-                          各Web IDのアクセス権限を設定します。閲覧権限、編集権限、管理者権限などを管理できます。
-                        </td>
-                      </tr>
-                      <tr className="hover:bg-gray-50">
-                        <td className="px-6 py-4 w-1/3 bg-gray-50">
-                          <a href="#" className="text-blue-600 hover:text-blue-800 hover:underline">
-                            パスワードリセット
-                          </a>
-                        </td>
-                        <td className="px-6 py-4 text-sm text-gray-600">
-                          指定したWeb IDのパスワードをリセットします。一時パスワードを発行し、ユーザーに通知します。
+                        <td className="px-6 py-4 text-sm text-gray-900">株式会社松村テスト</td>
+                        <td className="px-6 py-4 text-sm text-gray-900">テスト</td>
+                        <td className="px-6 py-4 text-sm text-gray-900">
+                          神奈川県川崎市麻生区２丁目テストテスト
                         </td>
                       </tr>
-                      <tr className="hover:bg-gray-50">
-                        <td className="px-6 py-4 w-1/3 bg-gray-50">
-                          <a href="#" className="text-blue-600 hover:text-blue-800 hover:underline">
-                            ログイン履歴確認
-                          </a>
+                      <tr>
+                        <td className="px-6 py-4">
+                          <button className="px-4 py-2 bg-orange-500 text-white text-sm font-semibold rounded hover:bg-orange-600 transition-colors mb-2 block">
+                            WebID一覧
+                          </button>
+                          <span className="text-sm text-gray-900">5000000006</span>
                         </td>
-                        <td className="px-6 py-4 text-sm text-gray-600">
-                          各Web IDのログイン履歴を確認します。ログイン日時、IPアドレスなどの情報を表示します。
+                        <td className="px-6 py-4 text-sm text-gray-900">株式会社松村テスト</td>
+                        <td className="px-6 py-4 text-sm text-gray-900">関東物流センター</td>
+                        <td className="px-6 py-4 text-sm text-gray-900">
+                          埼玉県志木市○△町２－２
                         </td>
                       </tr>
-                      <tr className="hover:bg-gray-50">
-                        <td className="px-6 py-4 w-1/3 bg-gray-50">
-                          <a href="#" className="text-blue-600 hover:text-blue-800 hover:underline">
-                            アカウントロック解除
-                          </a>
+                      <tr>
+                        <td className="px-6 py-4">
+                          <button className="px-4 py-2 bg-orange-500 text-white text-sm font-semibold rounded hover:bg-orange-600 transition-colors mb-2 block">
+                            WebID一覧
+                          </button>
+                          <span className="text-sm text-gray-900">9040301425</span>
                         </td>
-                        <td className="px-6 py-4 text-sm text-gray-600">
-                          ロックされたアカウントを解除します。複数回のログイン失敗などでロックされたアカウントを復旧できます。
+                        <td className="px-6 py-4 text-sm text-gray-900">
+                          １２３４５６７８９０１２３４５６７８９０１２３４５６７８９０１２３
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-900"></td>
+                        <td className="px-6 py-4 text-sm text-gray-900">
+                          愛知県名古屋市千種区○×町１－１松村ビル１階
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="px-6 py-4">
+                          <button className="px-4 py-2 bg-orange-500 text-white text-sm font-semibold rounded hover:bg-orange-600 transition-colors mb-2 block">
+                            WebID一覧
+                          </button>
+                          <span className="text-sm text-gray-900">9040301426</span>
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-900">株式会社松村テスト</td>
+                        <td className="px-6 py-4 text-sm text-gray-900">青梅物流センター</td>
+                        <td className="px-6 py-4 text-sm text-gray-900">
+                          東京都青梅市a町３－３テストビル２階
                         </td>
                       </tr>
                     </tbody>
                   </table>
+                </div>
+
+                {/* ページネーション（下部） */}
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center gap-4">
+                    <button className="px-6 py-2 border border-gray-300 rounded hover:bg-gray-50 transition-colors">
+                      ◀ 前ページ
+                    </button>
+                    <button className="px-6 py-2 border border-gray-300 rounded hover:bg-gray-50 transition-colors">
+                      次ページ ▶
+                    </button>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="text"
+                      value="1"
+                      className="w-16 px-2 py-1 text-center border border-gray-300 rounded"
+                      readOnly
+                    />
+                    <span className="text-gray-600">/ 1</span>
+                  </div>
+                </div>
+
+                {/* 戻るボタン */}
+                <div className="flex justify-center">
+                  <button className="px-16 py-3 bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors">
+                    戻る
+                  </button>
                 </div>
               </div>
             </div>
