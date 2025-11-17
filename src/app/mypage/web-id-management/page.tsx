@@ -52,28 +52,72 @@ export default function WebIdManagementPage() {
               <div className="bg-white rounded-lg shadow-sm p-8">
                 <h1 className="text-2xl font-bold text-gray-900 mb-6">Web ID管理</h1>
 
-                {/* 空のコンテンツエリア */}
-                <div className="text-center py-16">
-                  <svg
-                    className="mx-auto h-12 w-12 text-gray-400"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"
-                    />
-                  </svg>
-                  <h3 className="mt-2 text-sm font-medium text-gray-900">
-                    Web ID管理
-                  </h3>
-                  <p className="mt-1 text-sm text-gray-500">
-                    Web IDの作成、編集、削除などの管理機能を提供します。
-                  </p>
+                {/* 機能一覧テーブル */}
+                <div className="overflow-hidden border border-gray-200 rounded-lg">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      <tr className="hover:bg-gray-50">
+                        <td className="px-6 py-4 w-1/3 bg-gray-50">
+                          <a href="#" className="text-blue-600 hover:text-blue-800 hover:underline">
+                            Web ID一覧
+                          </a>
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-600">
+                          登録されているWeb IDの一覧を表示します。編集・削除もこちらから行えます。
+                        </td>
+                      </tr>
+                      <tr className="hover:bg-gray-50">
+                        <td className="px-6 py-4 w-1/3 bg-gray-50">
+                          <a href="#" className="text-blue-600 hover:text-blue-800 hover:underline">
+                            新規Web ID作成
+                          </a>
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-600">
+                          新しいWeb IDを作成します。ユーザー名、パスワード、権限などを設定できます。
+                        </td>
+                      </tr>
+                      <tr className="hover:bg-gray-50">
+                        <td className="px-6 py-4 w-1/3 bg-gray-50">
+                          <a href="#" className="text-blue-600 hover:text-blue-800 hover:underline">
+                            アクセス権限設定
+                          </a>
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-600">
+                          各Web IDのアクセス権限を設定します。閲覧権限、編集権限、管理者権限などを管理できます。
+                        </td>
+                      </tr>
+                      <tr className="hover:bg-gray-50">
+                        <td className="px-6 py-4 w-1/3 bg-gray-50">
+                          <a href="#" className="text-blue-600 hover:text-blue-800 hover:underline">
+                            パスワードリセット
+                          </a>
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-600">
+                          指定したWeb IDのパスワードをリセットします。一時パスワードを発行し、ユーザーに通知します。
+                        </td>
+                      </tr>
+                      <tr className="hover:bg-gray-50">
+                        <td className="px-6 py-4 w-1/3 bg-gray-50">
+                          <a href="#" className="text-blue-600 hover:text-blue-800 hover:underline">
+                            ログイン履歴確認
+                          </a>
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-600">
+                          各Web IDのログイン履歴を確認します。ログイン日時、IPアドレスなどの情報を表示します。
+                        </td>
+                      </tr>
+                      <tr className="hover:bg-gray-50">
+                        <td className="px-6 py-4 w-1/3 bg-gray-50">
+                          <a href="#" className="text-blue-600 hover:text-blue-800 hover:underline">
+                            アカウントロック解除
+                          </a>
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-600">
+                          ロックされたアカウントを解除します。複数回のログイン失敗などでロックされたアカウントを復旧できます。
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
