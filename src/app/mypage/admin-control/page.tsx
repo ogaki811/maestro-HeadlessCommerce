@@ -105,10 +105,7 @@ export default function AdminControlPage() {
 
                 {/* 保存ボタン */}
                 <div className="mt-8 flex justify-end">
-                  <Button
-                    onClick={handleSave}
-                    className="bg-orange-500 hover:bg-orange-600 text-white px-12 py-3 rounded-md font-medium transition-colors"
-                  >
+                  <Button onClick={handleSave} size="lg">
                     設定
                   </Button>
                 </div>
