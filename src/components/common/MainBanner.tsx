@@ -120,9 +120,7 @@ type SwiperSlideRenderProps = {
  */
 const getLinkClassName = (isActive: boolean): string => {
   const baseClasses = 'ec-main-banner__link block h-full';
-  const activeClasses = isActive
-    ? 'ec-main-banner__link--active scale-105'
-    : 'scale-95';
+  const activeClasses = isActive ? 'ec-main-banner__link--active' : '';
   return `${baseClasses} ${activeClasses}`;
 };
 
@@ -187,29 +185,24 @@ export default function MainBanner() {
     return null; // バナーがない場合は何も表示しない（通常は発生しない）
   }
 
-  // Swiper設定（複数バナー表示・中央寄せ・無限ループ）
+  // Swiper設定（シンプルな横スライド・中央配置）
   const swiperConfig = {
     modules: [Navigation, Pagination, Autoplay],
     spaceBetween: 20,
-    centeredSlides: true,
     slidesPerView: 'auto' as const,
-    initialSlide: 0,
+    centeredSlides: true,
     loop: true,
     loopAdditionalSlides: 1,
-    observer: true,
-    observeParents: true,
-    watchOverflow: true,
+    loopedSlides: banners.length,
+    watchSlidesProgress: true,
     autoplay: {
       delay: SWIPER_SETTINGS.autoplayDelay,
       disableOnInteraction: false,
-      waitForTransition: true,
     },
     pagination: {
       clickable: true,
     },
     navigation: true,
-    speed: 400,
-    cssMode: false,
     className: 'ec-main-banner__container main-banner-slider',
   };
 

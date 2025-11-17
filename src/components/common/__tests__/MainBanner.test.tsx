@@ -193,15 +193,15 @@ describe('MainBanner', () => {
   });
 
   describe('アクティブ状態のスタイル', () => {
-    it('アクティブスライドにscale-105クラスが適用されること', () => {
+    it('アクティブスライドにec-main-banner__link--activeクラスが適用されること', () => {
       (bannersApi.getBanners as jest.Mock).mockRejectedValue(new Error('API Error'));
 
       render(<MainBanner />);
 
       const links = screen.getAllByRole('link');
       links.forEach((link) => {
-        // モックでisActiveをtrueに設定しているため、全てscale-105
-        expect(link.className).toContain('scale-105');
+        // モックでisActiveをtrueに設定しているため、全てec-main-banner__link--active
+        expect(link.className).toContain('ec-main-banner__link--active');
       });
     });
   });
