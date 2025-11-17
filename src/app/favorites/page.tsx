@@ -23,11 +23,11 @@ export default function FavoritesPage() {
     <div className="min-h-screen flex flex-col">
       <Header />
 
-      <main className="ec-favorites min-h-screen bg-gray-50 py-8">
-        <div className="ec-favorites__container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Breadcrumb />
+      <main className="ec-favorites min-h-screen bg-gray-50">
+        <Breadcrumb />
 
-          <div className="ec-favorites__layout lg:grid lg:grid-cols-4 lg:gap-8 mt-8">
+        <div className="ec-favorites__container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="ec-favorites__layout lg:grid lg:grid-cols-4 lg:gap-8">
             {/* サイドバー */}
             <MyPageSidebar />
 
