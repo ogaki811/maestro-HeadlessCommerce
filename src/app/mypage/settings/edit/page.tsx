@@ -6,6 +6,8 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import Breadcrumb from '@/components/common/Breadcrumb';
 import MyPageSidebar from '@/components/mypage/MyPageSidebar';
+import SectionHeader from '@/components/common/SectionHeader';
+import BasicInfoTable from '@/components/mypage/BasicInfoTable';
 import useAuthStore from '@/store/useAuthStore';
 
 interface FormData {
@@ -129,78 +131,18 @@ export default function SettingsEditPage() {
 
                 {/* 基本情報セクション */}
                 <section className="mb-12">
-                  <div className="flex items-center mb-6">
-                    <div className="w-1 h-6 bg-gray-900 mr-3"></div>
-                    <h2 className="text-xl font-bold text-gray-900">基本情報</h2>
-                  </div>
+                  <SectionHeader title="基本情報" />
 
                   <p className="text-sm text-gray-600 mb-6">
                     ※ご登録の基本情報に変更がある場合は管理者権限のWeb利用者の方より変更依頼をお願いいたします。
                   </p>
 
-                  {/* 基本情報テーブル */}
-                  <div className="bg-gray-50 rounded-lg overflow-hidden mb-8">
-                    <table className="w-full">
-                      <tbody>
-                        <tr className="border-b border-gray-200">
-                          <td className="py-4 px-6 bg-gray-100 text-sm text-gray-700 w-1/4">
-                            ユーザーコード
-                          </td>
-                          <td className="py-4 px-6 text-sm text-gray-900">
-                            0001
-                          </td>
-                        </tr>
-                        <tr className="border-b border-gray-200">
-                          <td className="py-4 px-6 bg-gray-100 text-sm text-gray-700 w-1/4">
-                            社名
-                          </td>
-                          <td className="py-4 px-6 text-sm text-gray-900">
-                            松村商事株式会社
-                          </td>
-                        </tr>
-                        <tr className="border-b border-gray-200">
-                          <td className="py-4 px-6 bg-gray-100 text-sm text-gray-700 w-1/4">
-                            部署名
-                          </td>
-                          <td className="py-4 px-6 text-sm text-gray-900">
-                            システム企画部
-                          </td>
-                        </tr>
-                        <tr className="border-b border-gray-200">
-                          <td className="py-4 px-6 bg-gray-100 text-sm text-gray-700 w-1/4">
-                            会社住所
-                          </td>
-                          <td className="py-4 px-6 text-sm text-gray-900">
-                            東京都千代田区永田町2-13-10プルデンシャルタワー12階
-                          </td>
-                        </tr>
-                        <tr className="border-b border-gray-200">
-                          <td className="py-4 px-6 bg-gray-100 text-sm text-gray-700 w-1/4">
-                            会社電話番号
-                          </td>
-                          <td className="py-4 px-6 text-sm text-gray-900">
-                            0362058719
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="py-4 px-6 bg-gray-100 text-sm text-gray-700 w-1/4">
-                            会社FAX番号
-                          </td>
-                          <td className="py-4 px-6 text-sm text-gray-900">
-                            0362058719
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
+                  <BasicInfoTable />
                 </section>
 
                 {/* Web利用者情報セクション */}
                 <section className="mb-12">
-                  <div className="flex items-center mb-6">
-                    <div className="w-1 h-6 bg-gray-900 mr-3"></div>
-                    <h2 className="text-xl font-bold text-gray-900">Web利用者情報</h2>
-                  </div>
+                  <SectionHeader title="Web利用者情報" />
 
                   <div className="bg-gray-50 rounded-lg overflow-hidden mb-8">
                     <table className="w-full">
@@ -369,10 +311,7 @@ export default function SettingsEditPage() {
 
                 {/* パスワード変更セクション */}
                 <section className="mb-12">
-                  <div className="flex items-center mb-6">
-                    <div className="w-1 h-6 bg-gray-900 mr-3"></div>
-                    <h2 className="text-xl font-bold text-gray-900">パスワード変更</h2>
-                  </div>
+                  <SectionHeader title="パスワード変更" />
 
                   <div className="mb-6 space-y-2">
                     <p className="text-sm text-gray-700">
