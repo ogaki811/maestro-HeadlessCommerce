@@ -35,6 +35,55 @@ export default function MyPageSidebar() {
       section: 'general',
     },
     {
+      path: '/mypage/catalog-settings',
+      label: 'マイカタログ設定',
+      icon: 'M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z',
+      requiredRoles: ['super_admin', 'admin', 'general'], // 全員
+      section: 'purchase',
+    },
+    {
+      path: '/mypage/purchase-data',
+      label: '購入データダウンロード',
+      icon: 'M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4',
+      requiredRoles: ['super_admin', 'admin', 'general'], // 全員
+      section: 'purchase',
+    },
+    {
+      path: '/mypage/eco-report',
+      label: '環境配慮レポート',
+      icon: 'M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
+      requiredRoles: ['super_admin', 'admin', 'general'], // 全員
+      section: 'purchase',
+    },
+    {
+      path: '/mypage/sds-rohs',
+      label: 'SDS,RoHS関連資料請求',
+      icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z',
+      requiredRoles: ['super_admin', 'admin', 'general'], // 全員
+      section: 'purchase',
+    },
+    {
+      path: '/mypage/special-order',
+      label: '掲載外商品取寄せ',
+      icon: 'M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z',
+      requiredRoles: ['super_admin', 'admin', 'general'], // 全員
+      section: 'purchase',
+    },
+    {
+      path: '/mypage/restock-alerts',
+      label: '販売再開メール一覧',
+      icon: 'M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
+      requiredRoles: ['super_admin', 'admin', 'general'], // 全員
+      section: 'purchase',
+    },
+    {
+      path: '/mypage/delivery-calendar',
+      label: '配送カレンダー登録',
+      icon: 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z',
+      requiredRoles: ['super_admin', 'admin', 'general'], // 全員
+      section: 'purchase',
+    },
+    {
       path: '/mypage/purchase-management',
       label: '購買管理',
       icon: 'M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z',
