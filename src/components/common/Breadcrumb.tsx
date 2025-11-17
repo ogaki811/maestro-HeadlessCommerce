@@ -23,6 +23,7 @@ const pathLabels: Record<string, string> = {
   '/search': '検索結果',
   '/mypage': 'マイページ',
   '/mypage/orders': '注文履歴',
+  '/mypage/purchase-management': '購買管理',
   '/mypage/settings': 'アカウント設定',
   '/mypage/catalog': 'マイカタログ',
   '/mypage/download': '購入データダウンロード',
