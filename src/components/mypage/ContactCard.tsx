@@ -86,13 +86,11 @@ export default function ContactCard({
       {/* 担当者情報とアバター */}
       <div className="flex items-start gap-4 mb-6">
         <div className="flex-1">
-          <p className="text-sm text-gray-900 leading-relaxed">
-            御社を担当いたします
-            <br />
+          <p className="text-xs font-normal text-gray-500 mb-2">御社を担当いたします</p>
+          <p className="text-sm font-normal text-gray-700 leading-relaxed mb-1">
             {company}
-            <br />
-            {name}
           </p>
+          <p className="text-base font-semibold text-gray-900">{name}</p>
         </div>
         {avatarUrl && (
           <div className="flex-shrink-0">
@@ -109,12 +107,12 @@ export default function ContactCard({
 
       {/* 注意書き */}
       {note && (
-        <div className="mb-4 text-xs text-gray-600">
+        <div className="mb-4 text-xs font-normal text-gray-500">
           <p className="leading-relaxed">
             {note}
             <br />
             お届け、キャンセル、返品等については
-            <Link href="/help/contact" className="text-blue-600 underline hover:no-underline">
+            <Link href="/help/contact" className="text-blue-600 font-medium underline hover:no-underline">
               こちら
             </Link>
           </p>
@@ -122,26 +120,26 @@ export default function ContactCard({
       )}
 
       {/* 連絡先情報 */}
-      <div className="space-y-1 text-sm">
-        <div className="flex">
-          <span className="w-16 text-gray-700">TEL</span>
-          <span className="text-gray-600">:</span>
-          <span className="ml-2 text-gray-900">{tel}</span>
+      <div className="space-y-2">
+        <div className="flex items-baseline">
+          <span className="w-16 text-xs font-normal text-gray-500">TEL</span>
+          <span className="text-gray-400">:</span>
+          <span className="ml-2 text-sm font-semibold text-gray-900">{tel}</span>
         </div>
-        <div className="flex">
-          <span className="w-16 text-gray-700">FAX</span>
-          <span className="text-gray-600">:</span>
-          {fax && <span className="ml-2 text-gray-900">{fax}</span>}
+        <div className="flex items-baseline">
+          <span className="w-16 text-xs font-normal text-gray-500">FAX</span>
+          <span className="text-gray-400">:</span>
+          {fax && <span className="ml-2 text-sm font-semibold text-gray-900">{fax}</span>}
         </div>
-        <div className="flex">
-          <span className="w-16 text-gray-700">Mobile</span>
-          <span className="text-gray-600">:</span>
-          <span className="ml-2 text-gray-900">{mobile}</span>
+        <div className="flex items-baseline">
+          <span className="w-16 text-xs font-normal text-gray-500">Mobile</span>
+          <span className="text-gray-400">:</span>
+          <span className="ml-2 text-sm font-semibold text-gray-900">{mobile}</span>
         </div>
-        <div className="flex">
-          <span className="w-16 text-gray-700">E-mail</span>
-          <span className="text-gray-600">:</span>
-          <span className="ml-2 text-gray-900">{email}</span>
+        <div className="flex items-baseline">
+          <span className="w-16 text-xs font-normal text-gray-500">E-mail</span>
+          <span className="text-gray-400">:</span>
+          <span className="ml-2 text-sm font-semibold text-gray-900">{email}</span>
         </div>
       </div>
     </div>

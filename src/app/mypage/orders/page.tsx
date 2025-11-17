@@ -347,17 +347,19 @@ export default function OrdersPage() {
     <div className="min-h-screen flex flex-col">
       <Header />
 
-      <main className="ec-order-history min-h-screen bg-gray-50 py-8">
-        <div className="ec-order-history__container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Breadcrumb />
+      <main className="min-h-screen bg-gray-50">
+        <Breadcrumb />
 
-          <div className="ec-order-history__layout lg:grid lg:grid-cols-4 lg:gap-8 mt-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
             {/* サイドバー */}
-            <MyPageSidebar />
+            <div className="lg:col-span-1">
+              <MyPageSidebar />
+            </div>
 
             {/* メインコンテンツ */}
-            <div className="ec-order-history__content lg:col-span-3 mt-8 lg:mt-0">
-              <div className="ec-order-history__card bg-white rounded-lg shadow-sm p-8">
+            <div className="lg:col-span-3">
+              <div className="bg-white rounded-lg shadow-sm p-8">
                 <h1 className="ec-order-history__title text-3xl font-medium text-gray-900 mb-8 pb-2 border-b-2 border-black">
                   注文履歴
                 </h1>

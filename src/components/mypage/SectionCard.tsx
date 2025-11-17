@@ -60,34 +60,24 @@ export default function SectionCard({
   children,
   className = '',
 }: SectionCardProps) {
-  // ヘッダーカラーのスタイル
-  const headerColorStyles = {
-    orange: 'bg-orange-500',
-    teal: 'bg-teal-600',
-  };
-
   return (
-    <div className={`bg-white rounded-lg shadow-sm overflow-hidden ${className}`}>
-      {/* ヘッダー */}
-      <div
-        className={`${headerColorStyles[headerColor]} px-4 py-3 flex items-center justify-between`}
-      >
-        <h2 className="text-base font-bold text-white m-0 flex items-center">
-          <span className="inline-block w-1 h-5 bg-white mr-2"></span>
+    <section className={`mb-12 ${className}`}>
+      <div className="flex justify-between items-center mb-4">
+        <h3 className="text-lg font-bold text-gray-900">
           {title}
-        </h2>
+        </h3>
         {actionLink && (
           <Link
             href={actionLink.href}
-            className="text-white text-sm underline hover:no-underline transition-all"
+            className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-black hover:bg-gray-800 rounded-md transition-colors"
           >
             {actionLink.text}
           </Link>
         )}
       </div>
-
-      {/* コンテンツ */}
-      <div className="p-6">{children}</div>
-    </div>
+      <div className="bg-gray-50 rounded-lg p-6">
+        {children}
+      </div>
+    </section>
   );
 }

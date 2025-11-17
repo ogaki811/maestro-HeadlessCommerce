@@ -15,6 +15,10 @@ export const mockUserProfile: InfoRow[] = [
     value: '小川祐樹 様',
   },
   {
+    label: 'メールアドレス',
+    value: 'ogawa@example.com',
+  },
+  {
     label: 'Web ID',
     value: '1313111006',
   },

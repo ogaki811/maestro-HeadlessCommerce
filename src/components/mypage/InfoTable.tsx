@@ -70,59 +70,28 @@ export default function InfoTable({
   className = '',
 }: InfoTableProps) {
   if (columns === 1) {
-    // 1列レイアウト
+    // 1列レイアウト - 文字の強弱を意識
     return (
-      <table className={`w-full border-collapse ${className}`}>
-        <tbody>
-          {data.map((row, index) => (
-            <tr key={index} className="border-b border-gray-200 last:border-b-0">
-              <td className="py-3 px-4 text-sm text-gray-700 bg-gray-50 w-1/3">
-                {row.label}
-              </td>
-              <td className="py-3 px-4 text-sm text-gray-900">{row.value}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className={className}>
+        {data.map((row, index) => (
+          <div key={index} className={index < data.length - 1 ? 'mb-5' : ''}>
+            <p className="text-xs font-normal text-gray-500 mb-1.5">{row.label}</p>
+            <p className="text-base font-semibold text-gray-900">{row.value}</p>
+          </div>
+        ))}
+      </div>
     );
   }
 
-  // 2列レイアウト
-  const rows: InfoRow[][] = [];
-  for (let i = 0; i < data.length; i += 2) {
-    rows.push(data.slice(i, i + 2));
-  }
-
+  // 2列レイアウト - グリッドで表現
   return (
-    <table className={`w-full border-collapse ${className}`}>
-      <tbody>
-        {rows.map((rowPair, rowIndex) => (
-          <tr key={rowIndex} className="border-b border-gray-200 last:border-b-0">
-            {/* 1つ目のセル */}
-            <td className="py-3 px-4 text-sm text-gray-700 bg-gray-50 w-1/6">
-              {rowPair[0].label}
-            </td>
-            <td className="py-3 px-4 text-sm text-gray-900 w-1/3">{rowPair[0].value}</td>
-
-            {/* 2つ目のセル（存在する場合） */}
-            {rowPair[1] ? (
-              <>
-                <td className="py-3 px-4 text-sm text-gray-700 bg-gray-50 w-1/6">
-                  {rowPair[1].label}
-                </td>
-                <td className="py-3 px-4 text-sm text-gray-900 w-1/3">
-                  {rowPair[1].value}
-                </td>
-              </>
-            ) : (
-              <>
-                <td className="py-3 px-4 bg-gray-50 w-1/6"></td>
-                <td className="py-3 px-4 w-1/3"></td>
-              </>
-            )}
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <div className={`grid md:grid-cols-2 gap-6 ${className}`}>
+      {data.map((row, index) => (
+        <div key={index}>
+          <p className="text-xs font-normal text-gray-500 mb-1.5">{row.label}</p>
+          <p className="text-base font-semibold text-gray-900">{row.value}</p>
+        </div>
+      ))}
+    </div>
   );
 }
