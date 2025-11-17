@@ -1,5 +1,15 @@
 // ユーザー型定義
 
+// ロール型定義（RBAC - Role-Based Access Control）
+export type UserRole = 'super_admin' | 'admin' | 'general';
+
+// ロールラベル
+export const UserRoleLabels: Record<UserRole, string> = {
+  super_admin: 'スーパー管理者',
+  admin: '管理者',
+  general: '一般',
+};
+
 export interface User {
   id: string;
   email: string;
@@ -12,6 +22,7 @@ export interface User {
   address?: string;
   building?: string;
   points?: number;
+  role: UserRole; // ロール情報
   createdAt: string;
   updatedAt: string;
 }

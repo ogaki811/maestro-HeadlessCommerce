@@ -9,6 +9,53 @@ import SimpleFooter from '@/components/layout/SimpleFooter';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import useAuthStore from '@/store/useAuthStore';
+import type { User, UserRole } from '@/types/user';
+
+// サンプルユーザーデータ（ロール別）
+const SAMPLE_USERS: Record<UserRole, Omit<User, 'email'>> = {
+  super_admin: {
+    id: 'super-admin-1',
+    name: 'スーパー管理者 太郎',
+    role: 'super_admin',
+    phoneNumber: '090-1111-1111',
+    postalCode: '100-0001',
+    prefecture: '東京都',
+    city: '千代田区',
+    address: '千代田1-1-1',
+    building: '本社ビル10F',
+    points: 5000,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  admin: {
+    id: 'admin-1',
+    name: '管理者 花子',
+    role: 'admin',
+    phoneNumber: '090-2222-2222',
+    postalCode: '150-0001',
+    prefecture: '東京都',
+    city: '渋谷区',
+    address: '神宮前2-2-2',
+    building: 'オフィス棟5F',
+    points: 3000,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  general: {
+    id: 'general-1',
+    name: '一般ユーザー 次郎',
+    role: 'general',
+    phoneNumber: '090-3333-3333',
+    postalCode: '150-0002',
+    prefecture: '東京都',
+    city: '渋谷区',
+    address: '渋谷3-3-3',
+    building: 'マンション201',
+    points: 1250,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+};
 
 export default function LoginPage() {
   const router = useRouter();
@@ -31,23 +78,22 @@ export default function LoginPage() {
       // 実際の実装では、ここでAPI呼び出しを行う
       await new Promise((resolve) => setTimeout(resolve, 1000)); // シミュレーション
 
-      // デモユーザーでログイン
+      // メールアドレスに応じてロールを判定
+      let role: UserRole = 'general';
+      if (formData.email === 'super@example.com') {
+        role = 'super_admin';
+      } else if (formData.email === 'admin@example.com') {
+        role = 'admin';
+      }
+
+      // ロールに応じたサンプルユーザーでログイン
+      const userData = SAMPLE_USERS[role];
       authStoreLogin({
-        id: 'demo-user-1',
-        name: '山田 太郎',
+        ...userData,
         email: formData.email,
-        phoneNumber: '090-1234-5678',
-        postalCode: '150-0001',
-        prefecture: '東京都',
-        city: '渋谷区',
-        address: '神宮前1-2-3',
-        building: 'サンプルビル101',
-        points: 1250,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
       });
 
-      toast.success('ログインしました');
+      toast.success(`${userData.name}としてログインしました`);
       router.push(callbackUrl);
     } catch (error) {
       console.error('Login error:', error);
@@ -57,9 +103,15 @@ export default function LoginPage() {
     }
   };
 
-  const handleDemoLogin = () => {
+  const handleDemoLogin = (role: UserRole) => {
+    const emailMap = {
+      super_admin: 'super@example.com',
+      admin: 'admin@example.com',
+      general: 'general@example.com',
+    };
+
     setFormData({
-      email: 'customer@example.com',
+      email: emailMap[role],
       password: 'password123',
     });
   };
@@ -131,16 +183,40 @@ export default function LoginPage() {
               <Button type="submit" fullWidth loading={isLoading}>
                 ログイン
               </Button>
-
-              <Button
-                type="button"
-                variant="outline"
-                fullWidth
-                onClick={handleDemoLogin}
-              >
-                デモデータを入力
-              </Button>
             </form>
+
+            {/* デモログインボタン */}
+            <div className="mt-6">
+              <p className="text-sm text-gray-600 text-center mb-3">
+                デモアカウントでログイン
+              </p>
+              <div className="space-y-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  fullWidth
+                  onClick={() => handleDemoLogin('super_admin')}
+                >
+                  スーパー管理者でログイン
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  fullWidth
+                  onClick={() => handleDemoLogin('admin')}
+                >
+                  管理者でログイン
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  fullWidth
+                  onClick={() => handleDemoLogin('general')}
+                >
+                  一般ユーザーでログイン
+                </Button>
+              </div>
+            </div>
 
             {/* SNSログイン */}
             <div className="mt-6">
