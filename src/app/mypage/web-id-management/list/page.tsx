@@ -150,7 +150,12 @@ export default function WebIdListPage() {
                           <div className="text-sm text-gray-900">{row.email}</div>
                         </div>
                         <div className="col-span-3 flex items-end gap-2">
-                          <Button size="sm">修正</Button>
+                          <Button
+                            size="sm"
+                            onClick={() => router.push(`/mypage/web-id-management/edit?id=${row.id}`)}
+                          >
+                            修正
+                          </Button>
                           <Button size="sm" variant="secondary">引継ぎ</Button>
                           <button className="text-gray-400 hover:text-gray-600">
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
