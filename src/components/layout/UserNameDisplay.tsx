@@ -117,6 +117,14 @@ export default function UserNameDisplay({
                 注文履歴
               </Link>
               <Link
+                href="/mypage/purchase-management"
+                onClick={() => setIsOpen(false)}
+                className="block w-full text-left px-3 py-2 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition-colors"
+                role="menuitem"
+              >
+                購買管理
+              </Link>
+              <Link
                 href="/mypage/settings"
                 onClick={() => setIsOpen(false)}
                 className="block w-full text-left px-3 py-2 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition-colors"
