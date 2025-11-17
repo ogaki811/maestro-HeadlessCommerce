@@ -120,10 +120,8 @@ export default function WebIdManagementPage() {
                     <tbody className="bg-white divide-y divide-gray-200">
                       <tr>
                         <td className="px-6 py-4">
-                          <div className="mb-2">
-                            <Button size="sm">WebID一覧</Button>
-                          </div>
-                          <span className="text-sm text-gray-900">012345</span>
+                          <div className="text-sm text-gray-900 mb-2">012345</div>
+                          <Button size="sm">WebID一覧</Button>
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-900">子ユーザー</td>
                         <td className="px-6 py-4 text-sm text-gray-900"></td>
@@ -133,10 +131,8 @@ export default function WebIdManagementPage() {
                       </tr>
                       <tr>
                         <td className="px-6 py-4">
-                          <div className="mb-2">
-                            <Button size="sm">WebID一覧</Button>
-                          </div>
-                          <span className="text-sm text-gray-900">5000000004</span>
+                          <div className="text-sm text-gray-900 mb-2">5000000004</div>
+                          <Button size="sm">WebID一覧</Button>
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-900">株式会社松村テスト</td>
                         <td className="px-6 py-4 text-sm text-gray-900">テスト</td>
@@ -146,10 +142,8 @@ export default function WebIdManagementPage() {
                       </tr>
                       <tr>
                         <td className="px-6 py-4">
-                          <div className="mb-2">
-                            <Button size="sm">WebID一覧</Button>
-                          </div>
-                          <span className="text-sm text-gray-900">5000000006</span>
+                          <div className="text-sm text-gray-900 mb-2">5000000006</div>
+                          <Button size="sm">WebID一覧</Button>
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-900">株式会社松村テスト</td>
                         <td className="px-6 py-4 text-sm text-gray-900">関東物流センター</td>
@@ -159,10 +153,8 @@ export default function WebIdManagementPage() {
                       </tr>
                       <tr>
                         <td className="px-6 py-4">
-                          <div className="mb-2">
-                            <Button size="sm">WebID一覧</Button>
-                          </div>
-                          <span className="text-sm text-gray-900">9040301425</span>
+                          <div className="text-sm text-gray-900 mb-2">9040301425</div>
+                          <Button size="sm">WebID一覧</Button>
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-900">
                           １２３４５６７８９０１２３４５６７８９０１２３４５６７８９０１２３
@@ -174,10 +166,8 @@ export default function WebIdManagementPage() {
                       </tr>
                       <tr>
                         <td className="px-6 py-4">
-                          <div className="mb-2">
-                            <Button size="sm">WebID一覧</Button>
-                          </div>
-                          <span className="text-sm text-gray-900">9040301426</span>
+                          <div className="text-sm text-gray-900 mb-2">9040301426</div>
+                          <Button size="sm">WebID一覧</Button>
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-900">株式会社松村テスト</td>
                         <td className="px-6 py-4 text-sm text-gray-900">青梅物流センター</td>
