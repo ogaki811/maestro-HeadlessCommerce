@@ -103,13 +103,13 @@ export default function WebIdManagementPage() {
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-100">
                       <tr>
-                        <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
+                        <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 w-1/5">
                           ユーザーコード
                         </th>
-                        <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
+                        <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 w-1/4">
                           法人名
                         </th>
-                        <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
+                        <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 w-1/5">
                           部署名
                         </th>
                         <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
