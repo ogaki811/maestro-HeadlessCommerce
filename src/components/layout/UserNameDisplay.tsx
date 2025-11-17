@@ -124,14 +124,6 @@ export default function UserNameDisplay({
               >
                 購買管理
               </Link>
-              <Link
-                href="/mypage/settings"
-                onClick={() => setIsOpen(false)}
-                className="block w-full text-left px-3 py-2 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition-colors"
-                role="menuitem"
-              >
-                アカウント設定
-              </Link>
 
               <hr className="my-2 border-gray-200" />
 
