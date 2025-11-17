@@ -159,13 +159,24 @@ export default function MainBanner() {
       }
     }
     fetchBanners();
-  }, []);
+
+    // 最大1.5秒でタイムアウト - ロードが遅い場合は強制表示
+    const timeout = setTimeout(() => {
+      if (!imagesLoaded) {
+        console.log('⏱️ Image load timeout - forcing display');
+        setImagesLoaded(true);
+      }
+    }, 1500);
+
+    return () => clearTimeout(timeout);
+  }, [imagesLoaded]);
 
   // 画像ロード完了時のハンドラー
   const handleImageLoad = () => {
     setLoadedCount((prev) => {
       const newCount = prev + 1;
-      if (newCount >= totalImages.current) {
+      // 最初の2枚（priority画像）がロードされたら表示開始
+      if (newCount >= SWIPER_SETTINGS.eagerLoadCount) {
         setImagesLoaded(true);
       }
       return newCount;
@@ -176,14 +187,15 @@ export default function MainBanner() {
     return null; // バナーがない場合は何も表示しない（通常は発生しない）
   }
 
-  // Swiper設定（複数バナー表示・中央寄せ）
+  // Swiper設定（複数バナー表示・中央寄せ・無限ループ）
   const swiperConfig = {
     modules: [Navigation, Pagination, Autoplay],
     spaceBetween: 20,
     centeredSlides: true,
     slidesPerView: 'auto' as const,
     initialSlide: 0,
-    loop: false,
+    loop: true,
+    loopAdditionalSlides: 1,
     observer: true,
     observeParents: true,
     watchOverflow: true,
