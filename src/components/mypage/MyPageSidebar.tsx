@@ -149,7 +149,7 @@ export default function MyPageSidebar() {
                 }`}
               >
                 <svg
-                  className="ec-sidebar__icon w-4 h-4"
+                  className="ec-sidebar__icon w-4.5 h-4.5"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -161,7 +161,7 @@ export default function MyPageSidebar() {
                     d={item.icon}
                   />
                 </svg>
-                <span className="ec-sidebar__label text-sm font-medium">{item.label}</span>
+                <span className="ec-sidebar__label font-medium">{item.label}</span>
               </Link>
             </div>
           );
