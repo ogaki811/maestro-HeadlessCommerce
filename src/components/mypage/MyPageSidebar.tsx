@@ -112,23 +112,37 @@ export default function MyPageSidebar() {
     return item.requiredRoles.includes(user.role);
   });
 
+  // セクションタイトルのマッピング
+  const sectionTitles: { [key: string]: string } = {
+    purchase: '購入関連',
+    admin: '管理者メニュー',
+  };
+
   return (
     <aside className="ec-sidebar bg-white rounded-lg shadow-sm p-6 lg:sticky lg:top-8 lg:self-start">
-      <nav className="ec-sidebar__nav space-y-2">
+      <nav className="ec-sidebar__nav space-y-1">
         {filteredMenuItems.map((item, index) => {
           const active = isActive(item.path);
           const prevItem = index > 0 ? filteredMenuItems[index - 1] : null;
           const showDivider = prevItem && prevItem.section !== item.section;
+          const showSectionTitle = showDivider && sectionTitles[item.section];
 
           return (
             <div key={item.path}>
-              {/* 管理者専用セクションの前に区切り線を表示 */}
+              {/* セクションの変わり目に区切り線とタイトルを表示 */}
               {showDivider && (
-                <div className="border-t border-gray-200 my-4" />
+                <div className="border-t border-gray-200 my-3" />
+              )}
+              {showSectionTitle && (
+                <div className="px-4 pt-2 pb-1">
+                  <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    {sectionTitles[item.section]}
+                  </span>
+                </div>
               )}
               <Link
                 href={item.path}
-                className={`ec-sidebar__link flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
+                className={`ec-sidebar__link flex items-center space-x-3 px-4 py-2 rounded-lg transition-colors ${
                   active
                     ? 'ec-sidebar__link--active bg-black text-white'
                     : 'text-gray-700 hover:bg-gray-100'
