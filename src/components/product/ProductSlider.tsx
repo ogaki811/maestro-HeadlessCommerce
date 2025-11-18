@@ -124,9 +124,9 @@ export default function ProductSlider({
                 className="w-full h-full object-cover"
                 draggable={false}
               />
-              {product.badge && (
+              {product.tags && product.tags.length > 0 && (
                 <span className="ec-product-slider__badge absolute top-2 left-2 px-2 py-1 bg-red-600 text-white text-xs font-bold rounded">
-                  {product.badge}
+                  {product.tags[0]}
                 </span>
               )}
             </div>

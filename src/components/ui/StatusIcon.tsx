@@ -86,7 +86,7 @@ export default function StatusIcon({
         viewBox="0 0 24 24"
         stroke="currentColor"
       >
-        {icons[selectedIcon]}
+        {icons[selectedIcon as keyof typeof icons]}
       </svg>
     </div>
   );

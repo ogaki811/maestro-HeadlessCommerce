@@ -85,11 +85,17 @@ export default function QuotationResponseTable({ quotation }: QuotationResponseT
         // カートアイテムとして追加
         addItem({
           id: productDetail.id,
-          productCode: productDetail.productCode,
+          code: productDetail.productCode,
           name: productDetail.productName,
           price: responseProduct.unitPrice,
           quantity: productDetail.quantity,
-          image: productDetail.imageUrl,
+          image: productDetail.imageUrl ?? '/img/placeholder.png',
+          images: productDetail.imageUrl ? [productDetail.imageUrl] : ['/img/placeholder.png'],
+          brand: '',
+          category: '',
+          stock: true,
+          rating: 0,
+          tags: [],
         });
         successCount++;
       } catch (error) {

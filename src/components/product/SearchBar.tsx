@@ -33,7 +33,7 @@ export default function SearchBar({
         <div className="ec-search-bar__input-wrapper relative flex items-center">
           <Icon
             name="search"
-            size={20}
+            size="md"
             className="ec-search-bar__icon absolute left-3 text-gray-400 pointer-events-none"
           />
           <input
@@ -50,7 +50,7 @@ export default function SearchBar({
               className="ec-search-bar__clear absolute right-12 text-gray-400 hover:text-gray-600 transition-colors"
               aria-label="検索をクリア"
             >
-              <Icon name="close" size={18} />
+              <Icon name="close" size="sm" />
             </button>
           )}
           <button
