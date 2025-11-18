@@ -19,7 +19,6 @@ export default function RecommendedItem({ product }: RecommendedItemProps) {
 
   const handleAddToCart = () => {
     addItem({ ...product, quantity });
-    toast.success(`${product.name}を${quantity}個カートに追加しました`);
   };
 
   const handleToggleFavorite = () => {

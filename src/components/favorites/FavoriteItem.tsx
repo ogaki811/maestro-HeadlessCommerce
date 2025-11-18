@@ -18,7 +18,6 @@ export default function FavoriteItem({ item }: FavoriteItemProps) {
 
   const handleAddToCart = () => {
     addItem({ ...item, quantity });
-    toast.success(`${item.name}を${quantity}個カートに追加しました`);
   };
 
   const handleRemove = () => {

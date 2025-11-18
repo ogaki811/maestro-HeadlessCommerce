@@ -51,7 +51,6 @@ export default function ProductCard({ product, size = 'default', hideTags = fals
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     addItem({ ...product, quantity });
-    toast.success(`${product.name}を${quantity}個カートに追加しました`);
   };
 
   const handleToggleFavorite = (e: React.MouseEvent) => {

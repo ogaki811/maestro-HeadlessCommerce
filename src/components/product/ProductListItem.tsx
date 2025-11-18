@@ -18,7 +18,6 @@ export default function ProductListItem({ product }: ProductListItemProps) {
 
   const handleAddToCart = () => {
     addItem({ ...product, quantity });
-    toast.success(`${product.name}をカートに追加しました`);
     setQuantity(1);
   };
 

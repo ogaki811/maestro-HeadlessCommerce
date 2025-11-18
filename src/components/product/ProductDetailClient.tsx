@@ -50,8 +50,6 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
         quantity: quantity
       };
       addItem(productWithQuantity);
-
-      toast.success(`${product.name}を${quantity}個カートに追加しました`);
     } catch (error) {
       console.error('Failed to add to cart via Composer API, using local store:', error);
 
@@ -62,7 +60,6 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
         quantity: quantity
       };
       addItem(productWithQuantity);
-      toast.success(`${product.name}を${quantity}個カートに追加しました`);
     }
   };
 

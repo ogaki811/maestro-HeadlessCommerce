@@ -60,12 +60,6 @@ export default function QuickOrderPage() {
         addItem(product);
       });
 
-      // 成功メッセージ表示
-      toast.success(`${productsToAdd.length}商品をカートに追加しました！`, {
-        duration: 3000,
-        position: 'top-center',
-      });
-
       // カートページへ遷移するか確認
       setTimeout(() => {
         if (confirm('カートページに移動しますか？')) {
