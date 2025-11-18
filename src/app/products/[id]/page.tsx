@@ -106,8 +106,8 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
     ...productData,
     brand,
     rating,
-    images: productData.images || productData.imageUrl ? [productData.imageUrl] : ['/img/products/placeholder.png'], // imagesがない場合のフォールバック
-    stock: productData.stock || 0,
+    images: productData.images || ['/img/products/placeholder.png'], // imagesがない場合のフォールバック
+    stock: productData.stock ?? 0,
     originalPrice: (productData.tags && productData.tags.includes('セール')) ? Math.round(productData.price * 1.2) : null,
     description: `${productData.name}は、${brand}が提供する高品質な商品です。オフィスや家庭でお使いいただける定番商品で、丈夫な作りで長くお使いいただけます。`,
     features: [
@@ -159,7 +159,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
       url: `https://smartsample.example.com/products/${product.id}`,
       priceCurrency: 'JPY',
       price: product.price,
-      availability: product.stock > 0
+      availability: (product.stock as number) > 0
         ? 'https://schema.org/InStock'
         : 'https://schema.org/OutOfStock',
       seller: {
