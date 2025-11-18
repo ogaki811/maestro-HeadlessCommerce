@@ -116,7 +116,7 @@ export function useProductSearch(productCode: string, delay: number = 300) {
             imageUrl: product.image,
             stock: product.stock ? 100 : 0, // サンプルデータはboolean型なので数値に変換
             category: product.category,
-            isAvailable: product.stock,
+            isAvailable: Boolean(product.stock),
             // 廃番商品情報
             discontinued: product.discontinued,
             discontinuedDate: product.discontinuedDate,

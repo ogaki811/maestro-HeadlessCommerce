@@ -119,49 +119,6 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
   return (
     <>
-      {/* ページ上部：クイックカートインセクション */}
-      <div className="ec-product-detail__quick-actions bg-gray-50 border-b border-gray-200 py-4 mb-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-center">
-          {/* 商品情報 */}
-          <div className="lg:col-span-6">
-            <p className="text-sm text-gray-600 mb-1">{product.brand}</p>
-            <h2 className="text-xl font-bold text-gray-900 mb-2">{product.name}</h2>
-            <div className="flex items-baseline gap-3">
-              <p className="text-2xl font-bold text-black">¥{product.price.toLocaleString()}</p>
-              {product.originalPrice && (
-                <span className="bg-red-500 text-white text-xs px-2 py-1 rounded">
-                  {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}%OFF
-                </span>
-              )}
-            </div>
-          </div>
-
-          {/* 数量選択とカートインボタン */}
-          <div className="lg:col-span-6">
-            <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
-              {stockCount > 0 && (
-                <div className="flex items-center gap-3">
-                  <label className="text-sm font-medium text-gray-700 whitespace-nowrap">数量:</label>
-                  <QuantitySelector
-                    value={quantity}
-                    onChange={setQuantity}
-                    max={stockCount}
-                  />
-                </div>
-              )}
-              <div className="flex-1 min-w-0 w-full sm:w-auto">
-                <AddToCartButton />
-              </div>
-            </div>
-            {stockCount > 0 ? (
-              <p className="text-sm text-green-600 mt-2">在庫あり ({stockCount}個)</p>
-            ) : (
-              <p className="text-sm text-red-600 mt-2">在庫切れ</p>
-            )}
-          </div>
-        </div>
-      </div>
-
       {/* メイン商品詳細セクション */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
         {/* 商品画像 */}
