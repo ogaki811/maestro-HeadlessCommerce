@@ -69,7 +69,8 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
   const handleToggleFavorite = () => {
     const productForFavorite = {
       ...product,
-      image: product.images[0]
+      image: product.images[0],
+      quantity: 1 // CartItem型に必要
     };
     const wasFavorite = isFavorite(product.id);
     toggleFavorite(productForFavorite);

@@ -55,7 +55,13 @@ export default function FilterSidebar({ filters, onFilterChange }: FilterSidebar
   };
 
   const clearFilters = () => {
-    onFilterChange({});
+    onFilterChange({
+      categories: [],
+      brands: [],
+      priceRange: [0, 100000],
+      inStock: false,
+      minRating: 0,
+    });
   };
 
   return (

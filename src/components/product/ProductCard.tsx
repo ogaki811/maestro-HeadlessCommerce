@@ -80,7 +80,7 @@ export default function ProductCard({ product, size = 'default', hideTags = fals
           {!hideTags && product.tags && product.tags.length > 0 && (
             <div className="absolute top-2 left-2 flex flex-wrap gap-1">
               {product.tags.map((tag) => (
-                <Badge key={tag} variant={tag === 'セール' ? 'danger' : 'primary'} size="sm">
+                <Badge key={tag} variant={tag === 'セール' ? 'danger' : 'default'} size="sm">
                   {tag}
                 </Badge>
               ))}

@@ -4,14 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { formatPrice } from '@/utils';
-
-interface CartItem {
-  id: number;
-  name: string;
-  price: number;
-  quantity: number;
-  image: string;
-}
+import type { CartItem } from '@/types';
 
 interface CartAddedNotificationProps {
   item: CartItem | null;
