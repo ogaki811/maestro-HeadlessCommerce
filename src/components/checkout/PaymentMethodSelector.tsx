@@ -55,7 +55,7 @@ export default function PaymentMethodSelector({
                 className="ec-payment-method-selector__radio w-4 h-4 text-black border-gray-300 focus:ring-gray-700"
               />
               <span className="ec-payment-method-selector__label ml-3 flex items-center gap-2">
-                <Icon name={option.icon} size={24} />
+                <Icon name={option.icon} size="lg" />
                 {option.label}
               </span>
             </label>

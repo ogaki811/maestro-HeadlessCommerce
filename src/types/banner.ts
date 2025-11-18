@@ -16,7 +16,7 @@ export type BannerVariant = 'info' | 'success' | 'warning' | 'error';
 export type BannerStatus = 'scheduled' | 'active' | 'expired';
 
 /**
- * バナー設定データ
+ * バナー設定データ（ImportantNotice用）
  */
 export interface BannerConfig {
   /** バナーID（UUID v4） */
@@ -48,4 +48,33 @@ export interface BannerConfig {
 
   /** 更新日時（ISO 8601形式） */
   updatedAt: string;
+}
+
+/**
+ * メインバナー設定データ（MainBanner用）
+ */
+export interface MainBannerConfig {
+  /** バナーID */
+  id: string;
+
+  /** バナータイトル */
+  title: string;
+
+  /** バナー説明文 */
+  description: string;
+
+  /** 画像URL */
+  imageUrl: string;
+
+  /** リンク先URL */
+  linkUrl: string;
+
+  /** ボタンテキスト（任意） */
+  buttonText?: string;
+
+  /** 表示フラグ */
+  isActive: boolean;
+
+  /** 表示順序 */
+  displayOrder: number;
 }

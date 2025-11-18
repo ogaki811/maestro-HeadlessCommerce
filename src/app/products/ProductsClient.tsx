@@ -171,12 +171,11 @@ export default function ProductsClient({
         )}
 
         {/* ソートと結果数 */}
-        <div className="flex justify-between items-center mb-6">
-          <p className="text-sm text-gray-600">
-            {sortedProducts.length}件の商品
-          </p>
-          <SearchSort value={sortBy} onChange={setSortBy} />
-        </div>
+        <SearchSort
+          sortBy={sortBy}
+          onSortChange={setSortBy}
+          resultCount={sortedProducts.length}
+        />
 
         {/* 商品グリッド */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 mb-8">

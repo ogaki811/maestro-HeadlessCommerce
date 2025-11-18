@@ -75,7 +75,7 @@ export default function ShippingInfoForm({
                   </>
                 ) : (
                   <>
-                    <Icon name="search" size={16} className="mr-2" />
+                    <Icon name="search" size="sm" className="mr-2" />
                     住所を自動入力
                   </>
                 )}

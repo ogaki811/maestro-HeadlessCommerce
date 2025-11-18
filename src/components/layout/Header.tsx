@@ -214,7 +214,7 @@ export default function Header() {
                 {isAuthenticated && approvalMenu && (
                   <Link href={approvalMenu.href} className="flex flex-col items-center p-2 text-gray-600 hover:text-gray-700 transition-colors relative">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d={approvalMenu.iconPath}></path>
+                      <path d={Array.isArray(approvalMenu.iconPath) ? approvalMenu.iconPath.join(' ') : approvalMenu.iconPath}></path>
                     </svg>
                     <span className="text-xs mt-1">{approvalMenu.text}</span>
                     {approvalMenu.badge && approvalMenu.getBadgeCount && approvalMenu.getBadgeCount() > 0 && (
@@ -226,7 +226,7 @@ export default function Header() {
                 )}
 
                 {/* ポイント表示（認証済みユーザーのみ） */}
-                {isAuthenticated && user && user.points > 0 && (
+                {isAuthenticated && user && user.points !== undefined && user.points > 0 && (
                   <div className="flex flex-col items-center p-2 text-gray-600">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                       <circle cx="12" cy="12" r="10" strokeWidth="2"></circle>

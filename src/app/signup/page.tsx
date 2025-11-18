@@ -82,6 +82,7 @@ export default function SignupPage() {
         name: formData.name,
         email: formData.email,
         phoneNumber: formData.phoneNumber || undefined,
+        role: 'general', // 新規登録ユーザーのデフォルトロール
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       });

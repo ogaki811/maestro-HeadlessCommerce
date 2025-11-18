@@ -5,8 +5,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import Link from 'next/link';
 import Image from 'next/image';
-import { bannersApi } from '@/lib/api-client';
-import type { BannerConfig } from '@/types/banner';
+// import { bannersApi } from '@/lib/api-client'; // TODO: MainBanner用APIエンドポイント実装後に有効化
+import type { MainBannerConfig } from '@/types/banner';
 
 // Swiper CSS（動的インポート）
 import 'swiper/css';
@@ -41,7 +41,7 @@ const SPACE_BETWEEN_BREAKPOINTS = {
 // ===== デフォルトバナーデータ =====
 
 /** デフォルトバナー（初期表示用・API未起動時用） */
-const defaultBanners: BannerConfig[] = [
+const defaultBanners: MainBannerConfig[] = [
   {
     id: 'mainbanner-1',
     title: 'メインバナー1',
@@ -135,28 +135,29 @@ const getImageLoadingStrategy = (index: number): 'eager' | 'lazy' =>
 // ===== メインコンポーネント =====
 
 export default function MainBanner() {
-  const [banners, setBanners] = useState<BannerConfig[]>(defaultBanners);
+  const [banners, setBanners] = useState<MainBannerConfig[]>(defaultBanners);
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [loadedCount, setLoadedCount] = useState(0);
   const totalImages = useRef(defaultBanners.length);
 
   useEffect(() => {
-    async function fetchBanners() {
-      try {
-        const response = await bannersApi.getBanners();
-        if (response.success) {
-          setBanners(response.data);
-          totalImages.current = response.data.length;
-          setLoadedCount(0); // リセット
-          setImagesLoaded(false); // リセット
-          console.log('✅ Loaded banners from Composer API:', response.data.length);
-        }
-      } catch (error) {
-        console.error('❌ Failed to load banners from API, using default data:', error);
-        // デフォルトバナーを継続使用（すでにstateに設定済み）
-      }
-    }
-    fetchBanners();
+    // TODO: MainBanner用のAPIエンドポイント実装後に有効化
+    // async function fetchBanners() {
+    //   try {
+    //     const response = await bannersApi.getMainBanners(); // MainBanner用エンドポイント
+    //     if (response.success) {
+    //       setBanners(response.data);
+    //       totalImages.current = response.data.length;
+    //       setLoadedCount(0); // リセット
+    //       setImagesLoaded(false); // リセット
+    //       console.log('✅ Loaded banners from Composer API:', response.data.length);
+    //     }
+    //   } catch (error) {
+    //     console.error('❌ Failed to load banners from API, using default data:', error);
+    //     // デフォルトバナーを継続使用（すでにstateに設定済み）
+    //   }
+    // }
+    // fetchBanners();
 
     // 最大1.5秒でタイムアウト - ロードが遅い場合は強制表示
     const timeout = setTimeout(() => {
@@ -222,12 +223,12 @@ export default function MainBanner() {
             <SwiperSlide key={banner.id} className="ec-main-banner__slide">
               {({ isActive }: SwiperSlideRenderProps) => (
                 <Link
-                  href={banner.actionUrl || banner.linkUrl || '#'}
+                  href={banner.linkUrl || '#'}
                   className={getLinkClassName(isActive)}
                 >
                   <Image
                     src={banner.imageUrl}
-                    alt={banner.message || banner.title || 'バナー'}
+                    alt={banner.title || 'バナー'}
                     width={BANNER_DIMENSIONS.width}
                     height={BANNER_DIMENSIONS.height}
                     className="ec-main-banner__image rounded-lg object-contain block"

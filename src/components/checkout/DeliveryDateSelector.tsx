@@ -33,7 +33,7 @@ export default function DeliveryDateSelector({
     <div className={`ec-delivery-date-selector ${className}`}>
       <div className="ec-delivery-date-selector__container bg-white rounded-lg border border-gray-200 p-6">
         <h2 className="ec-delivery-date-selector__title text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
-          <Icon name="truck" size={20} />
+          <Icon name="truck" size="md" />
           配送日時指定
         </h2>
         <div className="ec-delivery-date-selector__fields grid grid-cols-2 gap-4">
