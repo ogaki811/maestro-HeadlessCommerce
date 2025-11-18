@@ -333,9 +333,12 @@ const useCartStore = create<CartState>()(
           price: product.price,
           quantity: index === 1 ? 2 : 1, // 2番目の商品は数量2
           image: product.image,
+          images: product.images,
           brand: product.brand,
           category: product.category,
-          stock: 50, // デモ用の在庫数
+          stock: typeof product.stock === 'number' ? product.stock : 50,
+          rating: product.rating,
+          tags: product.tags,
           code: product.code,
         }));
 

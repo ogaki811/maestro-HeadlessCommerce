@@ -96,9 +96,9 @@ export function useProductSearch(productCode: string, delay: number = 300) {
                   price: altProduct.price,
                   priceWithTax: Math.floor(altProduct.price * 1.1),
                   imageUrl: altProduct.image,
-                  stock: typeof altProduct.stock === 'number' ? altProduct.stock : (altProduct.stock ? 100 : 0),
+                  stock: typeof altProduct.stock === 'number' ? altProduct.stock : 0,
                   category: altProduct.category,
-                  isAvailable: altProduct.stock ? true : false,
+                  isAvailable: typeof altProduct.stock === 'number' && altProduct.stock > 0,
                 };
               })
               .filter((p): p is ProductSearchResult => p !== null)
@@ -114,9 +114,9 @@ export function useProductSearch(productCode: string, delay: number = 300) {
             price: product.price,
             priceWithTax: Math.floor(product.price * 1.1), // 10%の消費税を加算
             imageUrl: product.image,
-            stock: product.stock ? 100 : 0, // サンプルデータはboolean型なので数値に変換
+            stock: typeof product.stock === 'number' ? product.stock : 0,
             category: product.category,
-            isAvailable: Boolean(product.stock),
+            isAvailable: typeof product.stock === 'number' && product.stock > 0,
             // 廃番商品情報
             discontinued: product.discontinued,
             discontinuedDate: product.discontinuedDate,
@@ -132,7 +132,7 @@ export function useProductSearch(productCode: string, delay: number = 300) {
               code: 'DISCONTINUED',
               message: 'この商品は廃番になりました',
             });
-          } else if (!product.stock) {
+          } else if (typeof product.stock === 'number' && product.stock === 0) {
             setError({
               code: 'OUT_OF_STOCK',
               message: 'この商品は在庫切れです',

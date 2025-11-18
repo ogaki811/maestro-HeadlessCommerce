@@ -1,9 +1,0 @@
-<svg width="900" height="280" xmlns="http://www.w3.org/2000/svg">
-  <rect width="900" height="280" fill="#3d3d3d"/>
-  <text x="50%" y="40%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="48" font-weight="bold" font-family="sans-serif">
-    New Products
-  </text>
-  <text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" fill="#e5e5e5" font-size="24" font-family="sans-serif">
-    新商品続々入荷
-  </text>
-</svg>
