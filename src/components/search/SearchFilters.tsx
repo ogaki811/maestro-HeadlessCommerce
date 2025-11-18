@@ -15,6 +15,7 @@ interface SearchFiltersProps {
   onFilterChange: (filters: ProductFilters) => void;
   categories: string[];
   brands: string[];
+  onResetFilters?: () => void;
 }
 
 export default function SearchFilters({
@@ -22,6 +23,7 @@ export default function SearchFilters({
   onFilterChange,
   categories,
   brands,
+  onResetFilters,
 }: SearchFiltersProps) {
   const [showAllCategories, setShowAllCategories] = useState(false);
   const [showAllBrands, setShowAllBrands] = useState(false);
