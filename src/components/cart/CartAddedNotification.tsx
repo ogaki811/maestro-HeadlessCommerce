@@ -21,7 +21,7 @@ export default function CartAddedNotification({
 
   return (
     <div
-      className={`ec-cart-added-notification fixed top-4 right-4 w-[360px] bg-white rounded-lg shadow-2xl border-2 border-green-500 overflow-hidden z-50 transition-all duration-300 ${
+      className={`ec-cart-added-notification fixed bottom-4 right-4 w-[360px] bg-white rounded-lg shadow-2xl border-2 border-green-500 overflow-hidden z-50 transition-all duration-300 ${
         isVisible
           ? 'opacity-100 translate-x-0'
           : 'opacity-0 translate-x-[400px] pointer-events-none'
