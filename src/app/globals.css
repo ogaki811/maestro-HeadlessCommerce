@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* Swiper CSS - 1回だけインポート（パフォーマンス最適化） */
+@import "swiper/css";
+@import "swiper/css/navigation";
+@import "swiper/css/pagination";
+
 @theme {
   --color-background: #ffffff;
   --color-foreground: #171717;

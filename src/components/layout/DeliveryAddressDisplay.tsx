@@ -15,7 +15,7 @@ export default function DeliveryAddressDisplay({
 
   return (
     <Link
-      href="/mypage/settings"
+      href="/mypage"
       className="
         flex flex-col items-start
         text-[#2d2626]

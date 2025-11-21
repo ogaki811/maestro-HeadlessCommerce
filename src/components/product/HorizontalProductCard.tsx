@@ -1,7 +1,8 @@
 'use client';
 
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import QuantitySelector from './QuantitySelector';
 
 interface HorizontalProductCardProps {
@@ -35,6 +36,8 @@ export default function HorizontalProductCard({
   prefix,
   className = '',
 }: HorizontalProductCardProps) {
+  const [imageError, setImageError] = useState(false);
+
   return (
     <div data-testid="product-card" className={`ec-horizontal-product-card bg-white rounded-lg shadow-sm p-4 md:p-6 ${className}`}>
       <div className="ec-horizontal-product-card__container flex items-start space-x-4">
@@ -42,14 +45,14 @@ export default function HorizontalProductCard({
         {prefix}
 
         {/* 商品画像 */}
-        <Link href={`/products/${id}`} className="ec-horizontal-product-card__image-link flex-shrink-0">
-          <img
-            src={image}
+        <Link href={`/products/${id}`} className="ec-horizontal-product-card__image-link flex-shrink-0 relative w-24 h-24">
+          <Image
+            src={imageError ? '/img/placeholder.png' : image}
             alt={name}
-            className="ec-horizontal-product-card__image w-24 h-24 object-cover rounded-lg"
-            onError={(e) => {
-              (e.target as HTMLImageElement).src = '/img/placeholder.png';
-            }}
+            fill
+            sizes="96px"
+            className="ec-horizontal-product-card__image object-cover rounded-lg"
+            onError={() => setImageError(true)}
           />
         </Link>
 

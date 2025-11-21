@@ -2,12 +2,12 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { useRouter, usePathname } from 'next/navigation';
 import useCartStore from '@/store/useCartStore';
 import useAuthStore from '@/store/useAuthStore';
 import useCustomMenuStore from '@/store/useCustomMenuStore';
-import { CartAddedNotification } from '@/components/cart';
 import DeliveryAddressDisplay from './DeliveryAddressDisplay';
 import DealerSelectorButton from './DealerSelectorButton';
 import CustomMenuBar from './CustomMenuBar';
@@ -26,6 +26,11 @@ const MobileMenu = dynamic(() => import('./MobileMenu'), {
   loading: () => null,
 });
 
+// CartAddedNotificationを動的インポート
+const CartAddedNotification = dynamic(() => import('@/components/cart/CartAddedNotification'), {
+  ssr: false,
+});
+
 export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
@@ -34,6 +39,7 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isNotificationVisible, setIsNotificationVisible] = useState(false);
   const [badgeAnimation, setBadgeAnimation] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const prevItemCountRef = useRef<number>(0);
   const notificationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -47,6 +53,11 @@ export default function Header() {
 
   // 承認項目の設定を取得
   const approvalMenu = headerNavigationIcons.find(icon => icon.id === 'approval');
+
+  // クライアントサイドマウント確認
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // カスタムメニューストアのハイドレーション（SSR対応）
   useEffect(() => {
@@ -140,234 +151,248 @@ export default function Header() {
       <header className="ec-header w-full">
         {/* デスクトップヘッダー */}
         <div className={`ec-header--desktop hidden lg:block transition-transform duration-300 ${isScrolled ? 'fixed top-0 left-0 right-0 z-[100] shadow-md' : 'relative z-[100]'} ${isScrolled && !showHeader ? '-translate-y-full' : 'translate-y-0'}`}>
-        {/* メインヘッダー */}
-        <div className="bg-white">
-          <div className="w-full px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between py-1 gap-4">
-              {/* ロゴエリア */}
-              <div className="ec-header__logo flex-shrink-0">
-                <Link href="/" className="flex items-center space-x-3">
-                  <img src="/img/header_logo.png" alt="smartsample" className="h-6 w-auto" />
-                </Link>
-              </div>
-
-              {/* 検索エリア */}
-              <div className="ec-header__search flex-1 relative">
-                <form onSubmit={handleSearch} className="ec-header__search-form relative">
-                  {/* 統合された検索バー */}
-                  <div className="flex border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-gray-700 focus-within:border-transparent transition-all bg-white">
-                    {/* カテゴリセレクター */}
-                    <div className="flex-shrink-0 border-r border-gray-200">
-                      <CategorySelector
-                        value={selectedCategory}
-                        onChange={setSelectedCategory}
-                      />
-                    </div>
-
-                    {/* 検索入力 */}
-                    <div className="flex-1 flex items-center gap-3 px-4">
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-600 flex-shrink-0">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <path d="m21 21-4.35-4.35"></path>
-                      </svg>
-                      <input
-                        type="text"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        placeholder="商品名やメーカー、品番から探す"
-                        className="flex-1 py-3 text-sm border-none focus:outline-none focus:ring-0 bg-transparent placeholder:text-gray-400"
-                        style={{ outline: 'none', boxShadow: 'none', border: 'none' }}
-                      />
-                    </div>
-
-                    {/* 検索ボタン */}
-                    <button type="submit" className="flex-shrink-0 px-6 py-3 bg-black text-white hover:bg-gray-900 transition-colors font-medium rounded-r-lg">
-                      検索
-                    </button>
-                  </div>
-                </form>
-              </div>
-
-              {/* 機能エリア */}
-              <div className="ec-header__actions flex items-center space-x-4">
-                {/* よくある質問 */}
-                <Link href="/faq" className="flex flex-col items-center p-2 text-gray-600 hover:text-gray-700 transition-colors">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                  </svg>
-                  <span className="text-xs mt-1">よくある質問</span>
-                </Link>
-
-                {/* お問い合わせ（認証済みユーザーのみ） */}
-                {isAuthenticated && (
-                  <Link href="/contact" className="flex flex-col items-center p-2 text-gray-600 hover:text-gray-700 transition-colors">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                      <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
-                    </svg>
-                    <span className="text-xs mt-1">お問い合わせ</span>
-                  </Link>
-                )}
-
-                {/* 承認（認証済みユーザーのみ） */}
-                {isAuthenticated && approvalMenu && (
-                  <Link href={approvalMenu.href} className="flex flex-col items-center p-2 text-gray-600 hover:text-gray-700 transition-colors relative">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d={Array.isArray(approvalMenu.iconPath) ? approvalMenu.iconPath.join(' ') : approvalMenu.iconPath}></path>
-                    </svg>
-                    <span className="text-xs mt-1">{approvalMenu.text}</span>
-                    {approvalMenu.badge && approvalMenu.getBadgeCount && approvalMenu.getBadgeCount() > 0 && (
-                      <Badge variant="danger" size="sm" className="absolute -top-1 -right-1">
-                        {approvalMenu.getBadgeCount()}
-                      </Badge>
-                    )}
-                  </Link>
-                )}
-
-                {/* ポイント表示（認証済みユーザーのみ） */}
-                {isAuthenticated && user && user.points !== undefined && user.points > 0 && (
-                  <div className="flex flex-col items-center p-2 text-gray-600">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                      <circle cx="12" cy="12" r="10" strokeWidth="2"></circle>
-                      <path d="M12 6v6l4 2" strokeWidth="2" strokeLinecap="round"></path>
-                    </svg>
-                    <span className="text-xs mt-1 font-semibold">{user.points}pt</span>
-                  </div>
-                )}
-
-                <Link href="/cart" className="ec-header__cart-icon flex flex-col items-center p-2 text-gray-600 hover:text-gray-700 transition-colors">
-                  <div className="relative">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                      <circle cx="9" cy="21" r="1"></circle>
-                      <circle cx="20" cy="21" r="1"></circle>
-                      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                    </svg>
-                    {itemCount > 0 && (
-                      <span className={`ec-header__badge absolute -top-2 -right-2 bg-gray-700 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center ${badgeAnimation ? 'animate-badge-pop' : ''}`}>{itemCount}</span>
-                    )}
-                  </div>
-                  <span className="text-xs mt-1">カート</span>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* ナビゲーションメニュー */}
-        {!isScrolled && (
-          <nav className="ec-header__nav text-gray-700">
+          {/* メインヘッダー */}
+          <div className="bg-white">
             <div className="w-full px-4 sm:px-6 lg:px-8">
-              <div className="flex items-center justify-between h-12">
-                <div className="flex items-center space-x-4">
-                  <button
-                    onClick={handleMobileMenuOpen}
-                    className="flex items-center gap-2 hover:text-black transition-colors font-medium"
-                  >
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <line x1="3" y1="12" x2="21" y2="12"></line>
-                      <line x1="3" y1="6" x2="21" y2="6"></line>
-                      <line x1="3" y1="18" x2="21" y2="18"></line>
-                    </svg>
-                    メニュー
-                  </button>
-
-                  {/* カスタムメニューバー（開発中は常に表示） */}
-                  <CustomMenuBar selectedMenuIds={customMenuIds} />
+              <div className="flex items-center justify-between py-1 gap-4">
+                {/* ロゴエリア */}
+                <div className="ec-header__logo flex-shrink-0">
+                  <Link href="/" className="flex items-center space-x-3">
+                    <Image
+                      src="/img/header_logo.png"
+                      alt="smartsample"
+                      width={140}
+                      height={24}
+                      className="h-6 w-auto"
+                      priority
+                    />
+                  </Link>
                 </div>
 
-                {/* 右側: 販売店選択・配送先・ユーザー名 or ログインボタン */}
-                {isAuthenticated && user ? (
-                  <div className="flex items-center space-x-4">
-                    <DealerSelectorButton />
-                    <DeliveryAddressDisplay
-                      postalCode={user.postalCode}
-                      address={user.address}
-                    />
-                    <UserNameDisplay
-                      userName={user.name}
-                      userEmail={user.email}
-                    />
-                  </div>
-                ) : (
-                  <div className="flex items-center">
-                    <Link
-                      href="/login"
-                      className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-colors"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                {/* 検索エリア */}
+                <div className="ec-header__search flex-1 relative">
+                  <form onSubmit={handleSearch} className="ec-header__search-form relative">
+                    {/* 統合された検索バー */}
+                    <div className="flex border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-gray-700 focus-within:border-transparent transition-all bg-white">
+                      {/* カテゴリセレクター */}
+                      <div className="flex-shrink-0 border-r border-gray-200">
+                        <CategorySelector
+                          value={selectedCategory}
+                          onChange={setSelectedCategory}
+                        />
+                      </div>
+
+                      {/* 検索入力 */}
+                      <div className="flex-1 flex items-center gap-3 px-4">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-600 flex-shrink-0">
+                          <circle cx="11" cy="11" r="8"></circle>
+                          <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                        <input
+                          type="text"
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                          placeholder="商品名やメーカー、品番から探す"
+                          className="flex-1 py-3 text-sm border-none focus:outline-none focus:ring-0 bg-transparent placeholder:text-gray-400"
+                          style={{ outline: 'none', boxShadow: 'none', border: 'none' }}
+                        />
+                      </div>
+
+                      {/* 検索ボタン */}
+                      <button type="submit" className="flex-shrink-0 px-6 py-3 bg-black text-white hover:bg-gray-900 transition-colors font-medium rounded-r-lg">
+                        検索
+                      </button>
+                    </div>
+                  </form>
+                </div>
+
+                {/* 機能エリア */}
+                <div className="ec-header__actions flex items-center space-x-4">
+                  {/* よくある質問 */}
+                  <Link href="/faq" className="flex flex-col items-center p-2 text-gray-600 hover:text-gray-700 transition-colors">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                      <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                    <span className="text-xs mt-1">よくある質問</span>
+                  </Link>
+
+                  {/* お問い合わせ（認証済みユーザーのみ） */}
+                  {isAuthenticated && (
+                    <Link href="/contact" className="flex flex-col items-center p-2 text-gray-600 hover:text-gray-700 transition-colors">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
                       </svg>
-                      ログイン
+                      <span className="text-xs mt-1">お問い合わせ</span>
                     </Link>
-                  </div>
-                )}
+                  )}
+
+                  {/* 承認（認証済みユーザーのみ） */}
+                  {isAuthenticated && approvalMenu && (
+                    <Link href={approvalMenu.href} className="flex flex-col items-center p-2 text-gray-600 hover:text-gray-700 transition-colors relative">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d={Array.isArray(approvalMenu.iconPath) ? approvalMenu.iconPath.join(' ') : approvalMenu.iconPath}></path>
+                      </svg>
+                      <span className="text-xs mt-1">{approvalMenu.text}</span>
+                      {approvalMenu.badge && approvalMenu.getBadgeCount && approvalMenu.getBadgeCount() > 0 && (
+                        <Badge variant="danger" size="sm" className="absolute -top-1 -right-1">
+                          {approvalMenu.getBadgeCount()}
+                        </Badge>
+                      )}
+                    </Link>
+                  )}
+
+                  {/* ポイント表示（認証済みユーザーのみ） */}
+                  {isAuthenticated && user && user.points !== undefined && user.points > 0 && (
+                    <div className="flex flex-col items-center p-2 text-gray-600">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <circle cx="12" cy="12" r="10" strokeWidth="2"></circle>
+                        <path d="M12 6v6l4 2" strokeWidth="2" strokeLinecap="round"></path>
+                      </svg>
+                      <span className="text-xs mt-1 font-semibold">{user.points}pt</span>
+                    </div>
+                  )}
+
+                  <Link href="/cart" className="ec-header__cart-icon flex flex-col items-center p-2 text-gray-600 hover:text-gray-700 transition-colors">
+                    <div className="relative">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                      </svg>
+                      {mounted && itemCount > 0 && (
+                        <span className={`ec-header__badge absolute -top-2 -right-2 bg-gray-700 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center ${badgeAnimation ? 'animate-badge-pop' : ''}`}>{itemCount}</span>
+                      )}
+                    </div>
+                    <span className="text-xs mt-1">カート</span>
+                  </Link>
+                </div>
               </div>
             </div>
-          </nav>
-        )}
-
-        {/* 重要なお知らせ */}
-        {!isScrolled && <ImportantNotice notifications={notifications} />}
-      </div>
-
-      {/* モバイルメニュー */}
-      <MobileMenu isOpen={isMobileMenuOpen} onClose={handleMobileMenuClose} />
-
-      {/* モバイルヘッダー */}
-      <div className="ec-header--mobile lg:hidden bg-white">
-        <div className="px-4 py-3">
-          <div className="flex items-center justify-between mb-3">
-            <button onClick={handleMobileMenuOpen} className="ec-header__mobile-toggle p-2 text-gray-700 hover:text-black transition-colors">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <line x1="3" y1="12" x2="21" y2="12"></line>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <line x1="3" y1="18" x2="21" y2="18"></line>
-              </svg>
-            </button>
-            <Link href="/" className="ec-header__logo flex items-center">
-              <img src="/img/header_logo.png" alt="smartsample" className="h-5 w-auto" />
-            </Link>
-            <Link href="/cart" className="ec-header__cart-icon p-2 relative">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <circle cx="9" cy="21" r="1"></circle>
-                <circle cx="20" cy="21" r="1"></circle>
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-              </svg>
-              {itemCount > 0 && (
-                <span className="ec-header__badge absolute top-0 right-0 bg-gray-700 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">{itemCount}</span>
-              )}
-            </Link>
           </div>
-          <form onSubmit={handleSearch} className="ec-header__search-form space-y-2">
-            {/* カテゴリセレクター（モバイル） */}
-            <CategorySelector
-              value={selectedCategory}
-              onChange={setSelectedCategory}
-              variant="standalone"
-            />
 
-            {/* 検索入力（モバイル） */}
-            <div className="border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-gray-700 focus-within:border-transparent bg-white flex items-center gap-2 pl-3">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-600 flex-shrink-0">
-                <circle cx="11" cy="11" r="8"></circle>
-                <path d="m21 21-4.35-4.35"></path>
-              </svg>
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="商品を検索"
-                className="flex-1 pr-2 py-2.5 text-sm border-none focus:outline-none focus:ring-0 bg-transparent placeholder:text-gray-400"
-                style={{ outline: 'none', boxShadow: 'none', border: 'none' }}
-              />
-              <button type="submit" className="flex-shrink-0 px-4 py-2 bg-black text-white text-sm font-medium hover:bg-gray-900 transition-colors rounded-r-lg">
-                検索
-              </button>
-            </div>
-          </form>
+          {/* ナビゲーションメニュー */}
+          {!isScrolled && (
+            <nav className="ec-header__nav text-gray-700">
+              <div className="w-full px-4 sm:px-6 lg:px-8">
+                <div className="flex items-center justify-between h-12">
+                  <div className="flex items-center space-x-4">
+                    <button
+                      onClick={handleMobileMenuOpen}
+                      className="flex items-center gap-2 hover:text-black transition-colors font-medium"
+                    >
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                      </svg>
+                      メニュー
+                    </button>
+
+                    {/* カスタムメニューバー（開発中は常に表示） */}
+                    <CustomMenuBar selectedMenuIds={customMenuIds} />
+                  </div>
+
+                  {/* 右側: 販売店選択・配送先・ユーザー名 or ログインボタン */}
+                  {isAuthenticated && user ? (
+                    <div className="flex items-center space-x-4">
+                      <DealerSelectorButton />
+                      <DeliveryAddressDisplay
+                        postalCode={user.postalCode}
+                        address={user.address}
+                      />
+                      <UserNameDisplay
+                        userName={user.name}
+                        userEmail={user.email}
+                      />
+                    </div>
+                  ) : (
+                    <div className="flex items-center">
+                      <Link
+                        href="/login"
+                        className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-colors"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                        </svg>
+                        ログイン
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </nav>
+          )}
+
+          {/* 重要なお知らせ */}
+          {!isScrolled && <ImportantNotice notifications={notifications} />}
         </div>
-      </div>
+
+        {/* モバイルメニュー */}
+        <MobileMenu isOpen={isMobileMenuOpen} onClose={handleMobileMenuClose} />
+
+        {/* モバイルヘッダー */}
+        <div className="ec-header--mobile lg:hidden bg-white">
+          <div className="px-4 py-3">
+            <div className="flex items-center justify-between mb-3">
+              <button onClick={handleMobileMenuOpen} className="ec-header__mobile-toggle p-2 text-gray-700 hover:text-black transition-colors">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <line x1="3" y1="12" x2="21" y2="12"></line>
+                  <line x1="3" y1="6" x2="21" y2="6"></line>
+                  <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+              </button>
+              <Link href="/" className="ec-header__logo flex items-center">
+                <Image
+                  src="/img/header_logo.png"
+                  alt="smartsample"
+                  width={120}
+                  height={20}
+                  className="h-5 w-auto"
+                  priority
+                />
+              </Link>
+              <Link href="/cart" className="ec-header__cart-icon p-2 relative">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <circle cx="9" cy="21" r="1"></circle>
+                  <circle cx="20" cy="21" r="1"></circle>
+                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+                {mounted && itemCount > 0 && (
+                  <span className="ec-header__badge absolute top-0 right-0 bg-gray-700 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">{itemCount}</span>
+                )}
+              </Link>
+            </div>
+            <form onSubmit={handleSearch} className="ec-header__search-form space-y-2">
+              {/* カテゴリセレクター（モバイル） */}
+              <CategorySelector
+                value={selectedCategory}
+                onChange={setSelectedCategory}
+                variant="standalone"
+              />
+
+              {/* 検索入力（モバイル） */}
+              <div className="border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-gray-700 focus-within:border-transparent bg-white flex items-center gap-2 pl-3">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-600 flex-shrink-0">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="商品を検索"
+                  className="flex-1 pr-2 py-2.5 text-sm border-none focus:outline-none focus:ring-0 bg-transparent placeholder:text-gray-400"
+                  style={{ outline: 'none', boxShadow: 'none', border: 'none' }}
+                />
+                <button type="submit" className="flex-shrink-0 px-4 py-2 bg-black text-white text-sm font-medium hover:bg-gray-900 transition-colors rounded-r-lg">
+                  検索
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       </header>
 
       {/* カート追加通知トースト */}

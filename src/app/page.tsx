@@ -3,8 +3,8 @@ import type { Metadata } from 'next';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import MainBanner from '@/components/common/MainBanner';
-import ProductCard from '@/components/product/ProductCard';
 import ProductSlider from '@/components/home/ProductSlider';
+import LazyProductSection from '@/components/home/LazyProductSection';
 import { sampleProducts } from '@/data/sampleProducts';
 
 export const metadata: Metadata = {
@@ -179,7 +179,7 @@ export default function HomePage() {
             </div>
           </section>
 
-          {/* 新着商品 */}
+          {/* 新着商品 - Intersection Observerで遅延読み込み */}
           {newProducts.length > 0 && (
             <section className="ec-home__new-arrivals py-12 bg-gray-50">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -187,12 +187,12 @@ export default function HomePage() {
                   <h2 className="ec-home__section-title text-3xl font-bold text-gray-900">新着商品</h2>
                   <Link href="/search" className="ec-home__view-all text-black hover:text-blue-800">すべて見る →</Link>
                 </div>
-                <ProductSlider products={newProducts} hideTags />
+                <LazyProductSection products={newProducts} hideTags />
               </div>
             </section>
           )}
 
-          {/* セール商品 */}
+          {/* セール商品 - Intersection Observerで遅延読み込み */}
           {saleProducts.length > 0 && (
             <section className="ec-home__sale py-12">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -203,7 +203,7 @@ export default function HomePage() {
                   </div>
                   <Link href="/search" className="ec-home__view-all text-black hover:text-blue-800">すべて見る →</Link>
                 </div>
-                <ProductSlider products={saleProducts} hideTags />
+                <LazyProductSection products={saleProducts} hideTags />
               </div>
             </section>
           )}

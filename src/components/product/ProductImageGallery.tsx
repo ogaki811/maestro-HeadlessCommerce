@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 
 interface ProductImageGalleryProps {
   images: string[];
@@ -32,11 +33,14 @@ export default function ProductImageGallery({
   return (
     <div className="ec-product-detail__images">
       {/* メイン画像 */}
-      <div className="ec-product-detail__main-image bg-gray-100 rounded-lg overflow-hidden mb-4">
-        <img
+      <div className="ec-product-detail__main-image bg-gray-100 rounded-lg overflow-hidden mb-4 relative aspect-square">
+        <Image
           src={images[selectedImage] || '/placeholder.png'}
           alt={productName}
-          className="w-full h-auto object-cover"
+          fill
+          priority
+          sizes="(max-width: 768px) 100vw, 50vw"
+          className="object-cover"
         />
       </div>
 
@@ -47,11 +51,16 @@ export default function ProductImageGallery({
             <button
               key={index}
               onClick={() => setSelectedImage(index)}
-              className={`ec-product-detail__thumbnail ${selectedImage === index ? 'ec-product-detail__thumbnail--active' : ''} w-24 h-24 border-2 rounded-lg overflow-hidden flex-shrink-0 ${
-                selectedImage === index ? 'border-black' : 'border-gray-200'
-              }`}
+              className={`ec-product-detail__thumbnail ${selectedImage === index ? 'ec-product-detail__thumbnail--active' : ''} w-24 h-24 border-2 rounded-lg overflow-hidden flex-shrink-0 relative ${selectedImage === index ? 'border-black' : 'border-gray-200'
+                }`}
             >
-              <img src={image} alt={`${productName} ${index + 1}`} className="w-full h-full object-cover" />
+              <Image
+                src={image}
+                alt={`${productName} ${index + 1}`}
+                fill
+                sizes="96px"
+                className="object-cover"
+              />
             </button>
           ))}
         </div>

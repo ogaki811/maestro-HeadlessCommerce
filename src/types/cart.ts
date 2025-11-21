@@ -74,7 +74,7 @@ export interface CartState {
   }>;
 
   // 開発用
-  addDemoData: () => void;
+  addDemoData: () => Promise<void>;
 }
 
 // お気に入りストア State

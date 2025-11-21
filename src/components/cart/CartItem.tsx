@@ -1,6 +1,8 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
+import { useState } from 'react';
 import type { CartItem as CartItemType } from '@/types';
 import QuantitySelector from '@/components/product/QuantitySelector';
 
@@ -19,6 +21,8 @@ export default function CartItem({
   onUpdateQuantity,
   onRemove,
 }: CartItemProps) {
+  const [imageError, setImageError] = useState(false);
+
   return (
     <div data-testid="cart-item" className="ec-cart-item bg-white rounded-lg shadow-sm p-4 md:p-6">
       <div className="ec-cart-item__container flex items-start space-x-4">
@@ -31,14 +35,14 @@ export default function CartItem({
         />
 
         {/* 商品画像 */}
-        <Link href={`/products/${item.id}`} className="ec-cart-item__image-link flex-shrink-0">
-          <img
-            src={item.image}
+        <Link href={`/products/${item.id}`} className="ec-cart-item__image-link flex-shrink-0 relative w-24 h-24">
+          <Image
+            src={imageError ? '/img/placeholder.png' : item.image}
             alt={item.name}
-            className="ec-cart-item__image w-24 h-24 object-cover rounded-lg"
-            onError={(e) => {
-              (e.target as HTMLImageElement).src = '/img/placeholder.png';
-            }}
+            fill
+            sizes="96px"
+            className="ec-cart-item__image object-cover rounded-lg"
+            onError={() => setImageError(true)}
           />
         </Link>
 

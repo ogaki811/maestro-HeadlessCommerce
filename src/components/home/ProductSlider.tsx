@@ -2,12 +2,10 @@
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
-import ProductCard from '@/components/product/ProductCard';
+import ProductCardLite from '@/components/product/ProductCardLite';
 import type { Product } from '@/types';
 
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
+// Swiper CSSはglobals.cssで一括インポート済み
 import './ProductSlider.css';
 
 interface ProductSliderProps {
@@ -42,9 +40,14 @@ export default function ProductSlider({ products, size = 'compact', hideTags = f
         }}
         className="ec-product-slider__container pb-12"
       >
-        {products.map((product) => (
+        {products.map((product, index) => (
           <SwiperSlide key={product.id} className="ec-product-slider__slide">
-            <ProductCard product={product} size={size} hideTags={hideTags} />
+            <ProductCardLite
+              product={product}
+              size={size}
+              hideTags={hideTags}
+              priority={index < 6} // 最初の6枚のみeager loading
+            />
           </SwiperSlide>
         ))}
       </Swiper>

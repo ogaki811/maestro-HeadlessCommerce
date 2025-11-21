@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import type { Product } from '@/types';
@@ -68,10 +69,12 @@ export default function ProductCard({ product, size = 'default', hideTags = fals
       <Link href={`/products/${product.id}`}>
         {/* 商品画像 */}
         <div className={`ec-product-card__image-container relative bg-gray-100 ${classes.image}`}>
-          <img
+          <Image
             src={imageError ? '/img/placeholder.png' : product.image}
             alt={product.name}
-            className="ec-product-card__image w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            fill
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            className="ec-product-card__image object-cover group-hover:scale-105 transition-transform duration-300"
             onError={() => setImageError(true)}
           />
 
@@ -128,9 +131,8 @@ export default function ProductCard({ product, size = 'default', hideTags = fals
               {[...Array(5)].map((_, i) => (
                 <svg
                   key={i}
-                  className={`w-4 h-4 ${
-                    i < Math.floor(product.rating) ? 'text-yellow-400' : 'text-gray-300'
-                  }`}
+                  className={`w-4 h-4 ${i < Math.floor(product.rating) ? 'text-yellow-400' : 'text-gray-300'
+                    }`}
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/Button';
 import QuantitySelector from './QuantitySelector';
 import useCartStore from '@/store/useCartStore';
@@ -14,6 +15,7 @@ interface ProductListItemProps {
 
 export default function ProductListItem({ product }: ProductListItemProps) {
   const [quantity, setQuantity] = useState(1);
+  const [imageError, setImageError] = useState(false);
   const { addItem } = useCartStore();
 
   const handleAddToCart = () => {
@@ -27,12 +29,15 @@ export default function ProductListItem({ product }: ProductListItemProps) {
         {/* 商品画像 */}
         <Link
           href={`/products/${product.id}`}
-          className="ec-product-list-item__image-link flex-shrink-0"
+          className="ec-product-list-item__image-link flex-shrink-0 relative w-32 h-32"
         >
-          <img
-            src={product.image}
+          <Image
+            src={imageError ? '/img/placeholder.png' : product.image}
             alt={product.name}
-            className="ec-product-list-item__image w-32 h-32 object-cover rounded-lg"
+            fill
+            sizes="128px"
+            className="ec-product-list-item__image object-cover rounded-lg"
+            onError={() => setImageError(true)}
           />
         </Link>
 
@@ -60,9 +65,8 @@ export default function ProductListItem({ product }: ProductListItemProps) {
                 {[1, 2, 3, 4, 5].map((star) => (
                   <svg
                     key={star}
-                    className={`w-4 h-4 ${
-                      star <= product.rating ? 'text-yellow-400' : 'text-gray-300'
-                    }`}
+                    className={`w-4 h-4 ${star <= product.rating ? 'text-yellow-400' : 'text-gray-300'
+                      }`}
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >

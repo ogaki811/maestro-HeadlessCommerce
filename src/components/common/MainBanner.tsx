@@ -8,10 +8,7 @@ import Image from 'next/image';
 // import { bannersApi } from '@/lib/api-client'; // TODO: MainBanner用APIエンドポイント実装後に有効化
 import type { MainBannerConfig } from '@/types/banner';
 
-// Swiper CSS（動的インポート）
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
+// Swiper CSSはglobals.cssで一括インポート済み
 import './MainBanner.css';
 
 // ===== 定数定義 =====
@@ -136,54 +133,24 @@ const getImageLoadingStrategy = (index: number): 'eager' | 'lazy' =>
 
 export default function MainBanner() {
   const [banners, setBanners] = useState<MainBannerConfig[]>(defaultBanners);
-  const [imagesLoaded, setImagesLoaded] = useState(false);
-  const [loadedCount, setLoadedCount] = useState(0);
-  const totalImages = useRef(defaultBanners.length);
 
-  useEffect(() => {
-    // TODO: MainBanner用のAPIエンドポイント実装後に有効化
-    // async function fetchBanners() {
-    //   try {
-    //     const response = await bannersApi.getMainBanners(); // MainBanner用エンドポイント
-    //     if (response.success) {
-    //       setBanners(response.data);
-    //       totalImages.current = response.data.length;
-    //       setLoadedCount(0); // リセット
-    //       setImagesLoaded(false); // リセット
-    //       console.log('✅ Loaded banners from Composer API:', response.data.length);
-    //     }
-    //   } catch (error) {
-    //     console.error('❌ Failed to load banners from API, using default data:', error);
-    //     // デフォルトバナーを継続使用（すでにstateに設定済み）
-    //   }
-    // }
-    // fetchBanners();
-
-    // 最大1.5秒でタイムアウト - ロードが遅い場合は強制表示
-    const timeout = setTimeout(() => {
-      if (!imagesLoaded) {
-        console.log('⏱️ Image load timeout - forcing display');
-        setImagesLoaded(true);
-      }
-    }, 1500);
-
-    return () => clearTimeout(timeout);
-  }, [imagesLoaded]);
-
-  // 画像ロード完了時のハンドラー
-  const handleImageLoad = () => {
-    setLoadedCount((prev) => {
-      const newCount = prev + 1;
-      // 最初の2枚（priority画像）がロードされたら表示開始
-      if (newCount >= SWIPER_SETTINGS.eagerLoadCount) {
-        setImagesLoaded(true);
-      }
-      return newCount;
-    });
-  };
+  // TODO: MainBanner用のAPIエンドポイント実装後に有効化
+  // useEffect(() => {
+  //   async function fetchBanners() {
+  //     try {
+  //       const response = await bannersApi.getMainBanners();
+  //       if (response.success) {
+  //         setBanners(response.data);
+  //       }
+  //     } catch (error) {
+  //       console.error('Failed to load banners:', error);
+  //     }
+  //   }
+  //   fetchBanners();
+  // }, []);
 
   if (banners.length === 0) {
-    return null; // バナーがない場合は何も表示しない（通常は発生しない）
+    return null;
   }
 
   // Swiper設定（シンプルな横スライド・中央配置）
@@ -194,7 +161,6 @@ export default function MainBanner() {
     centeredSlides: true,
     loop: true,
     loopAdditionalSlides: 1,
-    loopedSlides: banners.length,
     watchSlidesProgress: true,
     autoplay: {
       delay: SWIPER_SETTINGS.autoplayDelay,
@@ -209,15 +175,8 @@ export default function MainBanner() {
 
   return (
     <section className="ec-main-banner main-banner-section relative w-full bg-gray-100">
-      {/* スケルトンローディング */}
-      {!imagesLoaded && (
-        <div className="ec-main-banner__skeleton absolute inset-0 flex items-center justify-center px-10">
-          <div className="w-[360px] h-[200px] bg-gray-200 rounded-lg animate-pulse" />
-        </div>
-      )}
-
       {/* 実際のバナースライダー */}
-      <div className={imagesLoaded ? 'ec-main-banner__loaded' : 'ec-main-banner__loading'}>
+      <div className="ec-main-banner__loaded">
         <Swiper {...swiperConfig}>
           {banners.map((banner, index) => (
             <SwiperSlide key={banner.id} className="ec-main-banner__slide">
@@ -231,10 +190,10 @@ export default function MainBanner() {
                     alt={banner.title || 'バナー'}
                     width={BANNER_DIMENSIONS.width}
                     height={BANNER_DIMENSIONS.height}
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 360px"
                     className="ec-main-banner__image rounded-lg object-contain block"
                     priority={index < SWIPER_SETTINGS.eagerLoadCount}
                     quality={90}
-                    onLoad={handleImageLoad}
                   />
                 </Link>
               )}

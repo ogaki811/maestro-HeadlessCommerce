@@ -3,7 +3,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import type { CartState } from '@/types';
-import { sampleProducts } from '@/data/sampleProducts';
 
 const useCartStore = create<CartState>()(
   persist(
@@ -325,7 +324,10 @@ const useCartStore = create<CartState>()(
       },
 
       // デモデータ追加（開発用）
-      addDemoData: () => {
+      addDemoData: async () => {
+        // sampleProductsを動的インポート（バンドルサイズ削減）
+        const { sampleProducts } = await import('@/data/sampleProducts');
+
         // sampleProductsから最初の3つの商品を取得してカートアイテムに変換
         const demoItems = sampleProducts.slice(0, 3).map((product, index) => ({
           id: product.id,

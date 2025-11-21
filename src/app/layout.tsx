@@ -6,7 +6,7 @@ import "./globals.css";
 
 const notoSansJP = Noto_Sans_JP({
   subsets: ["latin"],
-  weight: ["400", "500", "700"],
+  weight: ["400", "700"], // 500を削除してフォント読み込みを軽量化
   variable: "--font-noto-sans-jp",
 });
 
@@ -36,7 +36,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="ja">
+    <html lang="ja" suppressHydrationWarning>
       <body className={`${notoSansJP.variable} font-sans antialiased`}>
         {/* Organization 構造化データ */}
         <script
