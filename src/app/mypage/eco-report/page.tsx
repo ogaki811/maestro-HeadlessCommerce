@@ -9,7 +9,6 @@ import MyPageSidebar from '@/components/mypage/MyPageSidebar';
 import { EcoReportForm } from '@/components/eco-report';
 import useAuthStore from '@/store/useAuthStore';
 import { EcoReportRequest, TargetCodeOption } from '@/types/eco-report';
-import toast from 'react-hot-toast';
 
 export default function EcoReportPage() {
   const router = useRouter();
@@ -68,33 +67,14 @@ export default function EcoReportPage() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/eco-report/generate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
+      // 結果ページへ遷移（クエリパラメータでデータを渡す）
+      const params = new URLSearchParams({
+        targetCode: data.targetCode,
+        closingDay: String(data.closingDay),
+        aggregationType: data.aggregationType,
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'レポート作成に失敗しました');
-      }
-
-      const result = await response.json();
-
-      if (result.downloadUrl) {
-        // ダウンロードを開始
-        const link = document.createElement('a');
-        link.href = result.downloadUrl;
-        link.download = result.fileName || 'eco-report.pdf';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        toast.success('レポートのダウンロードを開始しました');
-      } else {
-        toast.success('レポート作成リクエストを受け付けました');
-      }
+      router.push(`/mypage/eco-report/result?${params.toString()}`);
     } catch (error) {
       if (error instanceof Error) {
         throw error;
@@ -103,7 +83,7 @@ export default function EcoReportPage() {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [router]);
 
   if (!isAuthenticated) {
     return null;
