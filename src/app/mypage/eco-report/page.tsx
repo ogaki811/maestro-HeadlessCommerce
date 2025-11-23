@@ -126,9 +126,10 @@ export default function EcoReportPage() {
             {/* メインコンテンツ */}
             <div className="lg:col-span-3">
               <div className="bg-white rounded-lg shadow-sm p-8">
-                {/* ページタイトル */}
-                <h1 className="text-3xl font-medium text-gray-900 mb-8 pb-2 border-b-2 border-black">
+                {/* ページタイトル - オレンジグラデーション線 */}
+                <h1 className="text-2xl font-bold text-gray-900 mb-8 pb-2 border-b-2 border-transparent relative">
                   環境配慮商品購入レポート作成
+                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-[#d4a017] to-transparent"></span>
                 </h1>
 
                 <div className="mt-6">

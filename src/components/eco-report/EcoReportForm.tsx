@@ -76,7 +76,7 @@ export const EcoReportForm: React.FC<EcoReportFormProps> = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-8">
       {/* APIエラー表示 */}
       {apiError && (
         <div className="p-4 bg-red-50 border border-red-200 rounded-md">
@@ -85,81 +85,56 @@ export const EcoReportForm: React.FC<EcoReportFormProps> = ({
       )}
 
       {/* 作成対象セクション */}
-      <div className="border border-gray-300 rounded-lg overflow-hidden">
+      <div>
         {/* セクションヘッダー */}
-        <div className="px-4 py-3 border-b border-gray-300 bg-white">
-          <h2 className="text-base font-bold text-gray-900 flex items-center">
-            <span className="w-1 h-5 bg-[#2d2626] mr-3"></span>
-            作成対象
-          </h2>
-        </div>
+        <h2 className="text-lg font-bold text-gray-900 flex items-center mb-6">
+          <span className="w-1 h-6 bg-[#d4a017] mr-3"></span>
+          作成対象
+        </h2>
 
         {/* 説明文 */}
-        <div className="px-4 py-3 bg-white border-b border-gray-200">
-          <ul className="text-sm text-gray-600 space-y-1">
-            <li>※過去一年分の環境配慮商品購入レポートを作成します。</li>
-            <li>※作成対象を選択し、「レポート作成」ボタンをクリックしてください。</li>
-            <li>※レポート作成には多少時間が掛かる場合があります。</li>
-          </ul>
+        <div className="mb-8 text-sm text-gray-600 space-y-1">
+          <p>※過去一年分の環境配慮商品購入レポートを作成します。</p>
+          <p>※作成対象を選択し、「レポート作成」ボタンをクリックしてください。</p>
+          <p>※レポート作成には多少時間が掛かる場合があります。</p>
         </div>
 
-        {/* フォームテーブル */}
-        <div className="divide-y divide-gray-200">
+        {/* フォームフィールド - 横並び */}
+        <div className="flex flex-wrap items-center gap-4 mb-8">
           {/* 対象コード */}
-          <div className="flex flex-col md:flex-row">
-            <div className="md:w-40 px-4 py-3 bg-gray-50 border-b md:border-b-0 md:border-r border-gray-200">
-              <label className="text-sm font-medium text-gray-700">対象コード</label>
-            </div>
-            <div className="flex-1 px-4 py-3 bg-white">
-              <Select
-                value={formData.targetCode}
-                onChange={(e) => updateField('targetCode', e.target.value)}
-                options={targetCodeOptions.map((opt) => ({
-                  value: opt.value,
-                  label: opt.label,
-                }))}
-                error={errors.targetCode}
-                className="max-w-xs"
-              />
-            </div>
-          </div>
+          <Select
+            value={formData.targetCode}
+            onChange={(e) => updateField('targetCode', e.target.value)}
+            options={targetCodeOptions.map((opt) => ({
+              value: opt.value,
+              label: opt.label,
+            }))}
+            error={errors.targetCode}
+            className="min-w-[200px]"
+          />
 
           {/* 集計方式 */}
-          <div className="flex flex-col md:flex-row">
-            <div className="md:w-40 px-4 py-3 bg-gray-50 border-b md:border-b-0 md:border-r border-gray-200">
-              <label className="text-sm font-medium text-gray-700">集計方式</label>
-            </div>
-            <div className="flex-1 px-4 py-3 bg-white">
-              <Select
-                value={formData.aggregationType}
-                onChange={(e) =>
-                  updateField('aggregationType', e.target.value as AggregationType)
-                }
-                options={AGGREGATION_TYPE_OPTIONS.map((opt) => ({
-                  value: opt.value,
-                  label: opt.label,
-                }))}
-                className="max-w-xs"
-              />
-            </div>
-          </div>
+          <Select
+            value={formData.aggregationType}
+            onChange={(e) =>
+              updateField('aggregationType', e.target.value as AggregationType)
+            }
+            options={AGGREGATION_TYPE_OPTIONS.map((opt) => ({
+              value: opt.value,
+              label: opt.label,
+            }))}
+            className="min-w-[140px]"
+          />
 
           {/* 集計締日 */}
-          <div className="flex flex-col md:flex-row">
-            <div className="md:w-40 px-4 py-3 bg-gray-50 border-b md:border-b-0 md:border-r border-gray-200">
-              <label className="text-sm font-medium text-gray-700">集計締日</label>
-            </div>
-            <div className="flex-1 px-4 py-3 bg-white">
-              <div className="flex items-center gap-2">
-                <Select
-                  value={String(formData.closingDay)}
-                  onChange={(e) => updateField('closingDay', Number(e.target.value))}
-                  options={CLOSING_DAY_OPTIONS}
-                  className="w-24"
-                />
-                <span className="text-sm text-gray-600">日</span>
-              </div>
-            </div>
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-700">集計締日：</span>
+            <Select
+              value={String(formData.closingDay)}
+              onChange={(e) => updateField('closingDay', Number(e.target.value))}
+              options={CLOSING_DAY_OPTIONS}
+              className="w-20"
+            />
           </div>
         </div>
       </div>

@@ -54,9 +54,7 @@ describe('EcoReportForm', () => {
     render(<EcoReportForm onSubmit={mockOnSubmit} targetCodeOptions={defaultTargetCodes} />);
 
     expect(screen.getByText('作成対象')).toBeInTheDocument();
-    expect(screen.getByText('対象コード')).toBeInTheDocument();
-    expect(screen.getByText('集計方式')).toBeInTheDocument();
-    expect(screen.getByText('集計締日')).toBeInTheDocument();
+    expect(screen.getByText('集計締日：')).toBeInTheDocument();
     expect(screen.getByText('レポート作成')).toBeInTheDocument();
   });
 
