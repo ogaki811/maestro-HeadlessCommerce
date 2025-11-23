@@ -118,18 +118,20 @@ export default function EcoReportPage() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            {/* サイドバー */}
             <div className="lg:col-span-1">
               <MyPageSidebar />
             </div>
 
+            {/* メインコンテンツ */}
             <div className="lg:col-span-3">
               <div className="bg-white rounded-lg shadow-sm p-8">
                 {/* ページタイトル */}
-                <h1 className="text-2xl font-bold text-gray-900 mb-2 pb-2 border-b-2 border-transparent bg-gradient-to-r from-orange-400 to-orange-600 bg-[length:100%_2px] bg-no-repeat bg-bottom">
+                <h1 className="text-3xl font-medium text-gray-900 mb-8 pb-2 border-b-2 border-black">
                   環境配慮商品購入レポート作成
                 </h1>
 
-                <div className="mt-8">
+                <div className="mt-6">
                   {targetCodeOptions.length > 0 ? (
                     <EcoReportForm
                       onSubmit={handleSubmit}
