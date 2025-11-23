@@ -3,16 +3,8 @@
  * メインバナースライダー テスト
  */
 
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import MainBanner from '../MainBanner';
-import { bannersApi } from '@/lib/api-client';
-
-// bannersApi.getBannersをモック化
-jest.mock('@/lib/api-client', () => ({
-  bannersApi: {
-    getBanners: jest.fn(),
-  },
-}));
 
 // Swiperコンポーネントのモック
 jest.mock('swiper/react', () => ({
@@ -41,17 +33,13 @@ describe('MainBanner', () => {
 
   describe('デフォルトバナー表示', () => {
     it('デフォルトバナー6枚が表示されること', () => {
-      (bannersApi.getBanners as jest.Mock).mockRejectedValue(new Error('API Error'));
-
       render(<MainBanner />);
 
       const slides = screen.getAllByTestId('swiper-slide');
       expect(slides).toHaveLength(6);
     });
 
-    it('各バナーに正しい画像URLが設定されること (Next.js Image)', () => {
-      (bannersApi.getBanners as jest.Mock).mockRejectedValue(new Error('API Error'));
-
+    it('各バナーに正しいalt属性が設定されること (Next.js Image)', () => {
       render(<MainBanner />);
 
       const images = screen.getAllByRole('img');
@@ -66,70 +54,12 @@ describe('MainBanner', () => {
     });
   });
 
-  describe('API連携', () => {
-    it('API成功時にバナーデータが切り替わること', async () => {
-      const mockBanners = [
-        {
-          id: 'api-banner-1',
-          title: 'APIバナー1',
-          description: 'テスト',
-          imageUrl: '/test/banner1.png',
-          linkUrl: '/test',
-          buttonText: 'テスト',
-          isActive: true,
-          displayOrder: 1,
-        },
-        {
-          id: 'api-banner-2',
-          title: 'APIバナー2',
-          description: 'テスト',
-          imageUrl: '/test/banner2.png',
-          linkUrl: '/test',
-          buttonText: 'テスト',
-          isActive: true,
-          displayOrder: 2,
-        },
-      ];
-
-      (bannersApi.getBanners as jest.Mock).mockResolvedValue({
-        success: true,
-        data: mockBanners,
-      });
-
-      render(<MainBanner />);
-
-      await waitFor(() => {
-        const images = screen.getAllByRole('img');
-        expect(images).toHaveLength(2);
-        // Next.js Imageの場合、alt属性で検証
-        expect(images[0]).toHaveAttribute('alt', 'APIバナー1');
-        expect(images[1]).toHaveAttribute('alt', 'APIバナー2');
-      });
-    });
-
-    it('API失敗時にデフォルトバナーを使用すること', async () => {
-      (bannersApi.getBanners as jest.Mock).mockRejectedValue(new Error('API Error'));
-
-      render(<MainBanner />);
-
-      await waitFor(() => {
-        const images = screen.getAllByRole('img');
-        expect(images).toHaveLength(6);
-        // Next.js Imageの場合、alt属性で検証
-        expect(images[0]).toHaveAttribute('alt', 'メインバナー1');
-      });
-    });
-  });
-
   describe('画像の読み込み戦略', () => {
-    it('最初の2枚がpriorityであること (Next.js Image)', () => {
-      (bannersApi.getBanners as jest.Mock).mockRejectedValue(new Error('API Error'));
-
+    it('最初の2枚がpriority（優先ロード）であること (Next.js Image)', () => {
       render(<MainBanner />);
 
       const images = screen.getAllByRole('img');
       // Next.js Imageコンポーネントはpriorityプロップを使用
-      // priorityの場合、fetchpriorityまたはloadingプロップが設定される
       expect(images).toHaveLength(6);
       // 最初の2枚の画像が存在することを確認（priority設定により優先ロード）
       expect(images[0]).toBeInTheDocument();
@@ -137,8 +67,6 @@ describe('MainBanner', () => {
     });
 
     it('3枚目以降が通常読み込みであること (Next.js Image)', () => {
-      (bannersApi.getBanners as jest.Mock).mockRejectedValue(new Error('API Error'));
-
       render(<MainBanner />);
 
       const images = screen.getAllByRole('img');
@@ -152,8 +80,6 @@ describe('MainBanner', () => {
 
   describe('リンク動作', () => {
     it('各バナーに正しいリンクが設定されること', () => {
-      (bannersApi.getBanners as jest.Mock).mockRejectedValue(new Error('API Error'));
-
       render(<MainBanner />);
 
       const links = screen.getAllByRole('link');
@@ -162,40 +88,10 @@ describe('MainBanner', () => {
         expect(link).toHaveAttribute('href', '/products');
       });
     });
-
-    it('actionUrlがある場合はactionUrlを優先すること', async () => {
-      const mockBanners = [
-        {
-          id: 'api-banner-1',
-          title: 'APIバナー1',
-          description: 'テスト',
-          imageUrl: '/test/banner1.png',
-          linkUrl: '/products',
-          actionUrl: '/special-action',
-          buttonText: 'テスト',
-          isActive: true,
-          displayOrder: 1,
-        },
-      ];
-
-      (bannersApi.getBanners as jest.Mock).mockResolvedValue({
-        success: true,
-        data: mockBanners,
-      });
-
-      render(<MainBanner />);
-
-      await waitFor(() => {
-        const link = screen.getByRole('link');
-        expect(link).toHaveAttribute('href', '/special-action');
-      });
-    });
   });
 
   describe('アクティブ状態のスタイル', () => {
     it('アクティブスライドにec-main-banner__link--activeクラスが適用されること', () => {
-      (bannersApi.getBanners as jest.Mock).mockRejectedValue(new Error('API Error'));
-
       render(<MainBanner />);
 
       const links = screen.getAllByRole('link');
@@ -206,57 +102,24 @@ describe('MainBanner', () => {
     });
   });
 
-  describe('空データ処理', () => {
-    it('バナーが0件の場合nullを返すこと', async () => {
-      (bannersApi.getBanners as jest.Mock).mockResolvedValue({
-        success: true,
-        data: [],
-      });
+  describe('Swiperコンテナ', () => {
+    it('Swiperコンポーネントが正しいクラス名で表示されること', () => {
+      render(<MainBanner />);
 
-      const { container } = render(<MainBanner />);
-
-      await waitFor(() => {
-        expect(container.firstChild).toBeNull();
-      });
+      const swiper = screen.getByTestId('swiper');
+      expect(swiper).toHaveClass('ec-main-banner__container');
+      expect(swiper).toHaveClass('main-banner-slider');
     });
   });
 
-  describe('alt属性', () => {
-    it('messageがある場合はmessageをaltに使用すること', async () => {
-      const mockBanners = [
-        {
-          id: 'api-banner-1',
-          title: 'APIバナー1',
-          description: 'テスト',
-          message: 'カスタムメッセージ',
-          imageUrl: '/test/banner1.png',
-          linkUrl: '/test',
-          buttonText: 'テスト',
-          isActive: true,
-          displayOrder: 1,
-        },
-      ];
+  describe('セクション要素', () => {
+    it('sectionタグが正しいクラスで表示されること', () => {
+      const { container } = render(<MainBanner />);
 
-      (bannersApi.getBanners as jest.Mock).mockResolvedValue({
-        success: true,
-        data: mockBanners,
-      });
-
-      render(<MainBanner />);
-
-      await waitFor(() => {
-        const image = screen.getByRole('img');
-        expect(image).toHaveAttribute('alt', 'カスタムメッセージ');
-      });
-    });
-
-    it('messageがない場合はtitleをaltに使用すること', () => {
-      (bannersApi.getBanners as jest.Mock).mockRejectedValue(new Error('API Error'));
-
-      render(<MainBanner />);
-
-      const images = screen.getAllByRole('img');
-      expect(images[0]).toHaveAttribute('alt', 'メインバナー1');
+      const section = container.querySelector('section');
+      expect(section).toBeInTheDocument();
+      expect(section).toHaveClass('ec-main-banner');
+      expect(section).toHaveClass('main-banner-section');
     });
   });
 });

@@ -86,8 +86,9 @@ describe('PurchaseDataDownloadForm', () => {
   it('対象データを「指定コードの注文」に変更するとコード入力欄が表示される', async () => {
     render(<PurchaseDataDownloadForm onSubmit={mockOnSubmit} />);
 
-    // 「指定コードの注文」を選択
-    const targetDataSelect = screen.getAllByRole('combobox')[4];
+    // 「指定コードの注文」を選択（対象データは4番目のセレクト、インデックス3）
+    const selects = screen.getAllByRole('combobox');
+    const targetDataSelect = selects[3];
     fireEvent.change(targetDataSelect, { target: { value: 'specified' } });
 
     await waitFor(() => {
