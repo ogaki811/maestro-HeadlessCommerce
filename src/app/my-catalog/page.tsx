@@ -27,7 +27,8 @@ export default function MyCatalogPage() {
 
     const handleScroll = () => {
       const scrollPosition = container.scrollLeft;
-      const columnWidth = container.querySelector('.min-w-\\[85vw\\]')?.clientWidth || 0;
+      const column = container.querySelector('[data-catalog-column]') as HTMLElement | null;
+      const columnWidth = column?.clientWidth || 0;
       const gap = 16; // gap-4 = 1rem = 16px
 
       // 現在表示されているカラムのインデックスを計算
@@ -74,22 +75,24 @@ export default function MyCatalogPage() {
                 {/* 検索とアクションボタン */}
                 <div className="ec-my-catalog__actions flex flex-col lg:flex-row gap-4 items-stretch lg:items-center justify-between mb-8">
                   {/* 検索ボックス */}
-                  <div className="ec-my-catalog__search flex items-center w-full lg:max-w-md">
-                    <input
-                      type="text"
-                      placeholder="商品名や商品コードで検索"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="flex-1 min-w-0 px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
-                    />
-                    <button
-                      type="button"
-                      className="px-4 py-2 bg-black text-white rounded-r-md hover:bg-gray-800 transition-colors flex-shrink-0"
-                    >
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                      </svg>
-                    </button>
+                  <div className="ec-my-catalog__search w-full lg:max-w-md">
+                    <div className="flex items-stretch w-full border-2 border-gray-900 rounded-lg overflow-hidden hover:shadow-md transition-all focus-within:border-black focus-within:shadow-lg">
+                      <input
+                        type="text"
+                        placeholder="商品名や商品コードで検索"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="flex-1 min-w-0 px-4 py-2.5 bg-white border-0 focus:outline-none focus:bg-gray-50 transition-colors"
+                      />
+                      <button
+                        type="button"
+                        className="px-4 flex items-center justify-center bg-gray-900 text-white hover:bg-black transition-colors"
+                      >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                      </button>
+                    </div>
                   </div>
 
                   {/* アクションボタン */}
@@ -114,12 +117,11 @@ export default function MyCatalogPage() {
                   {/* 横スクロールコンテナ */}
                   <div
                     ref={scrollContainerRef}
-                    className="overflow-x-auto scroll-smooth snap-x snap-mandatory -mx-8 px-8"
-                    style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitScrollbar: { display: 'none' } }}
+                    className="overflow-x-auto scroll-smooth snap-x snap-mandatory -mx-8 px-8 hide-scrollbar"
                   >
                     <div className="flex gap-4 pb-4">
                       {/* 企業共通フォルダ */}
-                      <div className="min-w-[85vw] snap-start">
+                      <div data-catalog-column className="min-w-[85vw] snap-start flex-shrink-0">
                         <CatalogFolderColumn
                           type="company"
                           folders={companyFolders}
@@ -127,7 +129,7 @@ export default function MyCatalogPage() {
                       </div>
 
                       {/* 部署共通フォルダ */}
-                      <div className="min-w-[85vw] snap-start">
+                      <div data-catalog-column className="min-w-[85vw] snap-start flex-shrink-0">
                         <CatalogFolderColumn
                           type="department"
                           folders={departmentFolders}
@@ -135,7 +137,7 @@ export default function MyCatalogPage() {
                       </div>
 
                       {/* マイフォルダ */}
-                      <div className="min-w-[85vw] snap-start">
+                      <div data-catalog-column className="min-w-[85vw] snap-start flex-shrink-0">
                         <CatalogFolderColumn
                           type="personal"
                           folders={personalFolders}
@@ -162,7 +164,8 @@ export default function MyCatalogPage() {
                       type="button"
                       onClick={() => {
                         if (scrollContainerRef.current) {
-                          const columnWidth = scrollContainerRef.current.querySelector('.min-w-\\[85vw\\]')?.clientWidth || 0;
+                          const column = scrollContainerRef.current.querySelector('[data-catalog-column]') as HTMLElement | null;
+                          const columnWidth = column?.clientWidth || 0;
                           const gap = 16; // gap-4 = 1rem = 16px
                           scrollContainerRef.current.scrollTo({ left: columnWidth + gap, behavior: 'smooth' });
                         }
@@ -176,7 +179,8 @@ export default function MyCatalogPage() {
                       type="button"
                       onClick={() => {
                         if (scrollContainerRef.current) {
-                          const columnWidth = scrollContainerRef.current.querySelector('.min-w-\\[85vw\\]')?.clientWidth || 0;
+                          const column = scrollContainerRef.current.querySelector('[data-catalog-column]') as HTMLElement | null;
+                          const columnWidth = column?.clientWidth || 0;
                           const gap = 16; // gap-4 = 1rem = 16px
                           scrollContainerRef.current.scrollTo({ left: (columnWidth + gap) * 2, behavior: 'smooth' });
                         }

@@ -191,3 +191,13 @@ input[type="radio"]:disabled,
 input[type="checkbox"]:disabled {
   cursor: not-allowed;
 }
+
+/* スクロールバー非表示ユーティリティ */
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE, Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
