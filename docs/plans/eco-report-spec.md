@@ -128,8 +128,115 @@ src/
 4. APIエンドポイントの作成
 5. テストの作成
 
+## 結果ページ仕様
+
+### ページ情報
+
+- **URL**: `/mypage/eco-report/result`
+- **アクセス**: 認証必須（TOC/Wholesale ユーザー）
+- **パラメータ**: `?targetCode=xxx&closingDay=20&aggregationType=amount`
+
+### UI仕様
+
+#### ページタイトル
+- テキスト: 「環境配慮商品購入レポート」
+- スタイル: `text-3xl font-medium border-b-2 border-black`
+
+#### 注意事項
+```
+※環境配慮商品情報は随時更新情報に基づきます。
+※「総購入額」は環境配慮商品以外も含む全ての購入額です。
+※「環境配慮商品合計」欄は、「エコマーク商品」「グリーン購入方適合商品」「GPNエコ商品ねっと掲載商品」のいずれかに該当する商品の合計金額・構成比となります。
+```
+
+#### 対象情報セクション
+| 左側 | 右側 |
+|------|------|
+| `{対象コード}` 様 | 集計締日：**20**（赤字） 集計項目：税抜金額（円単位） |
+
+#### データテーブル
+
+##### テーブル構造（2分割）
+- **上段テーブル**: 6ヶ月分（例: 2024/12 〜 2025/05）
+- **下段テーブル**: 6ヶ月分 + 合計列（例: 2025/06 〜 2025/11 + 合計）
+
+##### 行構成
+| 行 | アイコン | 表示形式 |
+|----|---------|---------|
+| 総購入額 | なし | 金額のみ |
+| エコマーク商品 | 緑バッジ（SVG） | 金額 + (構成比%) |
+| グリーン購入法適合商品 | 緑バッジ（SVG） | 金額 + (構成比%) |
+| GPNエコ商品ねっと掲載商品 | バッジ（SVG） | 金額 + (構成比%) |
+| 環境配慮商品合計 | バッジ（SVG） | 金額 + (構成比%) |
+
+##### ヘッダー行
+- 1行目: 年月（例: 2024/12）- グレー背景
+- 2行目: 期間範囲（例: 2024/11/21 ▼ 2024/12/20）
+
+#### ボタン
+- 「戻る」: `variant="secondary"`（グレー）
+- 「印刷」: `variant="primary"`（オレンジ）
+
+### 型定義
+
+```typescript
+interface EcoReportMonthData {
+  month: string;              // "2024/12"
+  startDate: string;          // "2024/11/21"
+  endDate: string;            // "2024/12/20"
+  totalPurchase: number;
+  ecoMark: number;
+  ecoMarkRatio: number;
+  greenPurchase: number;
+  greenPurchaseRatio: number;
+  gpnEco: number;
+  gpnEcoRatio: number;
+  ecoTotal: number;
+  ecoTotalRatio: number;
+}
+
+interface EcoReportResultData {
+  targetCode: string;
+  targetName: string;
+  closingDay: number;
+  aggregationType: AggregationType;
+  aggregationLabel: string;
+  monthlyData: EcoReportMonthData[];
+  total: EcoReportTotalData;
+}
+```
+
+### コンポーネント構成
+
+- `EcoReportResult` - 結果表示コンポーネント（Organism）
+- `EcoCategoryBadge` - カテゴリバッジ（SVGアイコン）（Atom）
+
+### ファイル構成（追加分）
+
+```
+src/
+├── app/
+│   └── mypage/
+│       └── eco-report/
+│           └── result/
+│               └── page.tsx      # 結果ページ
+├── components/
+│   └── eco-report/
+│       ├── EcoReportResult.tsx   # 結果表示コンポーネント
+│       ├── EcoCategoryBadge.tsx  # カテゴリバッジ
+│       └── __tests__/
+│           └── EcoReportResult.test.tsx
+└── types/
+    └── eco-report.ts             # 型定義追加
+```
+
 ## デザイントークン
 
 - プライマリカラー: `#2d2626`
 - アクセントカラー: `#d4a017`（オレンジボタン）
 - セクションヘッダー縦線: `#2d2626`
+- カテゴリバッジ色:
+  - エコマーク: `#4CAF50`
+  - グリーン購入法: `#8BC34A`
+  - GPNエコ: `#607D8B`
+  - 環境配慮商品合計: `#FF9800`
