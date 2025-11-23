@@ -106,15 +106,15 @@ export default function ProductsPage() {
 
     switch (sortBy) {
       case 'price-asc':
-        return sorted.sort((a, b) => a.price - b.price);
+        return sorted.sort((a, b) => (a.price || 0) - (b.price || 0));
       case 'price-desc':
-        return sorted.sort((a, b) => b.price - a.price);
+        return sorted.sort((a, b) => (b.price || 0) - (a.price || 0));
       case 'name-asc':
-        return sorted.sort((a, b) => a.name.localeCompare(b.name, 'ja'));
+        return sorted.sort((a, b) => (a.name || '').localeCompare(b.name || '', 'ja'));
       case 'name-desc':
-        return sorted.sort((a, b) => b.name.localeCompare(a.name, 'ja'));
+        return sorted.sort((a, b) => (b.name || '').localeCompare(a.name || '', 'ja'));
       case 'rating-desc':
-        return sorted.sort((a, b) => b.rating - a.rating);
+        return sorted.sort((a, b) => (b.rating || 0) - (a.rating || 0));
       case 'newest':
         return sorted;
       default:
