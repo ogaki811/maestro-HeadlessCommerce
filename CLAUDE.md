@@ -43,9 +43,9 @@ This is a complex BtoB e-commerce system designed for business-to-business trans
 **Key Stack:**
 - Next.js 15.5.4 (App Router)
 - TypeScript 5.7.3
-- Zustand 5.0.3 (state management)
+- Zustand 5.0.8 (state management)
 - Prisma + PostgreSQL (database)
-- NextAuth.js (authentication)
+- NextAuth.js v4 (authentication)
 - react-hot-toast (notifications)
 
 ## Development Rules（開発ルール）
@@ -275,6 +275,7 @@ Route groups `(marketing)`, `(auth)`, `(shop)`, `(protected)` organize pages wit
 - `useAuthStore` - User authentication state
 - `useFavoritesStore` - Favorite products
 - `useDealerStore` - TOC dealer information
+- `useCustomMenuStore` - Custom menu selection (header secondary row)
 
 **Critical**: Stores use `persist` middleware with SSR-compatible storage that returns dummy storage on server-side.
 
@@ -717,6 +718,7 @@ See README.md for detailed migration history and phase completion reports.
 - `src/store/useAuthStore.ts` - User authentication state
 - `src/store/useFavoritesStore.ts` - Favorite products management
 - `src/store/useDealerStore.ts` - TOC dealer-specific information
+- `src/store/useCustomMenuStore.ts` - Custom menu persistence
 
 ### Business Logic（ビジネスロジック）
 - `src/lib/pricing.ts` - Price calculation by business type and volume
@@ -734,3 +736,10 @@ See README.md for detailed migration history and phase completion reports.
 - `src/components/quick-order/QuickOrderMultiLineForm.tsx` - Bulk order form container
 - `src/components/common/ProductCodeInput.tsx` - Product code input with validation
 - `src/components/ui/NumberInput.tsx` - Quantity input component
+
+### My Catalog Feature（マイカタログ機能）
+- `src/app/my-catalog/page.tsx` - My catalog list page
+- `src/app/my-catalog/[folderId]/page.tsx` - Catalog folder detail page
+- `src/components/my-catalog/CatalogFolderColumn.tsx` - Folder column layout
+- `src/components/my-catalog/CatalogFolderItem.tsx` - Folder item component
+- `src/components/my-catalog/CatalogItemCard.tsx` - Catalog item card component

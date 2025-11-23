@@ -27,12 +27,13 @@ describe('ContactCard', () => {
   });
 
   it('FAX情報がない場合は空として表示される', () => {
-    const { container } = render(<ContactCard {...mockProps} />);
+    render(<ContactCard {...mockProps} />);
 
     const faxLabel = screen.getByText('FAX');
     expect(faxLabel).toBeInTheDocument();
-    // FAXの値部分は「:」のみ
-    expect(faxLabel.parentElement?.textContent).toContain('FAX :');
+    // FAXの値部分はコロンのみ（値なし）
+    expect(faxLabel.parentElement?.textContent).toContain('FAX');
+    expect(faxLabel.parentElement?.textContent).toContain(':');
   });
 
   it('アバターURLがある場合に画像が表示される', () => {

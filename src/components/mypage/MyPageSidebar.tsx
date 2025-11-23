@@ -42,7 +42,7 @@ export default function MyPageSidebar() {
       section: 'purchase',
     },
     {
-      path: '/mypage/purchase-data',
+      path: '/purchase-data-download',
       label: '購入データダウンロード',
       icon: 'M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4',
       requiredRoles: ['super_admin', 'admin', 'general'], // 全員

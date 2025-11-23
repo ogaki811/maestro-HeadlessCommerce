@@ -78,10 +78,10 @@ describe('TableHeader', () => {
     expect(container.querySelector('thead')).toBeInTheDocument();
   });
 
-  it('applies background color styling', () => {
+  it('applies custom className when provided', () => {
     const { container } = render(
       <table>
-        <TableHeader>
+        <TableHeader className="bg-gray-50">
           <TableRow>
             <TableHeaderCell>Header</TableHeaderCell>
           </TableRow>

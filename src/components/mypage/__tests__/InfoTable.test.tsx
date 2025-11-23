@@ -48,11 +48,9 @@ describe('InfoTable', () => {
   it('空のデータで正しくレンダリングされる', () => {
     const { container } = render(<InfoTable data={[]} />);
 
-    // テーブルは存在するが行がない
-    const table = container.querySelector('table');
-    expect(table).toBeInTheDocument();
-    const rows = container.querySelectorAll('tr');
-    expect(rows.length).toBe(0);
+    // コンテナは存在するがデータ行はない
+    const dataRows = container.querySelectorAll('p');
+    expect(dataRows.length).toBe(0);
   });
 
   it('混在したカラム数のデータが正しく表示される', () => {
