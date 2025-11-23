@@ -25,6 +25,11 @@ export interface User {
   role: UserRole; // ロール情報
   createdAt: string;
   updatedAt: string;
+  // BtoB関連フィールド
+  code?: string; // ユーザーコード
+  dealerCode?: string; // ディーラーコード（TOC）
+  companyCode?: string; // 会社コード（Wholesale）
+  businessType?: 'toc' | 'wholesale' | 'retail'; // 商流タイプ
 }
 
 export interface UserProfile extends User {
