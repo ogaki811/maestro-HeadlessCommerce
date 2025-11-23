@@ -54,15 +54,10 @@ describe('EcoReportForm', () => {
     render(<EcoReportForm onSubmit={mockOnSubmit} targetCodeOptions={defaultTargetCodes} />);
 
     expect(screen.getByText('作成対象')).toBeInTheDocument();
-    expect(screen.getByText('集計締日：')).toBeInTheDocument();
+    expect(screen.getByText('対象コード')).toBeInTheDocument();
+    expect(screen.getByText('集計方式')).toBeInTheDocument();
+    expect(screen.getByText('集計締日')).toBeInTheDocument();
     expect(screen.getByText('レポート作成')).toBeInTheDocument();
-  });
-
-  it('説明文が表示される', () => {
-    render(<EcoReportForm onSubmit={mockOnSubmit} targetCodeOptions={defaultTargetCodes} />);
-
-    expect(screen.getByText(/過去一年分の環境配慮商品購入レポートを作成します/)).toBeInTheDocument();
-    expect(screen.getByText(/作成対象を選択し/)).toBeInTheDocument();
   });
 
   it('送信時にonSubmitが呼ばれる', async () => {
