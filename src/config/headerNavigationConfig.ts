@@ -79,6 +79,15 @@ export const headerNavigationIcons: NavigationIconConfig[] = [
     customizable: true
   },
   {
+    id: 'purchase-data-download',
+    href: '/purchase-data-download',
+    label: '購入データダウンロード',
+    iconPath: 'M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4',
+    text: '購入データDL',
+    showInDrawer: true,
+    customizable: true
+  },
+  {
     id: 'purchase-management',
     href: '/mypage/purchase-management',
     label: '購買管理',
