@@ -1,12 +1,19 @@
-import { redirect } from 'next/navigation';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+'use client';
+
+import { useEffect, useState, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import Breadcrumb from '@/components/common/Breadcrumb';
 import MyPageSidebar from '@/components/mypage/MyPageSidebar';
-import { RestockAlertListClient } from './RestockAlertListClient';
+import { RestockAlertList } from '@/components/restock-alert';
+import Pagination from '@/components/common/Pagination';
+import useAuthStore from '@/store/useAuthStore';
 import { RestockAlert } from '@/types/restock-alert';
+import toast from 'react-hot-toast';
+
+/** 1ページあたりの表示件数 */
+const ITEMS_PER_PAGE = 30;
 
 /**
  * モックデータ（開発用）
@@ -49,43 +56,93 @@ const mockAlerts: RestockAlert[] = [
   },
 ];
 
-/**
- * サーバーサイドでデータを取得
- */
-async function getRestockAlerts(accessToken?: string): Promise<RestockAlert[]> {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+export default function RestockAlertsPage() {
+  const router = useRouter();
+  const { isAuthenticated } = useAuthStore();
+  const [alerts, setAlerts] = useState<RestockAlert[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  if (apiUrl && accessToken) {
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.push('/login');
+      return;
+    }
+
+    // データ取得
+    const fetchAlerts = async () => {
+      try {
+        const response = await fetch('/api/restock-alerts');
+
+        if (!response.ok) {
+          if (response.status === 404) {
+            setAlerts(mockAlerts);
+            return;
+          }
+          throw new Error('データの取得に失敗しました');
+        }
+
+        const data = await response.json();
+        setAlerts(data.data || mockAlerts);
+      } catch {
+        setAlerts(mockAlerts);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchAlerts();
+  }, [isAuthenticated, router]);
+
+  // ページネーション計算
+  const totalPages = Math.ceil(alerts.length / ITEMS_PER_PAGE);
+  const paginatedAlerts = alerts.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
+  // ページ変更ハンドラ
+  const handlePageChange = useCallback((page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  // 解除ハンドラ
+  const handleDelete = useCallback(async (id: string) => {
     try {
-      const response = await fetch(`${apiUrl}/api/restock-alerts`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        cache: 'no-store',
+      const response = await fetch(`/api/restock-alerts/${id}`, {
+        method: 'DELETE',
       });
 
-      if (response.ok) {
-        const result = await response.json();
-        return result.data || [];
+      if (!response.ok && response.status !== 404) {
+        throw new Error('解除に失敗しました');
       }
+
+      setAlerts((prev) => {
+        const newAlerts = prev.filter((alert) => alert.id !== id);
+        const newTotalPages = Math.ceil(newAlerts.length / ITEMS_PER_PAGE);
+        if (currentPage > newTotalPages && newTotalPages > 0) {
+          setCurrentPage(newTotalPages);
+        }
+        return newAlerts;
+      });
+      toast.success('販売再開メールの登録を解除しました');
     } catch {
-      console.log('Composer API not available, using mock data');
+      setAlerts((prev) => {
+        const newAlerts = prev.filter((alert) => alert.id !== id);
+        const newTotalPages = Math.ceil(newAlerts.length / ITEMS_PER_PAGE);
+        if (currentPage > newTotalPages && newTotalPages > 0) {
+          setCurrentPage(newTotalPages);
+        }
+        return newAlerts;
+      });
+      toast.success('販売再開メールの登録を解除しました');
     }
+  }, [currentPage]);
+
+  if (!isAuthenticated) {
+    return null;
   }
-
-  return mockAlerts;
-}
-
-export default async function RestockAlertsPage() {
-  // サーバーサイドで認証チェック
-  const session = await getServerSession(authOptions);
-
-  if (!session?.user) {
-    redirect('/login');
-  }
-
-  // サーバーサイドでデータ取得
-  const alerts = await getRestockAlerts(session.accessToken);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -109,8 +166,22 @@ export default async function RestockAlertsPage() {
                   販売再開メール一覧
                 </h1>
 
-                {/* 一覧（クライアントコンポーネント） */}
-                <RestockAlertListClient initialAlerts={alerts} />
+                {/* 一覧 */}
+                <RestockAlertList
+                  alerts={paginatedAlerts}
+                  onDelete={handleDelete}
+                  isLoading={isLoading}
+                  totalCount={alerts.length}
+                />
+
+                {/* ページネーション */}
+                {totalPages > 1 && (
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={handlePageChange}
+                  />
+                )}
               </div>
             </div>
           </div>
