@@ -1,15 +1,12 @@
-'use client';
-
-import { useEffect, useState, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import Breadcrumb from '@/components/common/Breadcrumb';
 import MyPageSidebar from '@/components/mypage/MyPageSidebar';
-import { RestockAlertList } from '@/components/restock-alert';
-import useAuthStore from '@/store/useAuthStore';
+import { RestockAlertListClient } from './RestockAlertListClient';
 import { RestockAlert } from '@/types/restock-alert';
-import toast from 'react-hot-toast';
 
 /**
  * モックデータ（開発用）
@@ -52,69 +49,43 @@ const mockAlerts: RestockAlert[] = [
   },
 ];
 
-export default function RestockAlertsPage() {
-  const router = useRouter();
-  const { isAuthenticated } = useAuthStore();
-  const [alerts, setAlerts] = useState<RestockAlert[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+/**
+ * サーバーサイドでデータを取得
+ */
+async function getRestockAlerts(accessToken?: string): Promise<RestockAlert[]> {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      router.push('/login');
-      return;
-    }
-
-    // データ取得
-    const fetchAlerts = async () => {
-      try {
-        const response = await fetch('/api/restock-alerts');
-
-        if (!response.ok) {
-          // APIが未実装の場合はモックデータを使用
-          if (response.status === 404) {
-            setAlerts(mockAlerts);
-            return;
-          }
-          throw new Error('データの取得に失敗しました');
-        }
-
-        const data = await response.json();
-        setAlerts(data.data);
-      } catch (error) {
-        console.log('Using mock data:', error);
-        setAlerts(mockAlerts);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchAlerts();
-  }, [isAuthenticated, router]);
-
-  // 解除ハンドラ
-  const handleDelete = useCallback(async (id: string) => {
+  if (apiUrl && accessToken) {
     try {
-      const response = await fetch(`/api/restock-alerts/${id}`, {
-        method: 'DELETE',
+      const response = await fetch(`${apiUrl}/api/restock-alerts`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        cache: 'no-store',
       });
 
-      if (!response.ok && response.status !== 404) {
-        throw new Error('解除に失敗しました');
+      if (response.ok) {
+        const result = await response.json();
+        return result.data || [];
       }
-
-      // 一覧から削除
-      setAlerts((prev) => prev.filter((alert) => alert.id !== id));
-      toast.success('販売再開メールの登録を解除しました');
     } catch {
-      // APIが未実装の場合もローカルで削除
-      setAlerts((prev) => prev.filter((alert) => alert.id !== id));
-      toast.success('販売再開メールの登録を解除しました');
+      console.log('Composer API not available, using mock data');
     }
-  }, []);
-
-  if (!isAuthenticated) {
-    return null;
   }
+
+  return mockAlerts;
+}
+
+export default async function RestockAlertsPage() {
+  // サーバーサイドで認証チェック
+  const session = await getServerSession(authOptions);
+
+  if (!session?.user) {
+    redirect('/login');
+  }
+
+  // サーバーサイドでデータ取得
+  const alerts = await getRestockAlerts(session.accessToken);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -138,12 +109,8 @@ export default function RestockAlertsPage() {
                   販売再開メール一覧
                 </h1>
 
-                {/* 一覧 */}
-                <RestockAlertList
-                  alerts={alerts}
-                  onDelete={handleDelete}
-                  isLoading={isLoading}
-                />
+                {/* 一覧（クライアントコンポーネント） */}
+                <RestockAlertListClient initialAlerts={alerts} />
               </div>
             </div>
           </div>
