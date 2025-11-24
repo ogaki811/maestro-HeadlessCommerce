@@ -68,7 +68,21 @@ This is a complex BtoB e-commerce system designed for business-to-business trans
    - Get user approval before proceeding with the plan
    - Use `/init` or planning documents to outline the approach
 
-3. **Documentation（ドキュメント）**
+3. **Specification-Driven Development（仕様駆動開発）**
+   - **CRITICAL: Always create specification document BEFORE implementation**
+   - Specification documents must be stored in `/docs/plans/[feature-name]-spec.md`
+   - Specification must include:
+     - Feature overview and purpose
+     - Functional requirements
+     - UI/UX specifications (layout, components, interactions)
+     - API specifications (endpoints, request/response formats)
+     - Validation rules
+     - File structure for implementation
+   - Get user approval on specification before coding
+   - Use specification as the single source of truth during implementation
+   - Update specification if requirements change during development
+
+4. **Documentation（ドキュメント）**
    - Document all plans and requirements as logs
    - Keep implementation plans in project documentation
    - **All documentation must be stored in `/docs` directory**
@@ -81,7 +95,7 @@ This is a complex BtoB e-commerce system designed for business-to-business trans
 
 ### Component Architecture（コンポーネント設計）
 
-4. **Atomic Design Principles（アトミックデザイン）**
+5. **Atomic Design Principles（アトミックデザイン）**
    - Follow Atomic Design methodology for all components:
      - **Atoms**: `src/components/ui/` - Basic UI elements
        - Button, Input, Badge, Icon, Select, Checkbox, Loading, NumberInput
@@ -96,14 +110,14 @@ This is a complex BtoB e-commerce system designed for business-to-business trans
      - **Templates**: Page layouts with component composition (defined in route groups)
      - **Pages**: `src/app/` - Full pages with data fetching and business logic
 
-5. **Component Reusability（コンポーネント化）**
+6. **Component Reusability（コンポーネント化）**
    - **CRITICAL**: Always check for existing reusable components before creating new ones
    - Reuse existing components whenever possible to maintain consistency
    - Extract reusable logic into components whenever possible
    - Keep components small and focused on single responsibility
    - Use composition over inheritance
 
-6. **Design System Ready（デザインシステム対応）**
+7. **Design System Ready（デザインシステム対応）**
    - All components must be ready for design system integration
    - Use consistent prop interfaces across similar components
    - Document component variants and usage patterns
@@ -111,7 +125,7 @@ This is a complex BtoB e-commerce system designed for business-to-business trans
 
 ### Testing & Quality（テスト・品質）
 
-7. **Test-Driven Development（TDD）**
+8. **Test-Driven Development（TDD）**
    - **CRITICAL**: Always write tests BEFORE implementation
    - Follow Red-Green-Refactor cycle:
      1. Write failing test (Red)
@@ -120,13 +134,13 @@ This is a complex BtoB e-commerce system designed for business-to-business trans
    - Test coverage must meet threshold (60% minimum)
    - Test files location: `__tests__/` or `*.test.ts` alongside source files
 
-8. **Testing Patterns**
+9. **Testing Patterns**
    - **Unit Tests**: Test individual functions/components in isolation
    - **Integration Tests**: Test component interactions and data flow
    - **E2E Tests**: Test critical user journeys (checkout, login)
    - Run tests before committing: `npm test`
 
-9. **Performance & Quality Metrics（パフォーマンス・品質指標）**
+10. **Performance & Quality Metrics（パフォーマンス・品質指標）**
    - **CRITICAL**: All pages must achieve **Lighthouse score of 90+ points** in all categories
    - **CRITICAL**: Lighthouse audits must be performed at **Planning Phase** and **Testing Phase**
    - Lighthouse categories to monitor:
@@ -143,17 +157,17 @@ This is a complex BtoB e-commerce system designed for business-to-business trans
 
 ### Styling & CSS（スタイリング）
 
-10. **Tailwind CSS First（Tailwind優先）**
+11. **Tailwind CSS First（Tailwind優先）**
    - Use Tailwind utility classes for all styling
    - Avoid custom CSS unless absolutely necessary
    - Use Tailwind's design tokens for consistency (colors, spacing, typography)
    - If custom CSS is needed, document the reason in comments
 
-11. **BEM Methodology（BEM方法論）**
+12. **BEM Methodology（BEM方法論）**
     - When custom CSS is required, use BEM naming convention
     - Example: `.product-card__title--featured`
 
-12. **Icon Usage（アイコン使用）**
+13. **Icon Usage（アイコン使用）**
     - **CRITICAL: Never use emoji icons in UI components**
     - Use monochrome SVG icons only
     - Icons should be single-color and consistent with the design system
@@ -162,7 +176,7 @@ This is a complex BtoB e-commerce system designed for business-to-business trans
 
 ### Git & Commits（Git・コミット）
 
-13. **Clear Commit Messages（わかりやすいコミット）**
+14. **Clear Commit Messages（わかりやすいコミット）**
     - Write descriptive commit messages in Japanese
     - Format: `[type] 実装内容の説明`
     - Types: `feat`, `fix`, `refactor`, `test`, `docs`, `style`, `chore`
@@ -172,7 +186,7 @@ This is a complex BtoB e-commerce system designed for business-to-business trans
       - `test: useCartStoreのユニットテストを追加`
       - `refactor: ProductCardコンポーネントをAtomic Design原則に従って再構成`
 
-14. **Commit Workflow（コミットワークフロー）**
+15. **Commit Workflow（コミットワークフロー）**
     - **CRITICAL: Document added requirements BEFORE committing**
     - **CRITICAL: Refactor code before committing (Red-Green-Refactor cycle)**
     - **CRITICAL: Always include detailed development content in commit messages**
@@ -196,7 +210,7 @@ This is a complex BtoB e-commerce system designed for business-to-business trans
       - Optimize performance if needed
       - Ensure consistency with project patterns
 
-15. **Testing & Merge Workflow（テスト・マージワークフロー）**
+16. **Testing & Merge Workflow（テスト・マージワークフロー）**
     - **CRITICAL: Tests are run BEFORE merge, not on every commit**
     - **CRITICAL: Do NOT merge to main without explicit user instruction**
     - Before merging to main branch:
