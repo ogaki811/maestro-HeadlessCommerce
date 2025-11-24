@@ -9,6 +9,8 @@ interface RestockAlertListProps {
   alerts: RestockAlert[];
   onDelete: (id: string) => Promise<void>;
   isLoading?: boolean;
+  /** 総件数（ページネーション時に使用） */
+  totalCount?: number;
 }
 
 /**
@@ -18,6 +20,7 @@ export const RestockAlertList: React.FC<RestockAlertListProps> = ({
   alerts,
   onDelete,
   isLoading = false,
+  totalCount,
 }) => {
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
@@ -43,8 +46,9 @@ export const RestockAlertList: React.FC<RestockAlertListProps> = ({
     );
   }
 
-  // 空状態
-  if (alerts.length === 0) {
+  // 空状態（totalCountがある場合はそちらを優先）
+  const displayCount = totalCount ?? alerts.length;
+  if (displayCount === 0) {
     return (
       <div className="text-center py-16">
         <svg
@@ -70,7 +74,7 @@ export const RestockAlertList: React.FC<RestockAlertListProps> = ({
     <div className="space-y-4">
       {/* 件数表示 */}
       <p className="text-sm text-gray-700">
-        <span className="text-red-500 font-bold">{alerts.length}</span>
+        <span className="text-red-500 font-bold">{displayCount}</span>
         件あります。
       </p>
 
