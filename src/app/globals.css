@@ -8,6 +8,10 @@
 @theme {
   --color-background: #ffffff;
   --color-foreground: #171717;
+  --color-primary: #2563EB;
+  --color-primary-hover: #1D4ED8;
+  --color-secondary: #EA580C;
+  --color-secondary-hover: #C2410C;
 }
 
 body {

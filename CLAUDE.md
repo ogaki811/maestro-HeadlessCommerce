@@ -73,6 +73,10 @@ This is a complex BtoB e-commerce system designed for business-to-business trans
    - Specification documents must be stored in `/docs/plans/[feature-name]-spec.md`
    - Specification must include:
      - Feature overview and purpose
+     - **Business objectives and value proposition** (why this feature is needed, what business problem it solves)
+     - **Business workflow and stakeholders** (who uses it, how it fits into business processes, upstream/downstream impacts)
+     - **Business rules and constraints** (approval flows, permissions, integration/non-integration with other features)
+     - **System integrations** (external APIs, email notifications, backend services, data flows)
      - Functional requirements
      - UI/UX specifications (layout, components, interactions)
      - API specifications (endpoints, request/response formats)
@@ -174,9 +178,33 @@ This is a complex BtoB e-commerce system designed for business-to-business trans
     - Example of allowed icons: SVG with `stroke="currentColor"` or `fill="currentColor"`
     - Example of prohibited: 💡, ⚠️, ❌, ✅, etc.
 
+14. **Color System（カラーシステム）**
+    - **CRITICAL: Only use primary and secondary color variables defined in the design system**
+    - **NEVER use arbitrary color values (e.g., `bg-[#FF0000]`, `text-[#123456]`)**
+    - Use Tailwind color classes that reference CSS variables:
+      - Primary: `bg-primary`, `hover:bg-primary-hover`, `text-primary`, `border-primary`
+      - Secondary: `bg-secondary`, `hover:bg-secondary-hover`, `text-secondary`, `border-secondary`
+    - Color definitions are centralized in:
+      - `src/app/globals.css` - CSS variables in `@theme` block
+      - `tailwind.config.ts` - Tailwind color references
+    - Current color palette:
+      - **Primary**: #2563EB (blue) - Main brand color for primary actions
+      - **Primary Hover**: #1D4ED8 (dark blue) - Primary hover state
+      - **Secondary**: #EA580C (orange) - Complementary color for secondary actions
+      - **Secondary Hover**: #C2410C (dark orange) - Secondary hover state
+    - If a new color is needed:
+      1. Discuss with team lead and designer first
+      2. Add to `globals.css` @theme as a new variable (e.g., `--color-accent`)
+      3. Add to `tailwind.config.ts` color configuration
+      4. Document the purpose and usage in this file
+    - Benefits of centralized color system:
+      - Easy theme changes (update one place, affects entire app)
+      - Consistent brand identity across all components
+      - Easier maintenance and debugging
+
 ### Git & Commits（Git・コミット）
 
-14. **Clear Commit Messages（わかりやすいコミット）**
+15. **Clear Commit Messages（わかりやすいコミット）**
     - Write descriptive commit messages in Japanese
     - Format: `[type] 実装内容の説明`
     - Types: `feat`, `fix`, `refactor`, `test`, `docs`, `style`, `chore`
@@ -186,7 +214,7 @@ This is a complex BtoB e-commerce system designed for business-to-business trans
       - `test: useCartStoreのユニットテストを追加`
       - `refactor: ProductCardコンポーネントをAtomic Design原則に従って再構成`
 
-15. **Commit Workflow（コミットワークフロー）**
+16. **Commit Workflow（コミットワークフロー）**
     - **CRITICAL: Document added requirements BEFORE committing**
     - **CRITICAL: Refactor code before committing (Red-Green-Refactor cycle)**
     - **CRITICAL: Always include detailed development content in commit messages**
@@ -210,7 +238,7 @@ This is a complex BtoB e-commerce system designed for business-to-business trans
       - Optimize performance if needed
       - Ensure consistency with project patterns
 
-16. **Testing & Merge Workflow（テスト・マージワークフロー）**
+17. **Testing & Merge Workflow（テスト・マージワークフロー）**
     - **CRITICAL: Tests are run BEFORE merge, not on every commit**
     - **CRITICAL: Do NOT merge to main without explicit user instruction**
     - Before merging to main branch:
