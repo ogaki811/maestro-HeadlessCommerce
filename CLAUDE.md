@@ -179,28 +179,127 @@ This is a complex BtoB e-commerce system designed for business-to-business trans
     - Example of prohibited: 💡, ⚠️, ❌, ✅, etc.
 
 14. **Color System（カラーシステム）**
-    - **CRITICAL: Only use primary and secondary color variables defined in the design system**
+    - **CRITICAL: Only use color variables defined in the centralized design system**
     - **NEVER use arbitrary color values (e.g., `bg-[#FF0000]`, `text-[#123456]`)**
-    - Use Tailwind color classes that reference CSS variables:
-      - Primary: `bg-primary`, `hover:bg-primary-hover`, `text-primary`, `border-primary`
-      - Secondary: `bg-secondary`, `hover:bg-secondary-hover`, `text-secondary`, `border-secondary`
-    - Color definitions are centralized in:
-      - `src/app/globals.css` - CSS variables in `@theme` block
-      - `tailwind.config.ts` - Tailwind color references
-    - Current color palette:
-      - **Primary**: #2563EB (blue) - Main brand color for primary actions
-      - **Primary Hover**: #1D4ED8 (dark blue) - Primary hover state
-      - **Secondary**: #EA580C (orange) - Complementary color for secondary actions
-      - **Secondary Hover**: #C2410C (dark orange) - Secondary hover state
-    - If a new color is needed:
-      1. Discuss with team lead and designer first
-      2. Add to `globals.css` @theme as a new variable (e.g., `--color-accent`)
-      3. Add to `tailwind.config.ts` color configuration
-      4. Document the purpose and usage in this file
-    - Benefits of centralized color system:
-      - Easy theme changes (update one place, affects entire app)
-      - Consistent brand identity across all components
-      - Easier maintenance and debugging
+    - **NEVER hardcode color classes like `text-gray-900` for brand/theme colors**
+
+    **Color System Architecture:**
+
+    All colors are managed through a three-layer system:
+    1. **CSS Variables** (`globals.css` @theme block) - Single source of truth
+    2. **Tailwind Mapping** (`tailwind.config.ts`) - Maps CSS variables to Tailwind classes
+    3. **Component Usage** - Components use Tailwind classes (e.g., `text-primary`, `bg-text-header`)
+
+    **Current Color Palette:**
+
+    ```css
+    /* src/app/globals.css */
+    @theme {
+      --color-background: #ffffff;      /* Page background */
+      --color-foreground: #171717;      /* Default text color */
+      --color-primary: #2563EB;         /* Primary brand color (blue) */
+      --color-primary-hover: #1D4ED8;   /* Primary hover state */
+      --color-secondary: #EA580C;       /* Secondary color (orange) */
+      --color-secondary-hover: #C2410C; /* Secondary hover state */
+      --color-text-header: #111827;     /* Header text color (independent) */
+    }
+    ```
+
+    **Tailwind Mapping:**
+
+    ```typescript
+    // tailwind.config.ts
+    theme: {
+      extend: {
+        colors: {
+          primary: 'var(--color-primary)',
+          'primary-hover': 'var(--color-primary-hover)',
+          secondary: 'var(--color-secondary)',
+          'secondary-hover': 'var(--color-secondary-hover)',
+          'text-header': 'var(--color-text-header)',
+        },
+      },
+    }
+    ```
+
+    **Component Usage Examples:**
+
+    ```tsx
+    // ✅ CORRECT - Use color variables
+    <button className="bg-primary hover:bg-primary-hover text-white">
+      送信
+    </button>
+
+    <div className="text-text-header">
+      ヘッダーテキスト
+    </div>
+
+    // ✅ CORRECT - Opacity modifiers for backgrounds
+    <div className="bg-primary/5 hover:bg-primary/10">
+      カスタムメニュー
+    </div>
+
+    // ❌ WRONG - Arbitrary color values
+    <button className="bg-[#2563EB] text-white">送信</button>
+
+    // ❌ WRONG - Hardcoded gray for theme colors
+    <div className="text-gray-900">ヘッダーテキスト</div>
+    ```
+
+    **Color Usage Guidelines:**
+
+    - **Primary Colors**: Use for main actions, links, active states
+      - `bg-primary`, `text-primary`, `border-primary`, `hover:bg-primary-hover`
+    - **Secondary Colors**: Use for complementary actions, highlights
+      - `bg-secondary`, `text-secondary`, `border-secondary`, `hover:bg-secondary-hover`
+    - **Header Text**: Use for all header-related text elements
+      - `text-text-header` (independent of primary/secondary colors)
+    - **Opacity Modifiers**: Use for subtle backgrounds
+      - `bg-primary/5` (5% opacity), `bg-primary/10` (10% opacity)
+
+    **Adding a New Color:**
+
+    When a new color is needed, follow these steps:
+
+    1. **Discuss with team lead and designer first**
+       - Confirm the need for a new color
+       - Define the purpose and usage scenarios
+
+    2. **Add to globals.css**
+       ```css
+       @theme {
+         --color-accent: #10B981;      /* New accent color */
+         --color-accent-hover: #059669; /* Hover state */
+       }
+       ```
+
+    3. **Add to tailwind.config.ts**
+       ```typescript
+       colors: {
+         accent: 'var(--color-accent)',
+         'accent-hover': 'var(--color-accent-hover)',
+       }
+       ```
+
+    4. **Document in CLAUDE.md**
+       - Update this section with the new color
+       - Describe its purpose and usage guidelines
+
+    5. **Use in components**
+       ```tsx
+       <button className="bg-accent hover:bg-accent-hover">
+         新しいアクション
+       </button>
+       ```
+
+    **Benefits of Centralized Color System:**
+
+    - ✅ **Easy theme changes**: Update one place (`globals.css`), affects entire app
+    - ✅ **Independent color management**: Text colors independent from brand colors
+    - ✅ **Consistent brand identity**: Automatic consistency across all components
+    - ✅ **Easier maintenance**: No need to search and replace hardcoded values
+    - ✅ **Design system ready**: Prepared for future design system integration
+    - ✅ **Type safety**: Tailwind classes provide autocomplete and validation
 
 ### Git & Commits（Git・コミット）
 
