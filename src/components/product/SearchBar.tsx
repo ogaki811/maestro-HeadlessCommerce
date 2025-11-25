@@ -41,7 +41,7 @@ export default function SearchBar({
             value={value}
             onChange={(e) => onChange(e.target.value)}
             placeholder={placeholder}
-            className="ec-search-bar__input w-full pl-10 pr-20 py-3 border-2 border-gray-200 rounded-lg text-base transition-all duration-300 bg-white focus:outline-none focus:border-black focus:shadow-lg focus:shadow-blue-100"
+            className="ec-search-bar__input w-full pl-10 pr-20 py-3 border-2 border-gray-200 rounded-lg text-base transition-all duration-300 bg-white focus:outline-none focus:border-primary focus:shadow-lg focus:shadow-blue-100"
           />
           {value && (
             <button
@@ -55,7 +55,7 @@ export default function SearchBar({
           )}
           <button
             type="submit"
-            className="ec-search-bar__submit absolute right-2 px-3 py-1.5 bg-black text-white rounded-md hover:bg-gray-900 transition-colors"
+            className="ec-search-bar__submit absolute right-2 px-3 py-1.5 bg-primary text-white rounded-md hover:bg-primary-hover transition-colors"
           >
             検索
           </button>

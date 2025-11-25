@@ -18,11 +18,10 @@ export default function DeliveryAddressDisplay({
       href="/mypage"
       className="
         flex flex-col items-start
-        text-[#2d2626]
+        text-text-header
         pl-4 pr-4 py-2
         rounded-md
         hover:bg-gray-100
-        hover:text-gray-900
         transition-colors
         max-w-[200px]
       "

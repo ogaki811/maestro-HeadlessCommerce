@@ -32,11 +32,10 @@ export default function UserNameDisplay({
         onClick={() => setIsOpen(!isOpen)}
         className="
           flex items-center gap-2
-          text-sm text-[#2d2626]
+          text-sm text-text-header
           pl-4 pr-4 py-2
           rounded-md
           hover:bg-gray-100
-          hover:text-gray-900
           transition-colors
           font-medium
         "
@@ -88,7 +87,7 @@ export default function UserNameDisplay({
           >
             {/* ユーザー情報 */}
             <div className="px-3 py-2 border-b border-gray-200">
-              <div className="font-medium text-gray-900 text-sm truncate">
+              <div className="font-medium text-text-header text-sm truncate">
                 {userName}
               </div>
               {userEmail && (

@@ -13,6 +13,7 @@ const config: Config = {
         'primary-hover': 'var(--color-primary-hover)',
         secondary: 'var(--color-secondary)',
         'secondary-hover': 'var(--color-secondary-hover)',
+        'text-header': 'var(--color-text-header)',
       },
     },
   },

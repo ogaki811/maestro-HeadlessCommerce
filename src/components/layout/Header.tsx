@@ -199,7 +199,7 @@ export default function Header() {
                       </div>
 
                       {/* 検索ボタン */}
-                      <button type="submit" className="flex-shrink-0 px-6 py-3 bg-black text-white hover:bg-gray-900 transition-colors font-medium rounded-r-lg">
+                      <button type="submit" className="flex-shrink-0 px-6 py-3 bg-primary text-white hover:bg-primary-hover transition-colors font-medium rounded-r-lg">
                         検索
                       </button>
                     </div>

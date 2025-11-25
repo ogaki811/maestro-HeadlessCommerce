@@ -76,11 +76,10 @@ export default function CustomMenuBar({ selectedMenuIds }: CustomMenuBarProps) {
             flex items-center gap-2
             px-4 py-2
             text-sm font-medium
-            text-[#2d2626]
-            bg-gray-50
+            text-text-header
+            bg-primary/5
             rounded-md
-            hover:bg-gray-100
-            hover:text-gray-900
+            hover:bg-primary/10
             transition-colors
           "
           aria-label={menu.label}

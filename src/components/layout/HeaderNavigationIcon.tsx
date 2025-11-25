@@ -23,10 +23,10 @@ export default function HeaderNavigationIcon({
       className="
         flex items-center gap-2
         text-sm
-        text-[#2d2626]
+        text-text-header
         border-l border-gray-300
         pl-4
-        hover:text-gray-900
+        hover:bg-gray-100
         transition-colors
         font-medium
       "

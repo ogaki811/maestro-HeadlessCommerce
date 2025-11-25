@@ -52,11 +52,10 @@ export default function DealerSelectorButton() {
         onClick={() => setIsOpen(!isOpen)}
         className="
           flex flex-col items-start
-          text-[#2d2626]
+          text-text-header
           pl-4 pr-4 py-2
           rounded-md
           hover:bg-gray-100
-          hover:text-gray-900
           transition-colors
         "
       >
@@ -110,7 +109,7 @@ export default function DealerSelectorButton() {
                       className={`
                         w-full text-left px-3 py-2 text-sm rounded-md transition-colors
                         ${selectedDealer?.id === dealer.id
-                          ? 'bg-[#2d2626] text-white'
+                          ? 'bg-primary text-white'
                           : 'hover:bg-gray-100'
                         }
                       `}
@@ -136,7 +135,7 @@ export default function DealerSelectorButton() {
                 <Link
                   href="/dealers"
                   onClick={() => setIsOpen(false)}
-                  className="block w-full text-center px-3 py-2 text-sm text-[#2d2626] font-medium rounded-md border border-gray-300 hover:bg-gray-50 transition-colors"
+                  className="block w-full text-center px-3 py-2 text-sm text-text-header font-medium rounded-md border border-gray-300 hover:bg-gray-50 transition-colors"
                 >
                   {hasMoreDealers ? '全ての販売店を見る' : '販売店一覧を見る'}
                 </Link>
